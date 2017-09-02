@@ -4,6 +4,18 @@ import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
 
+import * as firebase from 'firebase';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAkbmuMGHpzdJYyeyhokfO02_oqn9EmlAk",
+  authDomain: "tin-can-durm.firebaseapp.com",
+  databaseURL: "https://tin-can-durm.firebaseio.com",
+  storageBucket: "tin-can-durm.appspot.com"
+};
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+
+
 export default class App extends React.Component {
   state = {
     assetsAreLoaded: false,
