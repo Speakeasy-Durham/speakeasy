@@ -18,8 +18,10 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
+    // storeHighScore('swallsy', 2000);
     return (
       <View style={styles.container}>
+
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
