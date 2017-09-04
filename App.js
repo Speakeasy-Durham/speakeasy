@@ -1,9 +1,8 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View, Text} from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
-import SignupScreen from './screens/SignupScreen';
 
 import * as firebase from 'firebase';
 
@@ -43,12 +42,6 @@ export default class App extends React.Component {
   render() {
     if (!this.state.assetsAreLoaded && !this.props.skipLoadingScreen) {
       return <AppLoading />;
-    } else if (!this.state.isLoggedIn) {
-      return (
-        <View style={styles.container}>
-            <SignupScreen />
-        </View>
-      )
     } else {
       return (
         <View style={styles.container}>
