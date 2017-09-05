@@ -3,10 +3,14 @@ import React from 'react';
 import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
+import SignupScreen from '../screens/SignupScreen';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 const RootStackNavigator = StackNavigator(
   {
+    Signup: {
+      screen: SignupScreen,
+    },
     Main: {
       screen: MainTabNavigator,
     },

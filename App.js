@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import RootNavigation from './navigation/RootNavigation';
@@ -16,14 +16,28 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 
+
+// setupHighscoreListener(userId) {
+//   firebase.database().ref('users/' + userId).on('value', (snapshot) => {
+//     const highscore = snapshot.val().highscore;
+//     console.log("New high score: " + highscore);
+//   });
+// }
+
 export default class App extends React.Component {
   state = {
     assetsAreLoaded: false,
   };
 
+  // storeHighScore(userId, score) {
+  //   firebase.database().ref('users/' + userId).set({
+  //     highscore: score
+  //   });
+  // }
+
   componentWillMount() {
     this._loadAssetsAsync();
-  }
+  };
 
   render() {
     if (!this.state.assetsAreLoaded && !this.props.skipLoadingScreen) {
@@ -77,5 +91,9 @@ const styles = StyleSheet.create({
   statusBarUnderlay: {
     height: 24,
     backgroundColor: 'rgba(0,0,0,0.2)',
+  },
+  text: {
+    color: 'red',
+    fontSize: 20,
   },
 });
