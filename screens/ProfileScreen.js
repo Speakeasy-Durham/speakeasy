@@ -1,11 +1,13 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
+import * as firebase from 'firebase';
 
-export default class LinksScreen extends React.Component {
+export default class ProfileScreen extends React.Component {
   static navigationOptions = {
-    title: 'Links',
+    title: 'Profile',
   };
+
 
   render() {
     return (

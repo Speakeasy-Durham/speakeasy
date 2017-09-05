@@ -6,7 +6,7 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 import Colors from '../constants/Colors';
 
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import RecordingScreen from '../screens/RecordingScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -15,8 +15,8 @@ export default TabNavigator(
     Home: {
       screen: HomeScreen,
     },
-    Links: {
-      screen: LinksScreen,
+    Profile: {
+      screen: ProfileScreen,
     },
     Recording: {
       screen: RecordingScreen,
@@ -36,7 +36,7 @@ export default TabNavigator(
               ? `ios-information-circle${focused ? '' : '-outline'}`
               : 'md-information-circle';
             break;
-          case 'Links':
+          case 'Profile':
             iconName = Platform.OS === 'ios'
               ? `ios-link${focused ? '' : '-outline'}`
               : 'md-link';

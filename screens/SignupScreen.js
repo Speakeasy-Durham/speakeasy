@@ -41,6 +41,13 @@ export default class SignupScreen extends React.Component {
   //     }
   // }
 
+  checkLoggedIn() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.props.navigation.dispatch(resetStack);
+      }
+    });
+  }
 
   async logInFB() {
     const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('113477732653798', {
@@ -53,11 +60,24 @@ export default class SignupScreen extends React.Component {
       let access_token = token;
       var credential = firebase.auth.FacebookAuthProvider.credential(access_token);
       firebase.auth().signInWithCredential(credential).catch(function(error) {
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      var email = error.email;
-      var credential = error.credential;
-});
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          var email = error.email;
+          var credential = error.credential;
+      });
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(function() {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
+          return firebase.auth().signInWithEmailAndPassword(email, password);
+        })
+        .catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        });
       Alert.alert(
         'Logged in!',
         `Hi ${fbInfo.name}!`,
@@ -65,8 +85,6 @@ export default class SignupScreen extends React.Component {
       this.props.navigation.dispatch(resetStack);
     }
   }
-
-
 
   _handleFacebookAuth = ()  => {
     this.logInFB();
@@ -76,7 +94,7 @@ export default class SignupScreen extends React.Component {
   //   this.logInGoogle();
   // }
   render () {
-    // storeHighSchore("swallsy", 4500);
+    this.checkLoggedIn();
     return (
       <View style={styles.main}>
         <Text style={styles.mainText}>This is the signup Screen</Text>
