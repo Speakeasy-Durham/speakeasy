@@ -12,14 +12,35 @@ import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 
+import * as firebase from 'firebase';
+
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
-  render() {
+  checkForUser() {
+    let user = firebase.auth().currentUser;
+
+    if (user != null) {
+      user.providerData.forEach(function (profile) {
+        console.log("Sign-in provider: "+profile.providerId);
+        console.log("  Provider-specific UID: "+profile.uid);
+        console.log("  Name: "+profile.displayName);
+        console.log("  Email: "+profile.email);
+        console.log("  Photo URL: "+profile.photoURL);
+      });
+    }
+  }
+
     // storeHighScore('swallsy', 2000);
-    return (
+
+    render() {
+      this.checkForUser();
+      // Expo.SecureStore.getValueWithKeyAsync("fbId");
+      //       .then( result => console.log(result))
+      //       .catch( error => console.log(error));
+      return (
       <View style={styles.container}>
 
         <ScrollView
