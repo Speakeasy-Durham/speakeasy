@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
     backgroundColor: "pink",
   },
   mainText: {
-    color: "white",
+    color: "gray",
     fontSize: 30,
   },
 })
