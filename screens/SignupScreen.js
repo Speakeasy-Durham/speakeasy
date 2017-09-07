@@ -23,23 +23,23 @@ export default class SignupScreen extends React.Component {
   }
 
 
-  // async logInGoogle(accessToken) {
-  //     try {
-  //       const result = await Expo.Google.logInAsync({
-  //         behavior: 'web',
-  //         androidClientId: "464757889372-7rot9u82fm6ncvpec4cl4kng4elo10mk.apps.googleusercontent.com",
-  //         iosClientId: "464757889372-0l11hjb6nmrstbfp56q437l17sq68tqu.apps.googleusercontent.com",
-  //         scopes: ['profile', 'email'],
-  //       });
-  //       if (result.type === 'success') {
-  //         return result.accessToken;
-  //       } else {
-  //         return {cancelled: true};
-  //       }
-  //     } catch(e) {
-  //       return {error: true};
-  //     }
-  // }
+  async logInGoogle(accessToken) {
+      try {
+        const result = await Expo.Google.logInAsync({
+          behavior: 'web',
+          androidClientId: "464757889372-7rot9u82fm6ncvpec4cl4kng4elo10mk.apps.googleusercontent.com",
+          iosClientId: "464757889372-0l11hjb6nmrstbfp56q437l17sq68tqu.apps.googleusercontent.com",
+          scopes: ['profile', 'email'],
+        });
+        if (result.type === 'success') {
+          return result.accessToken;
+        } else {
+          return {cancelled: true};
+        }
+      } catch(e) {
+        return {error: true};
+      }
+  }
 
   checkLoggedIn() {
     firebase.auth().onAuthStateChanged(user => {
@@ -90,9 +90,9 @@ export default class SignupScreen extends React.Component {
     this.logInFB();
   }
 
-  // _handleGoogleAuth = () => {
-  //   this.logInGoogle();
-  // }
+  _handleGoogleAuth = () => {
+    this.logInGoogle();
+  }
   render () {
     this.checkLoggedIn();
     return (
@@ -101,6 +101,12 @@ export default class SignupScreen extends React.Component {
         <Button
           onPress={this._handleFacebookAuth}
           title="Facebook"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
+        <Button
+          onPress={this._handleGoogleAuth}
+          title="Google"
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
         />
@@ -115,7 +121,7 @@ const styles = StyleSheet.create({
     backgroundColor: "pink",
   },
   mainText: {
-    color: "white",
+    color: "gray",
     fontSize: 30,
   },
 })

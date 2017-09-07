@@ -7,6 +7,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
+  Alert
 } from 'react-native';
 import { WebBrowser } from 'expo';
 
@@ -31,6 +33,17 @@ export default class HomeScreen extends React.Component {
         console.log("  Photo URL: "+profile.photoURL);
       });
     }
+  }
+
+  _handleLogOut () {
+    firebase.auth().signOut().then(function() {
+      Alert.alert(
+        'Logged Out!'
+      );
+      this.p
+}, function(error) {
+  // An error happened.
+});
   }
 
     // storeHighScore('swallsy', 2000);
@@ -61,6 +74,12 @@ export default class HomeScreen extends React.Component {
             {this._maybeRenderDevelopmentModeWarning()}
 
             <Text style={styles.getStartedText}>Get started by opening</Text>
+              <Button
+                onPress={this._handleLogOut}
+                title="Logout of App"
+                color="#841584"
+                accessibilityLabel="Learn more about this purple button"
+              />
 
             <View
               style={[
