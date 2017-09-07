@@ -29,11 +29,13 @@ export default class App extends React.Component {
     assetsAreLoaded: false,
   };
 
-  // storeHighScore(userId, score) {
-  //   firebase.database().ref('users/' + userId).set({
-  //     highscore: score
-  //   });
-  // }
+  storeHighScore(userId, score) {
+    firebase.database().ref('users/' + userId).set({
+      highscore: score,
+      animal: monkey,
+      
+    });
+  }
 
   componentWillMount() {
     this._loadAssetsAsync();
