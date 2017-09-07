@@ -13,13 +13,25 @@ import {
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
-
+import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
+
+
+
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
+  constructor(props) {
+    super(props);
+  }
+  // static navigationOptions = {
+  //   title: 'home',
+  // };
+
+  // const navigateAction = NavigationActions.navigate({
+  //   routeName: 'SignUp',
+  //   params: {},
+  //   action: NavigationActions.navigate({ routeName: 'SignUp'})
+  // });
 
   checkForUser() {
     let user = firebase.auth().currentUser;
@@ -36,15 +48,14 @@ export default class HomeScreen extends React.Component {
   }
 
   _handleLogOut () {
-    firebase.auth().signOut().then(function() {
+    firebase.auth().signOut().then(user => {
       Alert.alert(
         'Logged Out!'
       );
-      this.p
-}, function(error) {
-  // An error happened.
-});
-  }
+      // this.props.navigation.dispatch(navigateAction);
+    }, function(error) {
+  });
+}
 
     // storeHighScore('swallsy', 2000);
 
