@@ -18,7 +18,7 @@ import * as firebase from 'firebase';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Home',
+    title: 'Feed',
   };
 
   // checkForUser() {
