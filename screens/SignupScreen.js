@@ -4,8 +4,10 @@ import {
   View,
   Text,
   Button,
-  Alert
+  Alert,
+  TouchableHighlight,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions } from 'react-navigation';
 
 import * as firebase from 'firebase';
@@ -20,27 +22,6 @@ import * as firebase from 'firebase';
 export default class SignupScreen extends React.Component {
   static navigationOptions = {
     header: null
-  }
-
-  render () {
-    this.checkLoggedIn();
-    return (
-      <View style={styles.main}>
-        <Text style={styles.mainText}>This is the signup Screen</Text>
-        <Button
-          onPress={this._handleFacebookAuth}
-          title="Facebook"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
-        <Button
-          onPress={this._handleGoogleAuth}
-          title="Google"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
-      </View>
-    )
   }
 
   checkLoggedIn() {
@@ -129,15 +110,69 @@ export default class SignupScreen extends React.Component {
   _handleGoogleAuth = () => {
     this.logInGoogle();
   }
-}
 
+  render () {
+    this.checkLoggedIn();
+    return (
+      <View style={styles.main}>
+        <Text style={styles.headerText}>SPEAKEASY</Text>
+        <TouchableHighlight onPress={this._handleFacebookAuth} style={styles.touchableBtn}>
+          <View style={styles.facebookButton}>
+            <Ionicons name="logo-facebook" size={24} color="white" style={styles.providerIcon} />
+            <Text style={styles.providerText}>Login with Facebook</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._handleGoogleAuth} style={styles.touchableBtn}>
+          <View style={styles.googleButton} >
+            <Ionicons name="logo-google" size={24} color="white" style={styles.providerIcon} />
+            <Text style={styles.providerText}>Login with Google</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
+    )
+  }
+}
+const fbBlue = 'rgb(59,89,152)';
+const googRed = '#ea4335';
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "pink",
+    backgroundColor: "rgb(234, 231, 222)",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  mainText: {
-    color: "gray",
-    fontSize: 30,
+  headerText: {
+    color: "black",
+    fontSize: 40,
+    fontFamily: 'monoton',
+    marginBottom: 44,
   },
+  facebookButton: {
+    width: 250,
+    height: 44,
+    backgroundColor: fbBlue,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  googleButton: {
+    width: 250,
+    height: 44,
+    backgroundColor: googRed,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  touchableBtn: {
+    marginBottom: 12,
+    borderRadius: 12,
+  },
+  providerText: {
+    color: "white",
+  },
+  providerIcon: {
+    marginRight: 8,
+  }
 })
