@@ -36,7 +36,7 @@ export default TabNavigator({
         switch (routeName) {
           case 'Home':
             iconName = Platform.OS === 'ios'
-              ? `ios-list-outline${focused ? '' : '-outline'}`
+              ? `ios-list${focused ? '' : '-outline'}`
               : 'md-information-circle';
             break;
           case 'Discover':
