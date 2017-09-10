@@ -10,8 +10,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import RecordingScreen from '../screens/RecordingScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
-export default TabNavigator(
-  {
+export default TabNavigator({
     Home: {
       screen: HomeScreen,
     },

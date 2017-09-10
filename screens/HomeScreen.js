@@ -16,54 +16,26 @@ import { MonoText } from '../components/StyledText';
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
-
-
-
 export default class HomeScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  // static navigationOptions = {
-  //   title: 'home',
-  // };
+  static navigationOptions = {
+    title: 'Home',
+  };
 
-  // const navigateAction = NavigationActions.navigate({
-  //   routeName: 'SignUp',
-  //   params: {},
-  //   action: NavigationActions.navigate({ routeName: 'SignUp'})
-  // });
-
-  checkForUser() {
-    let user = firebase.auth().currentUser;
-
-    if (user != null) {
-      user.providerData.forEach(function (profile) {
-        console.log("Sign-in provider: "+profile.providerId);
-        console.log("  Provider-specific UID: "+profile.uid);
-        console.log("  Name: "+profile.displayName);
-        console.log("  Email: "+profile.email);
-        console.log("  Photo URL: "+profile.photoURL);
-      });
-    }
-  }
-
-  _handleLogOut () {
-    firebase.auth().signOut().then(user => {
-      Alert.alert(
-        'Logged Out!'
-      );
-      // this.props.navigation.dispatch(navigateAction);
-    }, function(error) {
-  });
-}
-
-    // storeHighScore('swallsy', 2000);
+  // checkForUser() {
+  //   let user = firebase.auth().currentUser;
+  //   if (user != null) {
+  //     user.providerData.forEach(function (profile) {
+  //       console.log("Sign-in provider: "+profile.providerId);
+  //       console.log("  Provider-specific UID: "+profile.uid);
+  //       console.log("  Name: "+profile.displayName);
+  //       console.log("  Email: "+profile.email);
+  //       console.log("  Photo URL: "+profile.photoURL);
+  //     });
+  //   }
+  // }
 
     render() {
-      this.checkForUser();
-      // Expo.SecureStore.getValueWithKeyAsync("fbId");
-      //       .then( result => console.log(result))
-      //       .catch( error => console.log(error));
+      // this.checkForUser();
       return (
       <View style={styles.container}>
 
@@ -133,6 +105,26 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
+
+  _handleLogOut = () => {
+      this._navigateTo('Signup');
+      firebase.auth().signOut().then(user => {
+        Alert.alert(
+          "You're logged out."
+        );
+      }, function(error) {
+        console.log(error);
+    });
+  }
+
+  _navigateTo(routeName: string){
+    const actionToDispatch = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName })]
+    })
+      this.props.navigation.dispatch(actionToDispatch)
+  }
+
 
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {

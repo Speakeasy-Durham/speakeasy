@@ -4,15 +4,19 @@ import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import SignupScreen from '../screens/SignupScreen';
+import SplashScreen from '../screens/SplashScreen';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
 
 const RootStackNavigator = StackNavigator(
   {
-    Signup: {
-      screen: SignupScreen,
+    Splash: {
+      screen: SplashScreen,
     },
     Main: {
       screen: MainTabNavigator,
+    },
+    Signup: {
+      screen: SignupScreen,
     },
   },
   {
@@ -20,11 +24,18 @@ const RootStackNavigator = StackNavigator(
       headerTitleStyle: {
         fontWeight: 'normal',
       },
+      initialRouteName: 'SplashScreen'
     }),
   }
 );
 
 export default class RootNavigator extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false
+    };
+  }
   componentDidMount() {
     this._notificationSubscription = this._registerForPushNotifications();
   }
@@ -34,7 +45,9 @@ export default class RootNavigator extends React.Component {
   }
 
   render() {
-    return <RootStackNavigator />;
+    return (
+      <RootStackNavigator />
+    )
   }
 
   _registerForPushNotifications() {
