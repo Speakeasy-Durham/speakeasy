@@ -8,20 +8,24 @@ import Colors from '../constants/Colors';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import RecordingScreen from '../screens/RecordingScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import DiscoverScreen from '../screens/DiscoverScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 export default TabNavigator({
     Home: {
       screen: HomeScreen,
     },
-    Profile: {
-      screen: ProfileScreen,
+    Discover: {
+      screen: DiscoverScreen,
     },
     Recording: {
       screen: RecordingScreen,
     },
-    Settings: {
-      screen: SettingsScreen,
+    Notifications: {
+      screen: NotificationScreen,
+    },
+    Profile: {
+      screen: ProfileScreen,
     },
   },
   {
@@ -32,23 +36,28 @@ export default TabNavigator({
         switch (routeName) {
           case 'Home':
             iconName = Platform.OS === 'ios'
-              ? `ios-information-circle${focused ? '' : '-outline'}`
+              ? `ios-list-outline${focused ? '' : '-outline'}`
               : 'md-information-circle';
             break;
-          case 'Profile':
-            iconName = Platform.OS === 'ios'
-              ? `ios-link${focused ? '' : '-outline'}`
-              : 'md-link';
-            break;
+          case 'Discover':
+              iconName = Platform.OS === 'ios'
+                ? `ios-search${focused ? '' : '-outline'}`
+                : 'md-options';
+              break;
           case 'Recording':
             iconName = Platform.OS === 'ios'
               ? `ios-microphone${focused ? '' : '-outline'}`
               : 'md-link';
             break;
-          case 'Settings':
+          case 'Notifications':
             iconName = Platform.OS === 'ios'
-              ? `ios-options${focused ? '' : '-outline'}`
-              : 'md-options';
+              ? `ios-heart${focused ? '' : '-outline'}`
+              : 'md-link';
+          break;
+          case 'Profile':
+            iconName = Platform.OS === 'ios'
+              ? `ios-person${focused ? '' : '-outline'}`
+              : 'md-link';
         }
         return (
           <Ionicons
