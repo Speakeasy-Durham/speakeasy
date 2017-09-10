@@ -50,6 +50,7 @@ export default class App extends React.Component {
         Font.loadAsync([
           Ionicons.font,
           { 'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf') },
+          { 'monoton': require('./assets/fonts/Monoton-Regular.ttf') },
         ]),
       ]);
     } catch (e) {
