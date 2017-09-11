@@ -58,7 +58,7 @@ export default class SignupScreen extends React.Component {
               var errorMessage = error.message;
             });
           Alert.alert(
-            'Logged in!',
+            "You're logged in!",
           );
           this.props.navigation.dispatch(resetStack);
           return result.accessToken;
