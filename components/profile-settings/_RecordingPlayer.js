@@ -7,7 +7,7 @@ import {
     // import children
 
 
-export default class SpokePlayer extends Component {
+export default class RecordingPlayer extends Component {
   render () {
     return (
       <View style={styles.main}>
@@ -22,6 +22,8 @@ export default class SpokePlayer extends Component {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "pink"
+    backgroundColor: "#CCC",
+    paddingLeft: 8,
+    
   }
 })

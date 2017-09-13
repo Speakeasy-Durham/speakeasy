@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
     // import children
-import SpokePlayer from './_SpokePlayer';
+import RecordingPlayer from './_RecordingPlayer';
 
 export default class ProfileAndSettings extends Component {
   render () {
@@ -28,6 +28,14 @@ export default class ProfileAndSettings extends Component {
                 ##
               </Text>
               <Text style={styles.infoType}>
+                posts
+              </Text>
+            </View>
+            <View style={styles.info}>
+              <Text style={styles.infoNumber}>
+                ##
+              </Text>
+              <Text style={styles.infoType}>
                 followers
               </Text>
             </View>
@@ -40,8 +48,15 @@ export default class ProfileAndSettings extends Component {
               </Text>
             </View>
           </View>
+          <View style={styles.settingsContainer}>
+            <Text>
+              (s)
+            </Text>
+          </View>
         </View>
-        <SpokePlayer />
+        <View style={styles.recordingsContainer}>
+          <RecordingPlayer />
+        </View>
       </View>
     )
   }
@@ -56,31 +71,52 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderBottomColor: '#000',
     flexDirection: 'row'
-    // width: Layout.window.width
   },
   imageContainer: {
-    padding: 10
+    padding: 10,
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderColor: 'green',
+    borderWidth: 1,
   },
   image: {
-    width: 50,
-    height: 50
+    width: 56,
+    height: 56,
+    backgroundColor: '#000',
   },
   name: {
-
+    marginTop: 4,
   },
   infoContainer: {
     flexDirection: 'row',
-    
+    flex: 2,
+    marginLeft: 5,
+    borderColor: 'red',
+    borderWidth: 1,
   },
   info: {
     flexDirection: 'column',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    padding: 8
   },
   infoNumber: {
-
+    marginTop: 12,
+    fontSize: 16
   },
   infoType: {
-
+    marginTop: 8,
+    fontSize: 12
+  },
+  settingsContainer: {
+    flexDirection: 'column',
+    flex: 0,
+    minWidth: 48,
+    // minHeight: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'blue',
+    borderWidth: 1,
   }
 })
