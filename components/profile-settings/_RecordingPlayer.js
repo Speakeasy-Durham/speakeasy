@@ -54,6 +54,7 @@ export default class RecordingPlayer extends Component {
       testPlay: false,
       animation: new Animated.Value()
     };
+    this._testPlayPause = this._testPlayPause.bind(this);
   }
 
   componentDidMount() {
@@ -157,13 +158,15 @@ export default class RecordingPlayer extends Component {
   //   )
   // }
 
+
+
   render () {
     return (
       <View style={styles.container}>
         <View style={styles.playerContainer}>
           <TouchableHighlight
             style={styles.playStopContainer}
-            onPress={() => this.setState({ testPlay: !this.state.testPlay })}
+            onPress={ this._testPlayPause }
           >
               <Text>></Text>
           </TouchableHighlight>
