@@ -93,14 +93,10 @@ export default class RecordingPlayer extends Component {
   _onPlayPausePressed = () => {
     if (this.sound != null) {
       if (this.state.isPlaying) {
-        this.setState({
-          testPlay: true
-        });
+
         this.sound.pauseAsync();
       } else {
-        this.setState({
-          testPlay: false
-        });
+
         this.sound.playAsync();
       }
     }
@@ -134,6 +130,22 @@ export default class RecordingPlayer extends Component {
     return padWithZero(minutes) + ':' + padWithZero(seconds);
   }
 
+  _testPlayPause() {
+    this.setState({
+      testPlay: !this.state.testPlay
+    });
+  }
+
+  _renderSlider() {
+    if (!this.state.testPlay) {
+      return null;
+    }
+    return (
+      <View style={styles.sliderContainer}>
+        <Slider style={styles.slider} />
+      </View>
+    );
+  }
 
   // render () {
   //   return (
@@ -151,7 +163,7 @@ export default class RecordingPlayer extends Component {
         <View style={styles.playerContainer}>
           <TouchableHighlight
             style={styles.playStopContainer}
-            onPress={this._onPlayPausePressed}
+            onPress={() => this.setState({ testPlay: !this.state.testPlay })}
           >
               <Text>></Text>
           </TouchableHighlight>
@@ -162,9 +174,8 @@ export default class RecordingPlayer extends Component {
             <Text>0:00</Text>
           </View>
         </View>
-        <View style={styles.sliderContainer}>
-          <Slider style={styles.slider} />
-        </View>
+        {/* { this.state.testPlay && } */}
+        {this._renderSlider()}
       </View>
     )
   }
@@ -179,6 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#333',
     borderWidth: 1,
+
   },
   playerContainer: {
     flex: 1,
@@ -213,9 +225,14 @@ const styles = StyleSheet.create({
   },
 
   testPlayTrue: {
-    minHeight: 36,
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderColor: '#333',
+    borderWidth: 1,
+    minHeight: 78,
   },
   testPlayFalse: {
-    minHeight: 18,
+
   }
 })
