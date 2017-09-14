@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -54,9 +55,9 @@ export default class ProfileAndSettings extends Component {
             </Text>
           </View>
         </View>
-        <View style={styles.recordingsContainer}>
+        <ScrollView style={styles.recordingsContainer}>
           <RecordingPlayer />
-        </View>
+        </ScrollView>
       </View>
     )
   }
@@ -90,8 +91,9 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 2,
-    marginLeft: 5,
     borderColor: 'red',
     borderWidth: 1,
   },
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 8
   },
   infoNumber: {
-    marginTop: 12,
+    marginTop: 4,
     fontSize: 16
   },
   infoType: {
