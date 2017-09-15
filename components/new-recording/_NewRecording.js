@@ -201,7 +201,11 @@ export default class _NewRecording extends React.Component {
       // Do nothing -- we are already unloaded.
     }
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
-    console.log(`FILE INFO: ${JSON.stringify(info)}`);
+    const newFile = (`FILE INFO: ${JSON.stringify(info)}`);
+    console.log(newFile);
+    const uri = newFile['uri'];
+    console.log(uri);
+    // this.uploadAudioAsync(uri);
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
