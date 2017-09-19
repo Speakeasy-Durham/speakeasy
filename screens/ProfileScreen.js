@@ -3,18 +3,18 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import * as firebase from 'firebase';
 
+import ProfileAndSettings from '../components/profile-settings/_ProfileAndSettings';
+
 export default class ProfileScreen extends React.Component {
   static navigationOptions = {
-    title: 'Profile',
+    title: 'User\'s name',
   };
 
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-        <ExpoLinksView />
+        <ProfileAndSettings />
       </ScrollView>
     );
   }
@@ -24,6 +24,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 15,
-    backgroundColor: '#fff',
+    backgroundColor: 'pink',
   },
 });
