@@ -10,11 +10,34 @@ export default class ProfileScreen extends React.Component {
     title: 'User\'s name',
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      userPhoto: null,
+      userEmail: null,
+      userUid: null,
+      userName: null,
+    };
+  }
+
+  componentWillMount() {
+    var user = firebase.auth().currentUser;
+    this.setState({userPhoto: user.providerData[0].photoURL});
+    this.setState({userEmail: user.providerData[0].email});
+    this.setState({userUid: user.providerData[0].uid});
+    this.setState({userName: user.providerData[0].displayName});
+  }
+
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        <ProfileAndSettings />
+        <ProfileAndSettings
+          userUid={this.state.userUid}
+          userEmail={this.state.userEmail}
+          userPhoto={this.state.userPhoto}
+          userName={this.state.userName}
+        />
       </ScrollView>
     );
   }
