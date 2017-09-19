@@ -17,6 +17,7 @@ import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 import _FeedSong from '../components/feed/_FeedRecording.js';
 
+
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -31,26 +32,35 @@ export default class HomeScreen extends React.Component {
     title: 'Feed',
   };
 
-  // gets information from firebase user and makes them available as props to child components
   componentWillMount() {
-    var user = firebase.auth().currentUser;
-    this.setState({userPhoto: user.providerData[0].photoURL});
-    this.setState({userEmail: user.providerData[0].email});
-    this.setState({userUid: user.providerData[0].uid});
-    this.setState({userName: user.providerData[0].displayName});
+    let user = firebase.auth().currentUser;
+    let userId = user.providerData[0].uid;
+    var ref = firebase.database().ref('users/' + userId);
+    ref.once('value')
+      .then(function(dataSnapshot) {
+        if (!dataSnapshot.val()) {
+            let user = firebase.auth().currentUser;
+            let userId = user.providerData[0].uid;
+            let email = user.providerData[0].email;
+            let name = user.providerData[0].displayName;
+            let imageUrl = user.providerData[0].photoURL;
+            firebase.database().ref('users/' + userId).set({
+              username: name,
+              email: email,
+              profile_picture: imageUrl
+            })
+        }
+    })
   }
+
+
     render() {
       return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}>
-          <_FeedSong
-            userUid={this.state.userUid}
-            userEmail={this.state.userEmail}
-            userPhoto={this.state.userPhoto}
-            userName={this.state.userName}
-          />
+          <_FeedSong />
           <View style={styles.getStartedContainer}>
               <Button
                 onPress={this._handleLogOut}
