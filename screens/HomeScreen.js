@@ -31,6 +31,7 @@ export default class HomeScreen extends React.Component {
     title: 'Feed',
   };
 
+  // gets information from firebase user and makes them available as props to child components
   componentWillMount() {
     var user = firebase.auth().currentUser;
     this.setState({userPhoto: user.providerData[0].photoURL});
