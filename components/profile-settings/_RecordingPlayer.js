@@ -148,18 +148,6 @@ export default class RecordingPlayer extends Component {
     );
   }
 
-  // render () {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>
-  //         This will be an audio player.
-  //       </Text>
-  //     </View>
-  //   )
-  // }
-
-
-
   render () {
     return (
       <View style={styles.container}>

@@ -38,7 +38,9 @@ export default class HomeScreen extends React.Component {
     var ref = firebase.database().ref('users/' + userId);
     ref.once('value')
       .then(function(dataSnapshot) {
+
         if (!dataSnapshot.val()) {
+          console.log(user.providerData);
             let user = firebase.auth().currentUser;
             let userId = user.providerData[0].uid;
             let email = user.providerData[0].email;
@@ -52,7 +54,6 @@ export default class HomeScreen extends React.Component {
         }
     })
   }
-
 
     render() {
       return (
