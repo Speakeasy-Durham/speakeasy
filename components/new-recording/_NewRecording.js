@@ -1,4 +1,3 @@
-//The following is powered by https://github.com/expo/audio-recording-example
 
 import React from 'react';
 import {
@@ -11,6 +10,8 @@ import {
   View,
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
+import { RNS3 } from 'react-native-aws3';
+import * as firebase from 'firebase';
 // import { Ionicons } from '@expo/vector-icons';
 
 class Icon {
@@ -180,6 +181,8 @@ export default class _NewRecording extends React.Component {
       this.recording = null;
     }
 
+    // Create a new audio recording //
+
     const recording = new Audio.Recording();
     await recording.prepareToRecordAsync(this.recordingSettings);
     recording.setOnRecordingStatusUpdate(this._updateScreenForRecordingStatus);
@@ -201,7 +204,31 @@ export default class _NewRecording extends React.Component {
       // Do nothing -- we are already unloaded.
     }
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
-    console.log(`FILE INFO: ${JSON.stringify(info)}`);
+    const jsonInfo = (`${JSON.stringify(info)}`);
+    const newUri = info.uri;
+    const file = {
+  // `uri` can also be a file system path (i.e. file://)
+      uri: `${newUri}`,
+      name: "Snaps",
+      type: "testaudio/caf"
+    }
+    const jsonFile = (`${JSON.stringify(file)}`);
+    console.log("this is the file " + file);
+    const options = {
+      keyPrefix: "uploads/",
+      bucket: "tin-can",
+      region: "us-east-2",
+      accessKey: "AKIAI7AEU4OFLCPGXRNA",
+      secretKey: "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",
+      successActionStatus: 201
+    }
+
+    let audioLocation = await this._uploadFileToS3(file, options);
+
+    console.log("this is the passed through audio location" + audioLocation);
+
+    this._addRecordingToFirebase(audioLocation);
+
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -223,6 +250,32 @@ export default class _NewRecording extends React.Component {
     this.setState({
       isLoading: false,
     });
+  }
+
+  async _uploadFileToS3 (file, options) {
+    let s3Response = RNS3.put(file, options);
+    let audioLoc = await s3Response.then(response => {
+      const responseJson = (`${JSON.stringify(response)}`);
+      let urlLocation = responseJson.location;
+      if (response.status !== 201)
+      throw new Error("Failed to upload file to S3");
+      let audioLocation = response.body.postResponse.location;
+      return audioLocation;
+    });
+    return audioLoc;
+  }
+
+  async _addRecordingToFirebase(audioLocation) {
+    let user = firebase.auth().currentUser;
+    let userId = user.providerData[0].uid;
+    let name = user.providerData[0].displayName;
+    let imageUrl = user.providerData[0].photoURL;
+    firebase.database().ref('recordings/' + userId).set({
+      username: name,
+      audio: audioLocation,
+      profile_picture: imageUrl
+    })
+    console.log("added to firebase");
   }
 
   _onRecordPressed = () => {

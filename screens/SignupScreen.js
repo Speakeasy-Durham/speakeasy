@@ -4,8 +4,10 @@ import {
   View,
   Text,
   Button,
-  Alert
+  Alert,
+  TouchableHighlight,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions } from 'react-navigation';
 
 import * as firebase from 'firebase';
@@ -22,31 +24,51 @@ export default class SignupScreen extends React.Component {
     header: null
   }
 
-
-  async logInGoogle(accessToken) {
-      try {
-        const result = await Expo.Google.logInAsync({
-          behavior: 'web',
-          androidClientId: "464757889372-7rot9u82fm6ncvpec4cl4kng4elo10mk.apps.googleusercontent.com",
-          iosClientId: "464757889372-0l11hjb6nmrstbfp56q437l17sq68tqu.apps.googleusercontent.com",
-          scopes: ['profile', 'email'],
-        });
-        if (result.type === 'success') {
-          return result.accessToken;
-        } else {
-          return {cancelled: true};
-        }
-      } catch(e) {
-        return {error: true};
-      }
-  }
-
   checkLoggedIn() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.props.navigation.dispatch(resetStack);
       }
     });
+  }
+
+  async logInGoogle() {
+
+      try {
+        const result = await Expo.Google.logInAsync({
+          behavior: 'web',
+          iosClientId: "464757889372-ug65j7ujl3013g51l4jb1mj6rqdc77mi.apps.googleusercontent.com",
+          scopes: ['profile', 'email'],
+        });
+
+        if (result.type === 'success') {
+          var credential = firebase.auth.GoogleAuthProvider.credential(null, result.accessToken);
+          firebase.auth().signInWithCredential(credential).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var email = error.email;
+            var credential = error.credential;
+          });
+          firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(function() {
+              return firebase.auth().signInWithEmailAndPassword(email, password);
+            })
+            .catch(function(error) {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+            });
+          Alert.alert(
+            "You're logged in!",
+          );
+          this.props.navigation.dispatch(resetStack);
+          return result.accessToken;
+        } else {
+          return {cancelled: true};
+        }
+      } catch(e) {
+        console.log(e);
+        return {error: true};
+      }
   }
 
   async logInFB() {
@@ -67,11 +89,6 @@ export default class SignupScreen extends React.Component {
       });
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         .then(function() {
-    // Existing and future Auth states are now persisted in the current
-    // session only. Closing the window would clear any existing state even
-    // if a user forgets to sign out.
-    // ...
-    // New sign-in will be persisted with session persistence.
           return firebase.auth().signInWithEmailAndPassword(email, password);
         })
         .catch(function(error) {
@@ -93,35 +110,69 @@ export default class SignupScreen extends React.Component {
   _handleGoogleAuth = () => {
     this.logInGoogle();
   }
+
   render () {
     this.checkLoggedIn();
     return (
       <View style={styles.main}>
-        <Text style={styles.mainText}>This is the signup Screen</Text>
-        <Button
-          onPress={this._handleFacebookAuth}
-          title="Facebook"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
-        <Button
-          onPress={this._handleGoogleAuth}
-          title="Google"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+        <Text style={styles.headerText}>SPEAKEASY</Text>
+        <TouchableHighlight onPress={this._handleFacebookAuth} style={styles.touchableBtn}>
+          <View style={styles.facebookButton}>
+            <Ionicons name="logo-facebook" size={24} color="white" style={styles.providerIcon} />
+            <Text style={styles.providerText}>Login with Facebook</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight onPress={this._handleGoogleAuth} style={styles.touchableBtn}>
+          <View style={styles.googleButton} >
+            <Ionicons name="logo-google" size={24} color="white" style={styles.providerIcon} />
+            <Text style={styles.providerText}>Login with Google</Text>
+          </View>
+        </TouchableHighlight>
       </View>
     )
   }
 }
-
+const fbBlue = 'rgb(59,89,152)';
+const googRed = '#ea4335';
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "pink",
+    backgroundColor: "rgb(234, 231, 222)",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  mainText: {
-    color: "gray",
-    fontSize: 30,
+  headerText: {
+    color: "black",
+    fontSize: 40,
+    fontFamily: 'monoton',
+    marginBottom: 44,
   },
+  facebookButton: {
+    width: 250,
+    height: 44,
+    backgroundColor: fbBlue,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  googleButton: {
+    width: 250,
+    height: 44,
+    backgroundColor: googRed,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  touchableBtn: {
+    marginBottom: 12,
+    borderRadius: 12,
+  },
+  providerText: {
+    color: "white",
+  },
+  providerIcon: {
+    marginRight: 8,
+  }
 })
