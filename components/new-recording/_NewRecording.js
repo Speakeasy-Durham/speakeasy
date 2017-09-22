@@ -8,6 +8,7 @@ import {
   Text,
   TouchableHighlight,
   View,
+  Button
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
@@ -206,10 +207,12 @@ export default class _NewRecording extends React.Component {
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
     const jsonInfo = (`${JSON.stringify(info)}`);
     const newUri = info.uri;
+    let user = firebase.auth().currentUser;
+    let userId = user.providerData[0].uid;
     const file = {
   // `uri` can also be a file system path (i.e. file://)
       uri: `${newUri}`,
-      name: "Snaps",
+      name: `${userId + Date.now()}`,
       type: "testaudio/caf"
     }
     const jsonFile = (`${JSON.stringify(file)}`);
@@ -268,12 +271,14 @@ export default class _NewRecording extends React.Component {
   async _addRecordingToFirebase(audioLocation) {
     let user = firebase.auth().currentUser;
     let userId = user.providerData[0].uid;
+    let recordingId = user.providerData[0].uid + Date.now();
     let name = user.providerData[0].displayName;
     let imageUrl = user.providerData[0].photoURL;
-    firebase.database().ref('recordings/' + userId).set({
+    firebase.database().ref('recordings/' + recordingId).set({
       username: name,
+      userId:userId,
       audio: audioLocation,
-      profile_picture: imageUrl
+      profile_picture: imageUrl,
     })
     console.log("added to firebase");
   }
