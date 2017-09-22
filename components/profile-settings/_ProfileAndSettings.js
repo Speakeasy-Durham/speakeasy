@@ -18,7 +18,7 @@ export default class ProfileAndSettings extends Component {
           <View style={styles.imageContainer}>
             <Image
               resizeMode="contain"
-              // source={{uri: ""}}
+              source={{uri: this.props.userPhoto}}
               style={styles.image}
             />
             <Text style={styles.name}>Profile Name</Text>
