@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderColor: 'green',
-    borderWidth: 1,
+    // borderColor: 'green',
+    // borderWidth: 1,
   },
   image: {
     width: 56,
@@ -94,18 +94,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 2,
-    borderColor: 'red',
-    borderWidth: 1,
+    // borderColor: 'red',
+    // borderWidth: 1,
   },
   info: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: 8
+    padding: 12,
+
   },
   infoNumber: {
     marginTop: 4,
-    fontSize: 16
+    fontSize: 24
   },
   infoType: {
     marginTop: 8,
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     // minHeight: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'blue',
-    borderWidth: 1,
+    // borderColor: 'blue',
+    // borderWidth: 1,
   }
 })
