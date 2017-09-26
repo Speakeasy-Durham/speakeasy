@@ -180,15 +180,11 @@ export default class _NewRecording extends React.Component {
       this.recording.setOnRecordingStatusUpdate(null);
       this.recording = null;
     }
-
-    // Create a new audio recording //
-
     const recording = new Audio.Recording();
     await recording.prepareToRecordAsync(this.recordingSettings);
     recording.setOnRecordingStatusUpdate(this._updateScreenForRecordingStatus);
-
     this.recording = recording;
-    await this.recording.startAsync(); // Will call this._updateScreenForRecordingStatus to update the screen.
+    await this.recording.startAsync();
     this.setState({
       isLoading: false,
     });
