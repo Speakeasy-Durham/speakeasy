@@ -38,9 +38,8 @@ export default class HomeScreen extends React.Component {
     var ref = firebase.database().ref('users/' + userId);
     ref.once('value')
       .then(function(dataSnapshot) {
-
-        if (!dataSnapshot.val()) {
-          console.log(user.providerData);
+        if(!dataSnapshot.exists()) {
+            console.log("Adding a user to the firebase database");
             let user = firebase.auth().currentUser;
             let userId = user.providerData[0].uid;
             let email = user.providerData[0].email;
@@ -51,11 +50,14 @@ export default class HomeScreen extends React.Component {
               email: email,
               profile_picture: imageUrl
             })
+        } else {
+          console.log("User already added");
         }
     })
   }
 
     render() {
+      console.log("Is this working at all?")
       return (
       <View style={styles.container}>
         <ScrollView
