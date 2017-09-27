@@ -217,8 +217,8 @@ export default class _NewRecording extends React.Component {
       keyPrefix: "uploads/",
       bucket: "tin-can",
       region: "us-east-2",
-      accessKey: "AKIAI7AEU4OFLCPGXRNA",
-      secretKey: "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",
+      accessKey: "AKIAIWIXSLEVFXM27ARQ",
+      secretKey: "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",
       successActionStatus: 201
     }
 
