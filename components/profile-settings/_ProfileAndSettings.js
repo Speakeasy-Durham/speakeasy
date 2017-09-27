@@ -9,6 +9,7 @@ import {
 
     // import children
 import RecordingPlayer from './_RecordingPlayer';
+import AudioFileContainer from '../audio/_AudioFileContainer';
 
 export default class ProfileAndSettings extends Component {
   render () {
@@ -56,7 +57,7 @@ export default class ProfileAndSettings extends Component {
           </View>
         </View>
         <ScrollView style={styles.recordingsContainer}>
-          <RecordingPlayer />
+          <AudioFileContainer />
         </ScrollView>
       </View>
     )
