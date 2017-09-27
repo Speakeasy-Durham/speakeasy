@@ -8,6 +8,7 @@ import {
   Text,
   TouchableHighlight,
   View,
+  Button
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
@@ -180,15 +181,11 @@ export default class _NewRecording extends React.Component {
       this.recording.setOnRecordingStatusUpdate(null);
       this.recording = null;
     }
-
-    // Create a new audio recording //
-
     const recording = new Audio.Recording();
     await recording.prepareToRecordAsync(this.recordingSettings);
     recording.setOnRecordingStatusUpdate(this._updateScreenForRecordingStatus);
-
     this.recording = recording;
-    await this.recording.startAsync(); // Will call this._updateScreenForRecordingStatus to update the screen.
+    await this.recording.startAsync();
     this.setState({
       isLoading: false,
     });
@@ -206,10 +203,12 @@ export default class _NewRecording extends React.Component {
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
     const jsonInfo = (`${JSON.stringify(info)}`);
     const newUri = info.uri;
+    let user = firebase.auth().currentUser;
+    let userId = user.providerData[0].uid;
     const file = {
   // `uri` can also be a file system path (i.e. file://)
       uri: `${newUri}`,
-      name: "Snaps",
+      name: `${userId + Date.now()}`,
       type: "testaudio/caf"
     }
     const jsonFile = (`${JSON.stringify(file)}`);
@@ -218,8 +217,8 @@ export default class _NewRecording extends React.Component {
       keyPrefix: "uploads/",
       bucket: "tin-can",
       region: "us-east-2",
-      accessKey: "AKIAI7AEU4OFLCPGXRNA",
-      secretKey: "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",
+      accessKey: "AKIAIWIXSLEVFXM27ARQ",
+      secretKey: "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",
       successActionStatus: 201
     }
 
@@ -268,12 +267,14 @@ export default class _NewRecording extends React.Component {
   async _addRecordingToFirebase(audioLocation) {
     let user = firebase.auth().currentUser;
     let userId = user.providerData[0].uid;
+    let recordingId = user.providerData[0].uid + Date.now();
     let name = user.providerData[0].displayName;
     let imageUrl = user.providerData[0].photoURL;
-    firebase.database().ref('recordings/' + userId).set({
+    firebase.database().ref('recordings/' + recordingId).set({
       username: name,
+      userId:userId,
       audio: audioLocation,
-      profile_picture: imageUrl
+      profile_picture: imageUrl,
     })
     console.log("added to firebase");
   }
