@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {
+  FlatList,
   Image,
+  List,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,7 +14,35 @@ import RecordingPlayer from './_RecordingPlayer';
 import AudioFileContainer from '../audio/_AudioFileContainer';
 
 export default class ProfileAndSettings extends Component {
+
+  componentWillMount() {
+
+  }
+
+  _keyExtractor = (item, index) => item.id;
+
+  _renderPost = 0;
+
   render () {
+
+    // console.log(Object.keys(userPosts).forEach(function(post) {
+    //   return post;
+    // }
+    //
+    // ));
+    var userPosts = this.props.userPosts;
+
+
+
+
+    // console.log("userPostsArray");
+    // console.log(userPostsArray);
+    // console.log("userPostsArray[0]");
+    // console.log(userPostsArray[0]);
+    // console.log("userPostsArray[1]");
+    // console.log(userPostsArray[1]);
+
+
     return (
       <View style={styles.main}>
         <View style={styles.profileBarContainer}>
@@ -56,9 +86,25 @@ export default class ProfileAndSettings extends Component {
             </Text>
           </View>
         </View>
-        <ScrollView style={styles.recordingsContainer}>
-          <AudioFileContainer />
-        </ScrollView>
+        <View>
+          <Text>SHOW SOMETHING</Text>
+          <FlatList
+            data={userPosts}
+            keyExtractor={this._keyExtractor}
+            renderItem={
+              ({item}) =>
+                (
+                <AudioFileContainer
+                  key={item.key}
+                  title={item.key}
+                  username={item.username}
+                />
+                )
+              }
+
+          />
+
+        </View>
       </View>
     )
   }

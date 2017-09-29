@@ -23,24 +23,21 @@ class Icon {
 }
 
 export default class AudioFileContainer extends Component {
-
-
   render () {
     return (
+    <View>
       <View>
         <View>
-          <View>
-            <Text>Title of recording</Text>
-            <Text>User Name</Text>
-          </View>
-          <TouchableHighlight>
-              <Ionicons
-                name={`ios-heart`}
-                size={28} />
-          </TouchableHighlight>
+          <Text>{this.props.title} </Text>
+          <Text>{this.props.username}</Text>
         </View>
+        <TouchableHighlight>
+            <Ionicons
+              name={`ios-heart`}
+              size={28} />
+        </TouchableHighlight>
       </View>
+    </View>
     )
   }
-
 }

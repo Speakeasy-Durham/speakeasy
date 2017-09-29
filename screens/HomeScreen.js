@@ -57,7 +57,7 @@ export default class HomeScreen extends React.Component {
   }
 
     render() {
-      console.log("Is this working at all?")
+      // console.log("Is this working at all?")
       return (
       <View style={styles.container}>
         <ScrollView
