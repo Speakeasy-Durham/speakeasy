@@ -213,7 +213,6 @@ export default class _NewRecording extends React.Component {
     }
     const jsonFile = (`${JSON.stringify(file)}`);
     console.log("this is the file " + file);
-    
     const options = {
       keyPrefix: "uploads/",
       bucket: "tin-can",

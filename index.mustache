@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="index.css">
+  <link href="https://fonts.googleapis.com/css?family=Lobster|Questrial" rel="stylesheet">
+  <title>Gabble Social Site</title>
+</head>
+
+<body>
+  <div class="homepage-hero-module">
+      <div class="video-container">
+          <div class="filter"></div>
+          <video playsinline autoplay loop id="bgvid">
+              <source src="../Fish_Tank/Fish_Tank.mp4" type="video/mp4" />
+          </video>
+      </div>
+  </div>
+  <div id="body_wrapper">
+    <header>
+      <h1>Gabble</h1>
+      <p>a community of creators</p>
+    </header>
+    <form action="/index" method="post" id="signup_form">
+      <div id="info">
+        <h3>Join the community!</h3>
+        <div class="inputfield" id="name_fields">
+          <div id="first_name" class="label_input">
+            <label>first name</label>
+            <input type="text" autocomplete="off" name="first_name" autofocus>
+          </div>
+          <div id="last_name" class="label_input">
+            <label>last name</label>
+            <input type="text" autocomplete="off" name="last_name">
+          </div>
+        </div>
+        <div class="inputfield" id="row_2">
+          <div id="email" class="label_input">
+            <label>email</label>
+            <input type="email" autocomplete="off" name="email">
+          </div>
+          <div id="password" class="label_input">
+            <label>password</label>
+            <input type="password" autocomplete="off" name="password">
+          </div>
+        </div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+    <p id="login">Already have an account? <a href="/login/">Sign in here.</a></p>
+  </div>
+</body>
+
+</html>

@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@expo/samples": "^2.0.2",
+    "aws-cli": "^0.0.1",
+    "aws-sdk": "^2.125.0",
     "expo": "^20.0.0",
     "firebase": "^4.3.0",
     "react": "16.0.0-alpha.12",
