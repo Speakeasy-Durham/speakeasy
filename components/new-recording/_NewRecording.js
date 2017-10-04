@@ -13,6 +13,7 @@ import {
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
+import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 // import { Ionicons } from '@expo/vector-icons';
 
 class Icon {
@@ -205,27 +206,16 @@ export default class _NewRecording extends React.Component {
     const newUri = info.uri;
     let user = firebase.auth().currentUser;
     let userId = user.providerData[0].uid;
-    const file = {
-  // `uri` can also be a file system path (i.e. file://)
-      uri: `${newUri}`,
-      name: `${userId + Date.now()}`,
-      type: "testaudio/caf"
-    }
-    const jsonFile = (`${JSON.stringify(file)}`);
-    console.log("this is the file " + file);
-    
-    const options = {
-      keyPrefix: "uploads/",
-      bucket: "tin-can",
-      region: "us-east-2",
-      accessKey: "AKIAIWIXSLEVFXM27ARQ",
-      secretKey: "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",
-      successActionStatus: 201
-    }
+  //   const file = {
+  // // `uri` can also be a file system path (i.e. file://)
+  //     uri: `${newUri}`,
+  //     name: `${userId + Date.now()}`,
+  //     type: "testaudio/caf"
+  //   }
+    const file = newUri;
+    // const jsonFile = (`${JSON.stringify(file)}`);
 
-    let audioLocation = await this._uploadFileToS3(file, options);
-
-    console.log("this is the passed through audio location" + audioLocation);
+    let audioLocation = await this._uploadFileToS3(file);
 
     this._addRecordingToFirebase(audioLocation);
 
@@ -252,17 +242,32 @@ export default class _NewRecording extends React.Component {
     });
   }
 
-  async _uploadFileToS3 (file, options) {
-    let s3Response = RNS3.put(file, options);
-    let audioLoc = await s3Response.then(response => {
-      const responseJson = (`${JSON.stringify(response)}`);
-      let urlLocation = responseJson.location;
-      if (response.status !== 201)
-      throw new Error("Failed to upload file to S3");
-      let audioLocation = response.body.postResponse.location;
-      return audioLocation;
+  async _uploadFileToS3 (file) {
+    var s3 = new AWS.S3({
+      apiVersion: '2006-03-01',
+      params: {Bucket: "tin-can"}
     });
-    return audioLoc;
+    s3.upload({
+      ACL: "public-read-write",
+      Key: "Other New Thing",
+      Body: file,
+      ContentType: "caf",
+    }, function(err, data) {
+      if (err) {
+        console.log("Your recording did not upload properly.", err.message);
+      }
+      console.log("Successfully uploaded recording.", data)
+    });
+    // let s3Response = RNS3.put(file, options);
+    // let audioLoc = await s3Response.then(response => {
+    //   const responseJson = (`${JSON.stringify(response)}`);
+    //   let urlLocation = responseJson.location;
+    //   if (response.status !== 201)
+    //   throw new Error("Failed to upload file to S3");
+    //   let audioLocation = response.body.postResponse.location;
+    //   return audioLocation;
+    // });
+    // return audioLoc;
   }
 
   async _addRecordingToFirebase(audioLocation) {
