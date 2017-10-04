@@ -202,8 +202,16 @@ export default class _NewRecording extends React.Component {
       // Do nothing -- we are already unloaded.
     }
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
+    console.log(this.recording);
+    console.log("this is the info ", info);
     const jsonInfo = (`${JSON.stringify(info)}`);
     const newUri = info.uri;
+    let formData = new FormData();
+    formData.append('file', {
+      newUri,
+      name: `recording.caf`,
+      type: `audio/x-caf`,
+    });
     let user = firebase.auth().currentUser;
     let userId = user.providerData[0].uid;
   //   const file = {
@@ -212,8 +220,17 @@ export default class _NewRecording extends React.Component {
   //     name: `${userId + Date.now()}`,
   //     type: "testaudio/caf"
   //   }
-    const file = newUri;
-    // const jsonFile = (`${JSON.stringify(file)}`);
+    const file = formData;
+
+    // const options = {
+    //   keyPrefix: "uploads/",
+    //   bucket: "tin-can",
+    //   region: "us-east-1",
+    //   successActionStatus: 201
+    // }
+    const jsonFile = (`${JSON.stringify(file)}`);
+    console.log("THis is the file ", file);
+    // console.log("This is the jsonFile ", jsonFile);
 
     let audioLocation = await this._uploadFileToS3(file);
 
@@ -249,7 +266,7 @@ export default class _NewRecording extends React.Component {
     });
     s3.upload({
       ACL: "public-read-write",
-      Key: "Other New Thing",
+      Key: "IS THIS WORKING",
       Body: file,
       ContentType: "caf",
     }, function(err, data) {
