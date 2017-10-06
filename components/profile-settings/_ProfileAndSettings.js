@@ -25,23 +25,7 @@ export default class ProfileAndSettings extends Component {
 
   render () {
 
-    // console.log(Object.keys(userPosts).forEach(function(post) {
-    //   return post;
-    // }
-    //
-    // ));
     var userPosts = this.props.userPosts;
-
-
-
-
-    // console.log("userPostsArray");
-    // console.log(userPostsArray);
-    // console.log("userPostsArray[0]");
-    // console.log(userPostsArray[0]);
-    // console.log("userPostsArray[1]");
-    // console.log(userPostsArray[1]);
-
 
     return (
       <View style={styles.main}>
@@ -86,8 +70,8 @@ export default class ProfileAndSettings extends Component {
             </Text>
           </View>
         </View>
+        {/* Flatlist renders AudioFileContainer for each item */}
         <View>
-          <Text>SHOW SOMETHING</Text>
           <FlatList
             data={userPosts}
             keyExtractor={this._keyExtractor}
@@ -98,12 +82,13 @@ export default class ProfileAndSettings extends Component {
                   key={item.key}
                   title={item.key}
                   username={item.username}
+                  audio={item.audio}
                 />
                 )
               }
 
           />
-
+          <RecordingPlayer />
         </View>
       </View>
     )

@@ -12,6 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 
+import AudioFilePlayer from './_AudioFilePlayer'
 
 class Icon {
   constructor(module, width, height) {
@@ -23,21 +24,56 @@ class Icon {
 }
 
 export default class AudioFileContainer extends Component {
-  render () {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: false,
+    }
+
+    this._toggleExpandPlayer = this._toggleExpandPlayer.bind(this);
+
+    this._expandPlayer = this._expandPlayer.bind(this);
+  }
+
+  _toggleExpandPlayer() {
+
+    this.setState({
+      expanded: !this.state.expanded,
+    });
+  }
+
+  _expandPlayer() {
+    if (!this.state.expanded) {
+      return null;
+    }
     return (
-    <View>
+      <View style={styles.playerContainer}>
+        <AudioFilePlayer
+          audio={this.props.audio}
+        />
+      </View>
+    );
+  }
+
+  render () {
+
+    return (
       <View>
-        <View>
-          <Text>{this.props.title} </Text>
-          <Text>{this.props.username}</Text>
-        </View>
-        <TouchableHighlight>
-            <Ionicons
-              name={`ios-heart`}
-              size={28} />
+        <TouchableHighlight
+          onPress={ this._toggleExpandPlayer }>
+          <View>
+            <Text>{this.props.title} </Text>
+            <Text>{this.props.username}</Text>
+            { this._expandPlayer() }
+          </View>
         </TouchableHighlight>
       </View>
-    </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  playerContainer: {
+    flex: 1,
+  }
+})
