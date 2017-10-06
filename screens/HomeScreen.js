@@ -28,9 +28,25 @@ export default class HomeScreen extends React.Component {
       userName: null,
     };
   }
-  static navigationOptions = {
-    title: 'Feed',
-  };
+  // static navigationOptions = {
+  //   title: 'Speakeasy',
+  //     // headerTintColor: 'red',
+  //     // titleStyle: {
+  //     //   backgroundColor: 'white',
+  //     //   fontFamily: 'monoton',
+  //     // }
+  // };
+
+//   static navigationOptions = {
+//   header: ({ navigate }) => {
+//     return {
+//       title: 'Speakeasy',
+//       titleStyle: {
+//         fontFamily: 'American Typewriter'
+//       },
+//     };
+//   },
+// };
 
   componentWillMount() {
     let user = firebase.auth().currentUser;

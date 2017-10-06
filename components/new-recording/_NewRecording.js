@@ -13,7 +13,7 @@ import {
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
-// import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
 class Icon {
   constructor(module, width, height) {
@@ -24,50 +24,23 @@ class Icon {
   }
 }
 
-const ICON_RECORD_BUTTON = new Icon(
-  require('../../assets/images/record_button.png'),
-  70,
-  119
-);
-const ICON_RECORDING = new Icon(
-  require('../../assets/images/record_icon.png'),
-  20,
-  14
-);
+const ICON_RECORD_BUTTON = new Icon(require('../../assets/images/record.png'), 50, 50);
+const ICON_PLAY_BUTTON = new Icon(require('../../assets/images/play.png'), 50, 50);
+const ICON_PAUSE_BUTTON = new Icon(require('../../assets/images/pause.png'), 50, 50);
+const ICON_STOP_BUTTON = new Icon(require('../../assets/images/stop.png'), 50, 50);
+const ICON_EJECT_BUTTON = new Icon(require('../../assets/images/eject.png'), 50, 50);
+const ICON_MUTED_BUTTON = new Icon(require('../../assets/images/muted_button.png'), 67, 58);
+const ICON_VOLUME_BUTTON = new Icon(require('../../assets/images/sound.png'), 67, 58);
 
-const ICON_PLAY_BUTTON = new Icon(
-  require('../../assets/images/play_button.png'),
-  34,
-  51
-);
-const ICON_PAUSE_BUTTON = new Icon(
-  require('../../assets/images/pause_button.png'),
-  34,
-  51
-);
-const ICON_STOP_BUTTON = new Icon(
-  require('../../assets/images/stop_button.png'),
-  22,
-  22
-);
+const ICON_RECORDING = new Icon(require('../../assets/images/dots.png'), 15, 15);
+const ICON_TRACK_1 = new Icon(require('../../assets/images/slider.png'), 166, 5);
+const ICON_THUMB_1 = new Icon(require('../../assets/images/thumbslider.png'), 25, 25);
+const ICON_THUMB_2 = new Icon(require('../../assets/images/thumbslider.png'), 25, 25);
 
-const ICON_MUTED_BUTTON = new Icon(
-  require('../../assets/images/muted_button.png'),
-  67,
-  58
-);
-const ICON_UNMUTED_BUTTON = new Icon(
-  require('../../assets/images/unmuted_button.png'),
-  67,
-  58
-);
-
-const ICON_TRACK_1 = new Icon(require('../../assets/images/track_1.png'), 166, 5);
-const ICON_THUMB_1 = new Icon(require('../../assets/images/thumb_1.png'), 18, 19);
-const ICON_THUMB_2 = new Icon(require('../../assets/images/thumb_2.png'), 15, 19);
+const TAPE = new Icon(require('../../assets/images/tape.png'), 100, 100);
 
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
-const BACKGROUND_COLOR = '#FFF8ED';
+const BACKGROUND_COLOR = '#4F5674';
 const LIVE_COLOR = '#FF0000';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
@@ -106,6 +79,7 @@ export default class _NewRecording extends React.Component {
     (async () => {
       await Font.loadAsync({
         'space-mono-regular': require('../../assets/fonts/SpaceMono-Regular.ttf'),
+        'monoton-regular': require('../../assets/fonts/Monoton-Regular.ttf'),
       });
       this.setState({ fontLoaded: true });
     })();
@@ -418,107 +392,123 @@ export default class _NewRecording extends React.Component {
         : <View style={styles.container}>
             <View
               style={[
-                styles.halfScreenContainer,
-                {
-                  opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
-                },
+                styles.topHalfScreenContainer,
+                // {
+                //   opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
+                // },
               ]}>
               <View />
-              <View style={styles.recordingContainer}>
-                <View />
-                <TouchableHighlight
-                  underlayColor={BACKGROUND_COLOR}
-                  style={styles.wrapper}
-                  onPress={this._onRecordPressed}
-                  disabled={this.state.isLoading}>
-                  <Image
-                    style={styles.image}
-                    source={ICON_RECORD_BUTTON.module}
-                  />
-                </TouchableHighlight>
-                <View style={styles.recordingDataContainer}>
-                  <View />
-                  <Text
-                    style={[
-                      styles.liveText,
-                      { ...Font.style('space-mono-regular') },
-                    ]}>
-                    {this.state.isRecording ? 'LIVE' : ''}
-                  </Text>
-                  <View style={styles.recordingDataRowContainer}>
-                    <Image
-                      style={[
-                        styles.image,
-                        { opacity: this.state.isRecording ? 1.0 : 0.0 },
-                      ]}
-                      source={ICON_RECORDING.module}
-                    />
-                    <Text
-                      style={[
-                        styles.recordingTimestamp,
-                        { ...Font.style('space-mono-regular') },
-                      ]}>
-                      {this._getRecordingTimestamp()}
-                    </Text>
-                  </View>
-                  <View />
-                </View>
-                <View />
-              </View>
-              <View />
-            </View>
-            <View
-              style={[
-                styles.halfScreenContainer,
-                {
-                  opacity: !this.state.isPlaybackAllowed || this.state.isLoading
-                    ? DISABLED_OPACITY
-                    : 1.0,
-                },
-              ]}>
-              <View />
-              <View style={styles.playbackContainer}>
-                <Slider
-                  style={styles.playbackSlider}
-                  trackImage={ICON_TRACK_1.module}
-                  thumbImage={ICON_THUMB_1.module}
-                  value={this._getSeekSliderPosition()}
-                  onValueChange={this._onSeekSliderValueChange}
-                  onSlidingComplete={this._onSeekSliderSlidingComplete}
-                  disabled={
-                    !this.state.isPlaybackAllowed || this.state.isLoading
-                  }
-                />
+
+              <Image
+                source={TAPE.module}
+                style={{
+                  alignSelf: 'center',
+                  marginBottom: 30,
+                  height: 200,
+                  width: 300,
+                  borderWidth: 15,
+                  borderRadius: 20,
+                  borderColor: '#282A3E',
+                }}
+                // resizeMode='cover'
+              />
+              <View
+                style={{
+                  paddingTop: 4,
+                  paddingRight: 6,
+                  paddingLeft: 6,
+                  // borderWidth: 4,
+                  borderTopRightRadius: 2,
+                  borderTopLeftRadius: 2,
+                  borderColor: '#282A3E',
+                  backgroundColor: '#282A3E',
+                }}
+                >
                 <Text
                   style={[
-                    styles.playbackTimestamp,
-                    { ...Font.style('space-mono-regular') },
+                    styles.brandName,
+                    { ...Font.style('monoton-regular') },
                   ]}>
-                  {this._getPlaybackTimestamp()}
+                  Speakeasy
                 </Text>
               </View>
+
+
+
+              <View />
+            </View>
+
+
+
+            <View
+              style={[
+                styles.bottomHalfScreenContainer,
+                // {
+                //   opacity: !this.state.isPlaybackAllowed || this.state.isLoading
+                //     ? DISABLED_OPACITY
+                //     : 1.0,
+                // },
+              ]}>
+              <View />
+
+
+
               <View
                 style={[
-                  styles.buttonsContainerBase,
-                  styles.buttonsContainerTopRow,
+                  styles.controlsContainerBase,
+                  // styles.buttonsContainerTopRow,
                 ]}>
+
+
+
+
+
+                <View style={styles.playbackContainer}>
+                  <Slider
+                    style={styles.playbackSlider}
+                    trackImage={ICON_TRACK_1.module}
+                    thumbImage={ICON_THUMB_1.module}
+                    value={this._getSeekSliderPosition()}
+                    onValueChange={this._onSeekSliderValueChange}
+                    onSlidingComplete={this._onSeekSliderSlidingComplete}
+                    disabled={
+                      !this.state.isPlaybackAllowed || this.state.isLoading
+                    }
+                  />
+                  <Text
+                    style={[
+                      styles.playbackTimestamp,
+                      { ...Font.style('space-mono-regular') },
+                    ]}>
+                    {this._getPlaybackTimestamp()}
+                  </Text>
+                </View>
+
+
+
                 <View style={styles.volumeContainer}>
-                  <TouchableHighlight
+                  {/* <TouchableHighlight
                     underlayColor={BACKGROUND_COLOR}
-                    style={styles.wrapper}
+                    // style={styles.wrapper}
                     onPress={this._onMutePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
                     <Image
-                      style={styles.image}
+                      style={[styles.volumeIcon, styles.stretch]}
                       source={
                         this.state.muted
                           ? ICON_MUTED_BUTTON.module
-                          : ICON_UNMUTED_BUTTON.module
+                          : ICON_VOLUME_BUTTON.module
                       }
                     />
-                  </TouchableHighlight>
+                  </TouchableHighlight> */}
+                  <Text
+                    style={
+                      { ...Font.style('space-mono-regular') }
+                    }>
+                    Volume:
+                  </Text>
                   <Slider
                     style={styles.volumeSlider}
                     trackImage={ICON_TRACK_1.module}
@@ -530,16 +520,97 @@ export default class _NewRecording extends React.Component {
                     }
                   />
                 </View>
-                <View style={styles.playStopContainer}>
+
+                <View
+                  style={[
+                    // styles.controlsContainerBase,
+                    styles.rateControlContainer,
+                  ]}>
+                  <Text
+                    style={
+                      { ...Font.style('space-mono-regular') }
+                    }>
+                    Rate:
+                  </Text>
+                  <Slider
+                    style={styles.rateSlider}
+                    trackImage={ICON_TRACK_1.module}
+                    thumbImage={ICON_THUMB_1.module}
+                    value={this.state.rate / RATE_SCALE}
+                    onSlidingComplete={this._onRateSliderSlidingComplete}
+                    disabled={
+                      !this.state.isPlaybackAllowed || this.state.isLoading
+                    }
+                  />
                   <TouchableHighlight
                     underlayColor={BACKGROUND_COLOR}
+                    // style={styles.wrapper}
+                    onPress={this._onPitchCorrectionPressed}
+                    disabled={
+                      !this.state.isPlaybackAllowed || this.state.isLoading
+                    }>
+                    <Text style={[{ ...Font.style('space-mono-regular') }]}>
+                      PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
+                    </Text>
+                  </TouchableHighlight>
+                </View>
+
+                <View style={styles.recordingDataRowContainer}>
+                  <Image
+                    style={[
+                      styles.image,
+                      // { opacity: this.state.isRecording ? 1.0 : 0.0 },
+                      styles.stretch
+                    ]}
+                    source={ICON_RECORDING.module}
+                  />
+                  <Text
+                    style={[
+                      styles.recordingTimestamp,
+                      { ...Font.style('space-mono-regular') },
+                    ]}>
+                    {this._getRecordingTimestamp()}
+                  </Text>
+
+                  <View >
+                    <View />
+
+                    <View style={styles.recordingDataContainer}>
+                      <View />
+                      <Text
+                        style={[
+                          styles.liveText,
+                          { ...Font.style('space-mono-regular') },
+                        ]}>
+                        {this.state.isRecording ? 'LIVE' : ''}
+                      </Text>
+
+                      <View />
+                    </View>
+                    <View />
+                  </View>
+
+                </View>
+                <View style={styles.allButtonsContainer}>
+                  <TouchableHighlight
+                    underlayColor='#ff0000'
+                    style={styles.recButtonWrapper}
+                    onPress={this._onRecordPressed}
+                    disabled={this.state.isLoading}>
+                      <Image
+                        style={[styles.image, styles.stretch]}
+                        source={ICON_RECORD_BUTTON.module}
+                      />
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    underlayColor='#ff0000'
                     style={styles.wrapper}
                     onPress={this._onPlayPausePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
                     <Image
-                      style={styles.image}
+                      style={[styles.image, styles.stretch]}
                       source={
                         this.state.isPlaying
                           ? ICON_PAUSE_BUTTON.module
@@ -548,54 +619,45 @@ export default class _NewRecording extends React.Component {
                     />
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor={BACKGROUND_COLOR}
+                    underlayColor='#ff0000'
+                    style={styles.wrapper}
+                    onPress={this._onPlayPausePressed}
+                    disabled={
+                      !this.state.isPlaybackAllowed || this.state.isLoading
+                    }>
+                    <Image
+                      style={[styles.image, styles.stretch]}
+                      source={ICON_PAUSE_BUTTON.module}
+                    />
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    underlayColor='#ff0000'
                     style={styles.wrapper}
                     onPress={this._onStopPressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
                     <Image
-                      style={styles.image}
+                      style={[styles.image, styles.stretch]}
                       source={ICON_STOP_BUTTON.module}
+                    />
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    underlayColor='#ff0000'
+                    style={styles.wrapper}
+                    // onPress={this._onStopPressed}
+                    disabled={
+                      !this.state.isPlaybackAllowed || this.state.isLoading
+                    }>
+                    <Image
+                      style={[styles.image, styles.stretch]}
+                      source={ICON_EJECT_BUTTON.module}
                     />
                   </TouchableHighlight>
                 </View>
                 <View />
               </View>
-              <View
-                style={[
-                  styles.buttonsContainerBase,
-                  styles.buttonsContainerBottomRow,
-                ]}>
-                <Text
-                  style={[
-                    styles.timestamp,
-                    { ...Font.style('space-mono-regular') },
-                  ]}>
-                  Rate:
-                </Text>
-                <Slider
-                  style={styles.rateSlider}
-                  trackImage={ICON_TRACK_1.module}
-                  thumbImage={ICON_THUMB_1.module}
-                  value={this.state.rate / RATE_SCALE}
-                  onSlidingComplete={this._onRateSliderSlidingComplete}
-                  disabled={
-                    !this.state.isPlaybackAllowed || this.state.isLoading
-                  }
-                />
-                <TouchableHighlight
-                  underlayColor={BACKGROUND_COLOR}
-                  style={styles.wrapper}
-                  onPress={this._onPitchCorrectionPressed}
-                  disabled={
-                    !this.state.isPlaybackAllowed || this.state.isLoading
-                  }>
-                  <Text style={[{ ...Font.style('space-mono-regular') }]}>
-                    PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
-                  </Text>
-                </TouchableHighlight>
-              </View>
+
               <View />
             </View>
           </View>;
@@ -616,46 +678,92 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUND_COLOR,
     minHeight: DEVICE_HEIGHT,
     maxHeight: DEVICE_HEIGHT,
+    minWidth: DEVICE_WIDTH,
+    minWidth: DEVICE_WIDTH,
+    // borderWidth: 2,
+    // borderColor: '#228b22',
   },
-  noPermissionsText: {
-    textAlign: 'center',
+  topHalfScreenContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    minHeight: DEVICE_HEIGHT / 2,
+    maxHeight: DEVICE_HEIGHT / 2,
+    borderBottomWidth: 10,
+    borderColor: '#282A3E',
+    // borderWidth: 6,
+    // borderColor: '#282A3E',
   },
-  wrapper: {},
-  halfScreenContainer: {
+  bottomHalfScreenContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 2.0,
-    maxHeight: DEVICE_HEIGHT / 2.0,
+    minHeight: DEVICE_HEIGHT / 2,
+    maxHeight: DEVICE_HEIGHT / 2,
+    borderBottomWidth: 10,
+    borderColor: '#282A3E',
+    // borderWidth: 6,
+    // borderColor: '#282A3E',
   },
-  recordingContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    minHeight: ICON_RECORD_BUTTON.height,
-    maxHeight: ICON_RECORD_BUTTON.height,
+  noPermissionsText: {
+    textAlign: 'center',
   },
+  wrapper: {
+    borderWidth: 4,
+    borderColor: '#000000',
+    borderRadius: 2,
+    margin: 5,
+    paddingTop: 5,
+    paddingBottom: 30,
+    backgroundColor: '#7181A2',
+  },
+  recButtonWrapper: {
+    borderWidth: 4,
+    borderColor: '#000000',
+    borderRadius: 2,
+    margin: 5,
+    paddingTop: 5,
+    paddingBottom: 30,
+    backgroundColor: '#D85068',
+  },
+  // recordingContainer: {
+  //   flex: 1,
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   alignSelf: 'stretch',
+  //   minHeight: ICON_RECORD_BUTTON.height,
+  //   maxHeight: ICON_RECORD_BUTTON.height,
+    // borderWidth: 2,
+    // borderColor: '#00ffff'
+  // },
   recordingDataContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
-    minHeight: ICON_RECORD_BUTTON.height,
-    maxHeight: ICON_RECORD_BUTTON.height,
-    minWidth: ICON_RECORD_BUTTON.width * 3.0,
-    maxWidth: ICON_RECORD_BUTTON.width * 3.0,
+    // minHeight: ICON_RECORD_BUTTON.height,
+    // maxHeight: ICON_RECORD_BUTTON.height,
+    // minWidth: ICON_RECORD_BUTTON.width * 3.0,
+    // maxWidth: ICON_RECORD_BUTTON.width * 3.0,
+    // borderWidth: 2,
+    // borderColor: '#ff0000',
   },
   recordingDataRowContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    minHeight: ICON_RECORDING.height,
-    maxHeight: ICON_RECORDING.height,
+    minHeight: ICON_RECORDING.height * 2.0,
+    maxHeight: ICON_RECORDING.height * 2.0,
+    minWidth: DEVICE_WIDTH,
+    maxWidth: DEVICE_WIDTH,
+    // borderWidth: 2,
+    // borderColor: '#b22222',
   },
   playbackContainer: {
     flex: 1,
@@ -663,8 +771,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: ICON_THUMB_1.height * 2.0,
-    maxHeight: ICON_THUMB_1.height * 2.0,
+    minHeight: ICON_THUMB_1.height * 1.5,
+    maxHeight: ICON_THUMB_1.height * 1.5,
+    paddingRight: 10,
+    paddingLeft: 10,
+    // borderWidth: 2,
+    // borderColor: '#ffd700',
   },
   playbackSlider: {
     alignSelf: 'stretch',
@@ -680,52 +792,87 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     paddingRight: 20,
   },
-  image: {
-    backgroundColor: BACKGROUND_COLOR,
-  },
   textButton: {
     backgroundColor: BACKGROUND_COLOR,
     padding: 10,
   },
-  buttonsContainerBase: {
+  controlsContainerBase: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+    minWidth: DEVICE_WIDTH,
+    maxWidth: DEVICE_WIDTH,
+    backgroundColor: '#AEBDDA',
+    // borderWidth: 2,
+    // borderColor: '#b0e0e6',
   },
   buttonsContainerTopRow: {
     maxHeight: ICON_MUTED_BUTTON.height,
     alignSelf: 'stretch',
-    paddingRight: 20,
+    // paddingRight: 20,
+    // borderWidth: 2,
+    // borderColor: '#ff69b4',
   },
-  playStopContainer: {
+  allButtonsContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
-    maxWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
+    // minWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
+    // maxWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
+    // minWidth: DEVICE_WIDTH,
+    // maxWidth: DEVICE_WIDTH,
+    minHeight: ICON_RECORD_BUTTON.height * 2,
+    maxHeight: ICON_RECORD_BUTTON.height * 2,
+    marginRight: -10,
+    marginLeft: -10,
+    backgroundColor: '#E6F5FF',
+    borderRadius: 4,
+    // borderWidth: 2,
+    // borderColor: '#7cfc00',
   },
   volumeContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    minWidth: DEVICE_WIDTH / 2.0,
-    maxWidth: DEVICE_WIDTH / 2.0,
+    minWidth: DEVICE_WIDTH,
+    maxWidth: DEVICE_WIDTH,
+    minHeight: ICON_THUMB_1.height * 1.5,
+    maxHeight: ICON_THUMB_1.height * 1.5,
+    paddingRight: 10,
+    paddingLeft: 10,
+    // borderWidth: 2,
+    // borderColor: '#0000cd',
   },
   volumeSlider: {
-    width: DEVICE_WIDTH / 2.0 - ICON_MUTED_BUTTON.width,
+    width: DEVICE_WIDTH - ICON_MUTED_BUTTON.width,
   },
-  buttonsContainerBottomRow: {
-    maxHeight: ICON_THUMB_1.height,
+  rateControlContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    minHeight: ICON_THUMB_1.height * 1.5,
+    maxHeight: ICON_THUMB_1.height * 1.5,
     alignSelf: 'stretch',
-    paddingRight: 20,
-    paddingLeft: 20,
+    paddingRight: 10,
+    paddingLeft: 10,
+    // borderWidth: 2,
+    // borderColor: '#ffa500',
   },
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
   },
+  stretch: {
+    height: 50,
+    width: 50,
+  },
+  brandName: {
+    color: '#D85068',
+    fontSize: 20,
+  }
 });
 
 // Expo.registerRootComponent(App);
