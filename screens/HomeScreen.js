@@ -37,9 +37,25 @@ export default class HomeScreen extends React.Component {
 
     };
   }
-  static navigationOptions = {
-    title: 'Feed',
-  };
+  // static navigationOptions = {
+  //   title: 'Speakeasy',
+  //     // headerTintColor: 'red',
+  //     // titleStyle: {
+  //     //   backgroundColor: 'white',
+  //     //   fontFamily: 'monoton',
+  //     // }
+  // };
+
+//   static navigationOptions = {
+//   header: ({ navigate }) => {
+//     return {
+//       title: 'Speakeasy',
+//       titleStyle: {
+//         fontFamily: 'American Typewriter'
+//       },
+//     };
+//   },
+// };
 
   componentWillMount() {
     let user = firebase.auth().currentUser;
@@ -68,7 +84,7 @@ export default class HomeScreen extends React.Component {
   }
 
     render() {
-      console.log("Is this working at all?")
+      // console.log("Is this working at all?")
       return (
       <View style={styles.container}>
         <ScrollView
