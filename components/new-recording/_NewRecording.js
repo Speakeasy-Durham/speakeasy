@@ -182,23 +182,23 @@ export default class _NewRecording extends React.Component {
     const file = {
   // `uri` can also be a file system path (i.e. file://)
       uri: `${newUri}`,
-      name: `${userId + Date.now()}`,
+      name: `${userId + Date.now()}.caf`,
       type: "testaudio/caf"
     }
     const jsonFile = (`${JSON.stringify(file)}`);
-    console.log("this is the file " + file);
+    console.log("this is the file and right before options are built for S3 " + file);
     const options = {
       keyPrefix: "uploads/",
       bucket: "tin-can",
       region: "us-east-2",
-      accessKey: "AKIAIWIXSLEVFXM27ARQ",
-      secretKey: "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",
+      accessKey: "AKIAI6DKQKOMLHFF5KDQ",
+      secretKey: "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",
       successActionStatus: 201
     }
 
     let audioLocation = await this._uploadFileToS3(file, options);
 
-    console.log("this is the passed through audio location" + audioLocation);
+    console.log("this is the passed through audio location", audioLocation);
 
     this._addRecordingToFirebase(audioLocation);
 
