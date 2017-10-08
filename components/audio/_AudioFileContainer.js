@@ -75,14 +75,14 @@ export default class AudioFileContainer extends Component {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 4,
-    paddingRight: 8,
     paddingBottom: 8,
-    paddingLeft: 8,
+
 
   },
 
   playerContainer: {
     flex: 1,
+
 
   }
 })
