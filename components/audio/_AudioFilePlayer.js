@@ -12,6 +12,11 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 
+const width = Dimensions.get('window').width,
+      height = Dimensions.get('window').height;
+
+console.log(width);
+console.log(height);
 
 export default class AudioFilePlayer extends Component {
   constructor(props) {
@@ -24,11 +29,14 @@ export default class AudioFilePlayer extends Component {
     console.log(this.props.audio);
     return (
       <View style={styles.playerContainer}>
-        <Text> `${ this.props.audio }` </Text>
+        <View style={styles.sliderContainer}>
+          <Text> `${ this.props.audio }` </Text>
+        </View>
         <TouchableHighlight style={styles.heartContainer}>
             <Ionicons
               name={`ios-heart`}
-              size={28} />
+              size={28}
+              color='#ff6347'/>
         </TouchableHighlight>
       </View>
     )
@@ -38,9 +46,19 @@ export default class AudioFilePlayer extends Component {
 const styles = StyleSheet.create({
   playerContainer: {
     flex: 1,
+    paddingTop: 4,
+    flexWrap: 'nowrap',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 
   heartContainer: {
-    flex: 1,
+    width: width*0.2,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+  sliderContainer: {
+    width: width*0.7,
   }
 })

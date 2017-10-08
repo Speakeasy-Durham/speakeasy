@@ -1,3 +1,12 @@
+
+//
+//
+//
+//
+//
+// no longer using! use AudioFileContainer and AudioFilePlayer instead
+
+
 import React, { Component } from 'react';
 import {
   Animated,
@@ -179,6 +188,8 @@ const styles = StyleSheet.create({
     borderColor: '#333',
     borderWidth: 1,
     backgroundColor: '#FFF3FE',
+    paddingLeft: 8,
+    paddingRight: 8,
 
   },
   playerContainer: {

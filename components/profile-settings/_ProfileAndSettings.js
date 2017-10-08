@@ -8,6 +8,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
     // import children
 import RecordingPlayer from './_RecordingPlayer';
@@ -26,7 +27,7 @@ export default class ProfileAndSettings extends Component {
   render () {
 
     var userPosts = this.props.userPosts;
-
+    console.log(userPosts.length);
     return (
       <View style={styles.main}>
         <View style={styles.profileBarContainer}>
@@ -36,42 +37,26 @@ export default class ProfileAndSettings extends Component {
               source={{uri: this.props.userPhoto}}
               style={styles.image}
             />
-            <Text style={styles.name}>Profile Name</Text>
+            <Text style={styles.name}> { this.props.userName } </Text>
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.info}>
               <Text style={styles.infoNumber}>
-                ##
+                {userPosts.length}
               </Text>
               <Text style={styles.infoType}>
                 posts
               </Text>
             </View>
-            <View style={styles.info}>
-              <Text style={styles.infoNumber}>
-                ##
-              </Text>
-              <Text style={styles.infoType}>
-                followers
-              </Text>
-            </View>
-            <View style={styles.info}>
-              <Text style={styles.infoNumber}>
-                ##
-              </Text>
-              <Text style={styles.infoType}>
-                following
-              </Text>
-            </View>
           </View>
           <View style={styles.settingsContainer}>
-            <Text>
-              (s)
-            </Text>
+            <Ionicons
+              name={`ios-settings`}
+              size={28} />
           </View>
         </View>
         {/* Flatlist renders AudioFileContainer for each item */}
-        <View>
+        <View style={styles.listContainer}>
           <FlatList
             data={userPosts}
             keyExtractor={this._keyExtractor}
@@ -98,10 +83,11 @@ export default class ProfileAndSettings extends Component {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "pink"
+    backgroundColor: "#FCFCFC",
+    justifyContent: 'flex-start'
   },
   profileBarContainer: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#ff634744',
     borderBottomColor: '#000',
     flexDirection: 'row'
   },
@@ -131,27 +117,31 @@ const styles = StyleSheet.create({
   },
   info: {
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 12,
-
   },
   infoNumber: {
-    marginTop: 4,
-    fontSize: 24
+    marginTop: 12,
+    minHeight: 32,
+    fontSize: 30
   },
   infoType: {
     marginTop: 8,
-    fontSize: 12
   },
   settingsContainer: {
     flexDirection: 'column',
     flex: 0,
-    minWidth: 48,
+    minWidth: 100,
     // minHeight: 24,
     justifyContent: 'center',
     alignItems: 'center',
     // borderColor: 'blue',
     // borderWidth: 1,
-  }
+  },
+  listContainer: {
+    paddingTop: 8,
+    paddingRight: 8,
+    paddingLeft: 8,
+  },
 })

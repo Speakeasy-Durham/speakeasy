@@ -33,6 +33,13 @@ export default TabNavigator({
     // },
     Profile: {
       screen: ProfileScreen,
+      navigationOptions: {
+        headerTitle: 'Profile',
+        headerTintColor: '#fffafa',
+        headerStyle: {
+          backgroundColor: '#ff6347',
+        }
+      }
     },
   },
   {

@@ -61,9 +61,9 @@ export default class AudioFileContainer extends Component {
       <View>
         <TouchableHighlight
           onPress={ this._toggleExpandPlayer }>
-          <View>
+          <View style={styles.container}>
             <Text>{this.props.title} </Text>
-            <Text>{this.props.username}</Text>
+            <Text>by: {this.props.username}</Text>
             { this._expandPlayer() }
           </View>
         </TouchableHighlight>
@@ -73,7 +73,16 @@ export default class AudioFileContainer extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingTop: 4,
+    paddingRight: 8,
+    paddingBottom: 8,
+    paddingLeft: 8,
+
+  },
+
   playerContainer: {
     flex: 1,
+
   }
 })
