@@ -59,6 +59,7 @@ export default class AudioFileContainer extends Component {
 
     return (
       <View>
+        {/* TouchableHighlight triggers AudioFilePlayer */}
         <TouchableHighlight
           onPress={ this._toggleExpandPlayer }>
           <View style={styles.container}>
@@ -74,9 +75,10 @@ export default class AudioFileContainer extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 4,
-    paddingBottom: 8,
-
+    paddingTop: 8,
+    paddingBottom: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ff634766',
 
   },
 
