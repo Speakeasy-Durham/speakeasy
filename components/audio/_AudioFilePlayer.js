@@ -21,7 +21,50 @@ console.log(height);
 export default class AudioFilePlayer extends Component {
   constructor(props) {
     super(props);
+    // this.sound = null;
+    this.audioSource = { uri: this.props.audio };
+    this.sound = null;
+    this.state = {
+      isLoading: false,
+      isPlaybackAllowed: false,
+      shouldPlay: false,
+      isPlaying: false,
 
+    }
+    this._testClick = this._testClick.bind(this);
+  }
+
+
+  // create sound Object
+  async _loadSound() {
+    try {
+      await this.sound.loadAsync(this.audioSource);
+      await this.sound.playAsync();
+      console.log(this.sound);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+
+  componentWillMount() {
+    this.sound = new Expo.Audio.Sound();
+    this._loadSound();
+  }
+
+  componentDidMount() {
+
+    console.log(this.sound);
+  }
+
+  async _enablePlayback() {
+    this.setState({
+      isLoading: true,
+    });
+  }
+
+  _testClick() {
+    console.log(this.sound);
   }
 
   render () {
@@ -32,7 +75,8 @@ export default class AudioFilePlayer extends Component {
         <View style={styles.sliderContainer}>
           <Text> `${ this.props.audio }` </Text>
         </View>
-        <TouchableHighlight style={styles.heartContainer}>
+        <TouchableHighlight style={styles.heartContainer}
+          onPress={ this._testClick }>
             <Ionicons
               name={`ios-heart`}
               size={28}
@@ -46,10 +90,13 @@ export default class AudioFilePlayer extends Component {
 const styles = StyleSheet.create({
   playerContainer: {
     flex: 1,
-    paddingTop: 4,
+    marginTop: 8,
+    paddingTop: 8,
     flexWrap: 'nowrap',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: '#ff634722',
   },
 
   heartContainer: {

@@ -73,7 +73,6 @@ export default class ProfileAndSettings extends Component {
               }
 
           />
-          <RecordingPlayer />
         </View>
       </View>
     )
@@ -96,8 +95,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    // borderColor: 'green',
-    // borderWidth: 1,
   },
   image: {
     width: 56,
@@ -112,8 +109,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 2,
-    // borderColor: 'red',
-    // borderWidth: 1,
   },
   info: {
     flexDirection: 'column',
@@ -133,11 +128,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 0,
     minWidth: 100,
-    // minHeight: 24,
     justifyContent: 'center',
     alignItems: 'center',
-    // borderColor: 'blue',
-    // borderWidth: 1,
   },
   listContainer: {
     paddingTop: 8,
