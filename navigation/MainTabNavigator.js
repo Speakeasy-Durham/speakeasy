@@ -19,6 +19,7 @@ export default TabNavigator({
         headerTintColor: '#fffafa',
         headerStyle: {
           backgroundColor: '#ff6347',
+
         }
       }
     },
@@ -50,8 +51,8 @@ export default TabNavigator({
         switch (routeName) {
           case 'Home':
             iconName = Platform.OS === 'ios'
-              ? `ios-home${focused ? '' : '-outline'}`
-              : 'md-information-circle';
+              ? 'md-home'
+              : 'md-home';
             break;
           // case 'Discover':
           //     iconName = Platform.OS === 'ios'
@@ -60,8 +61,8 @@ export default TabNavigator({
           //     break;
           case 'Recording':
             iconName = Platform.OS === 'ios'
-              ? `ios-mic${focused ? '' : '-outline'}`
-              : 'md-link';
+              ? 'md-mic'
+              : 'md-mic';
             break;
           // case 'Notifications':
           //   iconName = Platform.OS === 'ios'
@@ -70,8 +71,8 @@ export default TabNavigator({
           // break;
           case 'Profile':
             iconName = Platform.OS === 'ios'
-              ? `ios-person${focused ? '' : '-outline'}`
-              : 'md-link';
+              ? 'md-person'
+              : 'md-person';
         }
         return (
           <Ionicons
@@ -86,7 +87,10 @@ export default TabNavigator({
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     tabBarOptions: {
-      showLabel: false
+      showLabel: false,
+      style: {
+        backgroundColor: 'white',
+      }
     },
     animationEnabled: false,
     swipeEnabled: false,

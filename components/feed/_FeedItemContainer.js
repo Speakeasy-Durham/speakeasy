@@ -32,8 +32,8 @@ export default class FeedItemContainer extends Component {
           <Text style={styles.name}> { this.props.userName } </Text>
         </View>
         <AudioFileContainer
-          key={this.props.key}
-          title={this.props.key}
+          // key={this.props.key}
+          // title={this.props.key}
           username={this.props.username}
           audio={this.props.audio}/>
       </View>
