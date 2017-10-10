@@ -37,6 +37,13 @@ export default class AudioFilePlayer extends Component {
 
   // create sound Object
   async _loadSound() {
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+    });
     try {
       await this.sound.loadAsync(this.audioSource);
       await this.sound.playAsync();
@@ -53,7 +60,11 @@ export default class AudioFilePlayer extends Component {
   }
 
   componentDidMount() {
-
+    this.setState({
+      isPlaybackAllowed: true,
+      shouldPlay: true,
+      isPlaying: true
+    })
     console.log(this.sound);
   }
 
