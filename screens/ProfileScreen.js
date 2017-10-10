@@ -41,7 +41,7 @@ export default class ProfileScreen extends React.Component {
       .equalTo(currentUser);
     currentUserRef.once("value", (snapshot) => {
             var userPosts = snapshot.val();
-            console.log(Object.keys(userPosts));
+            // console.log(Object.keys(userPosts));
             var userPostsArray = [];
             userPostsArray = Object.keys(userPosts).map(key => {
                let array = userPosts[key]
@@ -49,15 +49,14 @@ export default class ProfileScreen extends React.Component {
                array.key = key
                return array
             });
-            console.log(userPostsArray);
+            // console.log("userPostsArray");
+            // console.log(userPostsArray);
             this.setState({userPosts: userPostsArray})
           });
     }
 
 
   render() {
-    // console.log("this.state.userPosts");
-    // console.log(this.state.userPosts);
     return (
       <ScrollView style={styles.container}>
         <ProfileAndSettings

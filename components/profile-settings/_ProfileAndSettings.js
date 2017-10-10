@@ -27,7 +27,7 @@ export default class ProfileAndSettings extends Component {
   render () {
 
     var userPosts = this.props.userPosts;
-    console.log(userPosts.length);
+    // console.log(userPosts.length);
     return (
       <View style={styles.main}>
         <View style={styles.profileBarContainer}>

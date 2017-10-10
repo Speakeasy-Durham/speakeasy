@@ -8,14 +8,17 @@ import {
   TouchableOpacity,
   View,
   Button,
-  Alert
+  Alert,
+  FlatList,
 } from 'react-native';
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
-import _FeedSong from '../components/feed/_FeedRecording.js';
+
+import FeedList from '../components/feed/_FeedList.js';
+
 import { AsyncStorage } from 'react-native';
 // import Cognito from '../cognito-helper';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
@@ -29,11 +32,14 @@ import  {
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.allPosts = {};
+    this.allPostsArray = [];
     this.state = {
       userPhoto: null,
       userEmail: null,
       userUid: null,
       userName: null,
+      allPosts: [],
 
     };
   }
@@ -83,24 +89,51 @@ export default class HomeScreen extends React.Component {
     })
   }
 
+  componentDidMount() {
+    var ref = firebase.database().ref('recordings/');
+
+    // find only by current user
+    var allRecordingsRef = ref
+
+    allRecordingsRef.once("value", (snapshot) => {
+      this.allPosts = snapshot.val();
+      // console.log("this.allPosts");
+      // console.log(this.allPosts);
+      this.allPostsArray = Object.keys(this.allPosts).map(key => {
+        let array = this.allPosts[key]
+        // Append key if one exists (optional)
+        array.key = key
+        return array
+      })
+      // console.log("this.allPostsArray");
+      // console.log(this.allPostsArray);
+      this.setState({
+        allPosts: this.allPostsArray
+      });
+    })
+
+
+  }
+
     render() {
-      // console.log("Is this working at all?")
       return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}>
-          <_FeedSong />
-          <View style={styles.getStartedContainer}>
-              <Button
-                onPress={this._handleLogOut}
-                title="Logout of App"
-                color="#841584"
-                accessibilityLabel="Learn more about this purple button"
-              />
-            </View>
-          </ScrollView>
-        </View>
+        <View>
+          <Button
+            onPress={this._handleLogOut}
+            title="Logout of App"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+      </View>
+      <View>
+        <FeedList
+          allPosts={this.state.allPosts}/>
+      </View>
+
+
+
+      </View>
     );
   }
 
