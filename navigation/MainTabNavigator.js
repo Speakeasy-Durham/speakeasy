@@ -1,17 +1,18 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
-
+import {
+  TabNavigator,
+  TabBarBottom,
+  StackNavigator
+} from 'react-navigation';
 import Colors from '../constants/Colors';
-
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import RecordingScreen from '../screens/RecordingScreen';
-// import DiscoverScreen from '../screens/DiscoverScreen';
-// import NotificationScreen from '../screens/NotificationScreen';
 
-export default TabNavigator({
+
+const Tabs = TabNavigator({
     Home: {
       screen: HomeScreen,
       navigationOptions: {
@@ -19,19 +20,17 @@ export default TabNavigator({
         headerTintColor: '#fffafa',
         headerStyle: {
           backgroundColor: '#ff6347',
-
         }
       }
     },
-    // Discover: {
-    //   screen: DiscoverScreen,
-    // },
     Recording: {
       screen: RecordingScreen,
+      navigationOptions: ({ navigation }) => ({
+        tabBarOnPress: (tab, jumpToIndex) => {
+          navigation.navigate('RecordingScreenModal');
+        },
+      })
     },
-    // Notifications: {
-    //   screen: NotificationScreen,
-    // },
     Profile: {
       screen: ProfileScreen,
       navigationOptions: {
@@ -54,21 +53,11 @@ export default TabNavigator({
               ? 'md-home'
               : 'md-home';
             break;
-          // case 'Discover':
-          //     iconName = Platform.OS === 'ios'
-          //       ? `ios-search${focused ? '' : '-outline'}`
-          //       : 'md-options';
-          //     break;
           case 'Recording':
             iconName = Platform.OS === 'ios'
               ? 'md-mic'
               : 'md-mic';
             break;
-          // case 'Notifications':
-          //   iconName = Platform.OS === 'ios'
-          //     ? `ios-heart${focused ? '' : '-outline'}`
-          //     : 'md-link';
-          // break;
           case 'Profile':
             iconName = Platform.OS === 'ios'
               ? 'md-person'
@@ -96,3 +85,16 @@ export default TabNavigator({
     swipeEnabled: false,
   }
 );
+
+
+export default StackNavigator({
+  Tabs: {
+    screen: Tabs,
+  },
+  RecordingScreenModal: {
+    screen: RecordingScreen,
+  },
+}, {
+  mode: 'modal',
+  headerMode: 'none',
+});
