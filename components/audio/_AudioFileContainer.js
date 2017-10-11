@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
     borderBottomWidth: 1,
     borderBottomColor: '#ff634766',
-
+    minHeight: 100,
   },
 
   playerContainer: {

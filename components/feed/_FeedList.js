@@ -42,7 +42,7 @@ export default class FeedList extends Component {
               (
               <FeedItemContainer
                 keyProp={item.key}
-                title={item.key}
+                text={item.text}
                 username={item.username}
                 audio={item.audio}
                 userPhoto={item.profile_picture}
