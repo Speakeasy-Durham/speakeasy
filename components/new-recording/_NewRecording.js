@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Dimensions,
@@ -246,7 +245,7 @@ export default class _NewRecording extends React.Component {
     let imageUrl = user.providerData[0].photoURL;
     firebase.database().ref('recordings/' + recordingId).set({
       username: name,
-      userId:userId,
+      userId: userId,
       audio: audioLocation,
       profile_picture: imageUrl,
     })
@@ -411,10 +410,10 @@ export default class _NewRecording extends React.Component {
                     styles.brandName,
                     { ...Font.style('monoton-regular') },
                   ]}>
-                  Speakeasy
+                  SPEAKEASY
                 </Text>
               </View>
-              
+
               <View />
             </View>
 
@@ -788,19 +787,6 @@ const styles = StyleSheet.create({
   },
   volumeSlider: {
     width: DEVICE_WIDTH - ICON_MUTED_BUTTON.width,
-  },
-  rateControlContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    minHeight: ICON_THUMB_1.height * 1.5,
-    maxHeight: ICON_THUMB_1.height * 1.5,
-    alignSelf: 'stretch',
-    paddingRight: 10,
-    paddingLeft: 10,
-    // borderWidth: 2,
-    // borderColor: '#ffa500',
   },
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
