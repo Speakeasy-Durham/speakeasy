@@ -1,17 +1,33 @@
 import React, { Component } from 'react';
 import {
+  FlatList,
   Image,
+  List,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
     // import children
 import RecordingPlayer from './_RecordingPlayer';
+import AudioFileContainer from '../audio/_AudioFileContainer';
 
 export default class ProfileAndSettings extends Component {
+
+  componentWillMount() {
+
+  }
+
+  _keyExtractor = (item, index) => item.id;
+
+  _renderPost = 0;
+
   render () {
+
+    var userPosts = this.props.userPosts;
+    // console.log(userPosts.length);
     return (
       <View style={styles.main}>
         <View style={styles.profileBarContainer}>
@@ -21,43 +37,42 @@ export default class ProfileAndSettings extends Component {
               source={{uri: this.props.userPhoto}}
               style={styles.image}
             />
-            <Text style={styles.name}>Profile Name</Text>
+            <Text style={styles.name}> { this.props.userName } </Text>
           </View>
           <View style={styles.infoContainer}>
             <View style={styles.info}>
               <Text style={styles.infoNumber}>
-                ##
+                {userPosts.length}
               </Text>
               <Text style={styles.infoType}>
                 posts
               </Text>
             </View>
-            <View style={styles.info}>
-              <Text style={styles.infoNumber}>
-                ##
-              </Text>
-              <Text style={styles.infoType}>
-                followers
-              </Text>
-            </View>
-            <View style={styles.info}>
-              <Text style={styles.infoNumber}>
-                ##
-              </Text>
-              <Text style={styles.infoType}>
-                following
-              </Text>
-            </View>
           </View>
           <View style={styles.settingsContainer}>
-            <Text>
-              (s)
-            </Text>
+            <Ionicons
+              name={`ios-settings`}
+              size={28} />
           </View>
         </View>
-        <ScrollView style={styles.recordingsContainer}>
-          <RecordingPlayer />
-        </ScrollView>
+        {/* Flatlist renders AudioFileContainer for each item */}
+        <View style={styles.listContainer}>
+          <FlatList
+            data={userPosts}
+            keyExtractor={item => item.key}
+            renderItem={
+              ({item}) =>
+                (
+                <AudioFileContainer
+                  title={item.text}
+                  username={item.username}
+                  audio={item.audio}
+                />
+                )
+              }
+
+          />
+        </View>
       </View>
     )
   }
@@ -66,10 +81,11 @@ export default class ProfileAndSettings extends Component {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "pink"
+    backgroundColor: "#FCFCFC",
+    justifyContent: 'flex-start'
   },
   profileBarContainer: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#ff634744',
     borderBottomColor: '#000',
     flexDirection: 'row'
   },
@@ -78,8 +94,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderColor: 'green',
-    borderWidth: 1,
   },
   image: {
     width: 56,
@@ -94,31 +108,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 2,
-    borderColor: 'red',
-    borderWidth: 1,
   },
   info: {
     flexDirection: 'column',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 8
+    padding: 12,
   },
   infoNumber: {
-    marginTop: 4,
-    fontSize: 16
+    marginTop: 12,
+    minHeight: 32,
+    fontSize: 30
   },
   infoType: {
     marginTop: 8,
-    fontSize: 12
   },
   settingsContainer: {
     flexDirection: 'column',
     flex: 0,
-    minWidth: 48,
-    // minHeight: 24,
+    minWidth: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: 'blue',
-    borderWidth: 1,
-  }
+  },
+  listContainer: {
+    paddingTop: 8,
+    paddingRight: 8,
+    paddingLeft: 8,
+  },
 })

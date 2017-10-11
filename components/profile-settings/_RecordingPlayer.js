@@ -1,3 +1,12 @@
+
+//
+//
+//
+//
+//
+// no longer using! use AudioFileContainer and AudioFilePlayer instead
+
+
 import React, { Component } from 'react';
 import {
   Animated,
@@ -33,8 +42,8 @@ const ICON_PAUSE_BUTTON = new Icon(
 );
 const ICON_TRACK_1 = new Icon(require('../../assets/images/track_1.png'), 166, 5);
 
-const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
-
+const width = Dimensions.get('window').width,
+      height = Dimensions.get('window').height;
 
 export default class RecordingPlayer extends Component {
   constructor(props) {
@@ -156,22 +165,19 @@ export default class RecordingPlayer extends Component {
             style={styles.playStopContainer}
             onPress={ this._testPlayPause }
           >
-              <Text>></Text>
+              <Text style={styles.playStopbutton}>></Text>
           </TouchableHighlight>
           <View style={styles.recordingInfoContainer}>
-            <Text>Title</Text>
+            <Text>Title of recording</Text>
           </View>
           <View style={styles.playbackTimeContainer}>
             <Text>0:00</Text>
           </View>
         </View>
-        {/* { this.state.testPlay && } */}
         {this._renderSlider()}
       </View>
     )
   }
-
-
 }
 
 const styles = StyleSheet.create({
@@ -181,6 +187,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: '#333',
     borderWidth: 1,
+    backgroundColor: '#FFF3FE',
+
 
   },
   playerContainer: {
@@ -193,13 +201,17 @@ const styles = StyleSheet.create({
   },
   playStopContainer: {
     flex: 1,
-    borderColor: 'green',
-    borderWidth: 1,
+    // borderColor: 'green',
+    // borderWidth: 1,
+    alignItems: 'center',
+  },
+  playStopbutton: {
+    fontSize: 30,
   },
   recordingInfoContainer: {
-    flex: 2,
-    borderColor: 'red',
-    borderWidth: 1,
+    flex: 3,
+    // borderColor: 'red',
+    // borderWidth: 1,
   },
   playbackTimeContainer: {
     flex: 1,
@@ -212,15 +224,15 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   slider: {
-    width: DEVICE_WIDTH * 0.8,
+    width: width * 0.8,
   },
 
   testPlayTrue: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
-    borderColor: '#333',
-    borderWidth: 1,
+    // borderColor: '#333',
+    // borderWidth: 1,
     minHeight: 78,
   },
   testPlayFalse: {
