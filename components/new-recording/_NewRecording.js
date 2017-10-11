@@ -30,7 +30,7 @@ const ICON_RECORD_BUTTON = new Icon(require('../../assets/images/record.png'), 5
 const ICON_PLAY_BUTTON = new Icon(require('../../assets/images/play.png'), 50, 50);
 const ICON_PAUSE_BUTTON = new Icon(require('../../assets/images/pause.png'), 50, 50);
 const ICON_STOP_BUTTON = new Icon(require('../../assets/images/stop.png'), 50, 50);
-const ICON_EJECT_BUTTON = new Icon(require('../../assets/images/eject.png'), 50, 50);
+const ICON_DELETE_BUTTON = new Icon(require('../../assets/images/delete.png'), 50, 50);
 const ICON_MUTED_BUTTON = new Icon(require('../../assets/images/muted_button.png'), 67, 58);
 const ICON_VOLUME_BUTTON = new Icon(require('../../assets/images/sound.png'), 67, 58);
 
@@ -295,24 +295,6 @@ export default class _NewRecording extends React.Component {
     }
   };
 
-  _trySetRate = async (rate, shouldCorrectPitch) => {
-    if (this.sound != null) {
-      try {
-        await this.sound.setRateAsync(rate, shouldCorrectPitch);
-      } catch (error) {
-        // Rate changing could not be performed, possibly because the client's Android API is too old.
-      }
-    }
-  };
-
-  _onRateSliderSlidingComplete = async value => {
-    this._trySetRate(value * RATE_SCALE, this.state.shouldCorrectPitch);
-  };
-
-  _onPitchCorrectionPressed = async value => {
-    this._trySetRate(this.state.rate, !this.state.shouldCorrectPitch);
-  };
-
   _onSeekSliderValueChange = value => {
     if (this.sound != null && !this.isSeeking) {
       this.isSeeking = true;
@@ -438,9 +420,7 @@ export default class _NewRecording extends React.Component {
                   Speakeasy
                 </Text>
               </View>
-
-
-
+              
               <View />
             </View>
 
@@ -457,17 +437,11 @@ export default class _NewRecording extends React.Component {
               ]}>
               <View />
 
-
-
               <View
                 style={[
                   styles.controlsContainerBase,
                   // styles.buttonsContainerTopRow,
                 ]}>
-
-
-
-
 
                 <View style={styles.playbackContainer}>
                   <Slider
@@ -525,40 +499,6 @@ export default class _NewRecording extends React.Component {
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }
                   />
-                </View>
-
-                <View
-                  style={[
-                    // styles.controlsContainerBase,
-                    styles.rateControlContainer,
-                  ]}>
-                  <Text
-                    style={
-                      { ...Font.style('space-mono-regular') }
-                    }>
-                    Rate:
-                  </Text>
-                  <Slider
-                    style={styles.rateSlider}
-                    trackImage={ICON_TRACK_1.module}
-                    thumbImage={ICON_THUMB_1.module}
-                    value={this.state.rate / RATE_SCALE}
-                    onSlidingComplete={this._onRateSliderSlidingComplete}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }
-                  />
-                  <TouchableHighlight
-                    underlayColor={BACKGROUND_COLOR}
-                    // style={styles.wrapper}
-                    onPress={this._onPitchCorrectionPressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <Text style={[{ ...Font.style('space-mono-regular') }]}>
-                      PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
-                    </Text>
-                  </TouchableHighlight>
                 </View>
 
                 <View style={styles.recordingDataRowContainer}>
@@ -657,7 +597,7 @@ export default class _NewRecording extends React.Component {
                     }>
                     <Image
                       style={[styles.image, styles.stretch]}
-                      source={ICON_EJECT_BUTTON.module}
+                      source={ICON_DELETE_BUTTON.module}
                     />
                   </TouchableHighlight>
                 </View>
