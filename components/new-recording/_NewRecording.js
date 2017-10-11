@@ -8,7 +8,9 @@ import {
   Text,
   TouchableHighlight,
   View,
-  Button
+  Button,
+  TextInput,
+
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
@@ -67,6 +69,7 @@ export default class _NewRecording extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
+      text: "",
     };
     this.recordingSettings = JSON.parse(
       JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY)
@@ -183,6 +186,7 @@ export default class _NewRecording extends React.Component {
   // `uri` can also be a file system path (i.e. file://)
       uri: `${newUri}`,
       name: `${userId + Date.now()}.caf`,
+      title: `${this.state.text}`,
       type: "testaudio/caf"
     }
     const jsonFile = (`${JSON.stringify(file)}`);
@@ -244,11 +248,13 @@ export default class _NewRecording extends React.Component {
     let recordingId = user.providerData[0].uid + Date.now();
     let name = user.providerData[0].displayName;
     let imageUrl = user.providerData[0].photoURL;
+
     firebase.database().ref('recordings/' + recordingId).set({
       username: name,
       userId:userId,
       audio: audioLocation,
       profile_picture: imageUrl,
+      text: this.state.text
     })
     console.log("added to firebase");
   }
@@ -656,6 +662,11 @@ export default class _NewRecording extends React.Component {
                   </TouchableHighlight>
                 </View>
                 <View />
+                <TextInput
+       style={{height: 40, width:200, borderColor: 'gray', borderWidth: 1}}
+       onChangeText={(text) => this.setState({text})}
+       value={this.state.text}
+     />
               </View>
 
               <View />

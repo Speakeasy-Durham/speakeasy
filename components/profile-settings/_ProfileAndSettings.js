@@ -59,13 +59,12 @@ export default class ProfileAndSettings extends Component {
         <View style={styles.listContainer}>
           <FlatList
             data={userPosts}
-            keyExtractor={this._keyExtractor}
+            keyExtractor={item => item.key}
             renderItem={
               ({item}) =>
                 (
                 <AudioFileContainer
-                  key={item.key}
-                  title={item.key}
+                  title={item.text}
                   username={item.username}
                   audio={item.audio}
                 />

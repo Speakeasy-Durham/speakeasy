@@ -33,7 +33,7 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.allPosts = {};
-    this.allPostsArray = [];
+    this.allPostsArray = [0,0,0];
     this.state = {
       userPhoto: null,
       userEmail: null,
@@ -99,6 +99,7 @@ export default class HomeScreen extends React.Component {
       this.allPosts = snapshot.val();
       // console.log("this.allPosts");
       // console.log(this.allPosts);
+
       this.allPostsArray = Object.keys(this.allPosts).map(key => {
         let array = this.allPosts[key]
         // Append key if one exists (optional)
