@@ -21,6 +21,7 @@ export default class FeedItemContainer extends Component {
   }
 
   render () {
+    key = this.props.key
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
@@ -32,8 +33,8 @@ export default class FeedItemContainer extends Component {
           <Text style={styles.name}> { this.props.userName } </Text>
         </View>
         <AudioFileContainer
-          key={this.props.key}
-          title={this.props.key}
+          key={key}
+          title={key}
           username={this.props.username}
           audio={this.props.audio}/>
       </View>

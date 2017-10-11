@@ -17,8 +17,8 @@ import * as firebase from 'firebase';
 export default class FeedList extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      isLoading: true,
       allPosts: [],
     }
   }
@@ -28,26 +28,20 @@ export default class FeedList extends Component {
   }
 
   componentDidMount() {
-    this.setState({
-      allposts: this.props.allPosts
-    })
+
   }
 
   render () {
-
-    console.log("this.props.allPosts");
-    console.log(this.props.allPosts);
-    var allPosts = this.state.allPosts;
     return (
       <View style={styles.listContainer}>
         <FlatList
           data={this.props.allPosts}
-
+          keyExtractor={item => item.key}
           renderItem={
             ({item}) =>
               (
               <FeedItemContainer
-                key={item.key}
+                keyProp={item.key}
                 title={item.key}
                 username={item.username}
                 audio={item.audio}
