@@ -6,10 +6,6 @@ import * as firebase from 'firebase';
 import ProfileAndSettings from '../components/profile-settings/_ProfileAndSettings';
 
 export default class ProfileScreen extends React.Component {
-  static navigationOptions = {
-    title: 'User\'s name',
-  };
-
   constructor(props) {
     super(props);
     this.state = {
