@@ -1,16 +1,20 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Button } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import {
   TabNavigator,
   TabBarBottom,
-  StackNavigator
+  StackNavigator,
+  HeaderBackButton,
 } from 'react-navigation';
 import Colors from '../constants/Colors';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import RecordingScreen from '../screens/RecordingScreen';
 
+// const navigationOptionsBack = ({ navigation }) => ({
+//     headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
+// })
 
 const Tabs = TabNavigator({
     Home: {
@@ -29,12 +33,18 @@ const Tabs = TabNavigator({
         tabBarOnPress: (tab, jumpToIndex) => {
           navigation.navigate('RecordingScreenModal');
         },
+        // header: ({ state }) => ({
+        //     right: <Button title={"Save"} onPress={() => {state.params.handleSave()}} />
+        //   }),
+        //   headerStyle: {
+        //     backgroundColor: '#ff6347',
+        //   }
       })
     },
     Profile: {
       screen: ProfileScreen,
       navigationOptions: {
-        headerTitle: 'Profile',
+        headerTitle: 'You',
         headerTintColor: '#fffafa',
         headerStyle: {
           backgroundColor: '#ff6347',
@@ -93,8 +103,10 @@ export default StackNavigator({
   },
   RecordingScreenModal: {
     screen: RecordingScreen,
+    // navigationOptionsBack
   },
-}, {
+},
+{
   mode: 'modal',
   headerMode: 'none',
 });

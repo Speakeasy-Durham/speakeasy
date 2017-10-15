@@ -9,12 +9,12 @@ import {
   View,
   Button,
   TextInput,
-
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
 import { Entypo } from '@expo/vector-icons';
+import { NavigationActions, StackNavigator } from 'react-navigation';
 
 class Icon {
   constructor(module, width, height) {
@@ -28,7 +28,7 @@ class Icon {
 const ICON_RECORD_BUTTON = new Icon(require('../../assets/images/record.png'), 50, 50);
 const ICON_PLAY_BUTTON = new Icon(require('../../assets/images/play.png'), 50, 50);
 const ICON_PAUSE_BUTTON = new Icon(require('../../assets/images/pause.png'), 50, 50);
-const ICON_STOP_BUTTON = new Icon(require('../../assets/images/stop.png'), 50, 50);
+const ICON_SAVE_BUTTON = new Icon(require('../../assets/images/save.png'), 50, 50);
 const ICON_DELETE_BUTTON = new Icon(require('../../assets/images/delete.png'), 50, 50);
 const ICON_MUTED_BUTTON = new Icon(require('../../assets/images/muted_button.png'), 67, 58);
 const ICON_VOLUME_BUTTON = new Icon(require('../../assets/images/sound.png'), 67, 58);
@@ -45,6 +45,8 @@ const BACKGROUND_COLOR = '#4F5674';
 const LIVE_COLOR = '#FF0000';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
+
+// const INFO = await FileSystem.getInfoAsync(this.recording.getURI());
 
 export default class _NewRecording extends React.Component {
   constructor(props) {
@@ -176,7 +178,35 @@ export default class _NewRecording extends React.Component {
     } catch (error) {
       // Do nothing -- we are already unloaded.
     }
-    const info = await FileSystem.getInfoAsync(this.recording.getURI());
+
+///cut from here
+
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      playsInSilentModeIOS: true,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+    });
+    const { sound, status } = await this.recording.createNewLoadedSound(
+      {
+        isLooping: true,
+        isMuted: this.state.muted,
+        volume: this.state.volume,
+        rate: this.state.rate,
+        shouldCorrectPitch: this.state.shouldCorrectPitch,
+      },
+      this._updateScreenForSoundStatus
+    );
+    this.sound = sound;
+    this.setState({
+      isLoading: false,
+    });
+  }
+
+
+  async _saveRecordingAndPost() {
+    const info = await FileSystem.getInfoAsync(this.recording.getURI());//check into arrow functions to avoid binding "this"
     const jsonInfo = (`${JSON.stringify(info)}`);
     const newUri = info.uri;
     let user = firebase.auth().currentUser;
@@ -204,31 +234,11 @@ export default class _NewRecording extends React.Component {
     console.log("this is the passed through audio location", audioLocation);
 
     this._addRecordingToFirebase(audioLocation);
-
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
-      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-      playsInSilentModeIOS: true,
-      shouldDuckAndroid: true,
-      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-    });
-    const { sound, status } = await this.recording.createNewLoadedSound(
-      {
-        isLooping: true,
-        isMuted: this.state.muted,
-        volume: this.state.volume,
-        rate: this.state.rate,
-        shouldCorrectPitch: this.state.shouldCorrectPitch,
-      },
-      this._updateScreenForSoundStatus
-    );
-    this.sound = sound;
-    this.setState({
-      isLoading: false,
-    });
   }
 
-  async _uploadFileToS3 (file, options) {
+
+
+  async _uploadFileToS3(file, options) {
     let s3Response = RNS3.put(file, options);
     let audioLoc = await s3Response.then(response => {
       const responseJson = (`${JSON.stringify(response)}`);
@@ -258,6 +268,14 @@ export default class _NewRecording extends React.Component {
     console.log("added to firebase");
   }
 
+
+  _onSavePressed = () => {
+    if (this.state.isPlaybackAllowed) {
+      this._saveRecordingAndPost();
+    }
+  }
+
+
   _onRecordPressed = () => {
     if (this.state.isRecording) {
       this._stopRecordingAndEnablePlayback();
@@ -273,12 +291,6 @@ export default class _NewRecording extends React.Component {
       } else {
         this.sound.playAsync();
       }
-    }
-  };
-
-  _onStopPressed = () => {
-    if (this.sound != null) {
-      this.sound.stopAsync();
     }
   };
 
@@ -385,6 +397,7 @@ export default class _NewRecording extends React.Component {
                 // },
               ]}>
               <View />
+
 
               <Image
                 source={TAPE.module}
@@ -563,7 +576,7 @@ export default class _NewRecording extends React.Component {
                       }
                     />
                   </TouchableHighlight>
-                  <TouchableHighlight
+                  {/* <TouchableHighlight
                     underlayColor='#ff0000'
                     style={styles.wrapper}
                     onPress={this._onPlayPausePressed}
@@ -574,17 +587,17 @@ export default class _NewRecording extends React.Component {
                       style={[styles.image, styles.stretch]}
                       source={ICON_PAUSE_BUTTON.module}
                     />
-                  </TouchableHighlight>
+                  </TouchableHighlight> */}
                   <TouchableHighlight
                     underlayColor='#ff0000'
                     style={styles.wrapper}
-                    onPress={this._onStopPressed}
+                    onPress={this._onSavePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
                     <Image
                       style={[styles.image, styles.stretch]}
-                      source={ICON_STOP_BUTTON.module}
+                      source={ICON_SAVE_BUTTON.module}
                     />
                   </TouchableHighlight>
                   <TouchableHighlight
@@ -769,8 +782,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // minWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
-    // maxWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
+    // minWidth: (ICON_PLAY_BUTTON.width + ICON_SAVE_BUTTON.width) * 3.0 / 2.0,
+    // maxWidth: (ICON_PLAY_BUTTON.width + ICON_SAVE_BUTTON.width) * 3.0 / 2.0,
     // minWidth: DEVICE_WIDTH,
     // maxWidth: DEVICE_WIDTH,
     minHeight: ICON_RECORD_BUTTON.height * 2,
