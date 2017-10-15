@@ -178,9 +178,6 @@ export default class _NewRecording extends React.Component {
     } catch (error) {
       // Do nothing -- we are already unloaded.
     }
-
-///cut from here
-
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -206,7 +203,7 @@ export default class _NewRecording extends React.Component {
 
 
   async _saveRecordingAndPost() {
-    const info = await FileSystem.getInfoAsync(this.recording.getURI());//check into arrow functions to avoid binding "this"
+    const info = await FileSystem.getInfoAsync(this.recording.getURI());
     const jsonInfo = (`${JSON.stringify(info)}`);
     const newUri = info.uri;
     let user = firebase.auth().currentUser;
@@ -228,11 +225,8 @@ export default class _NewRecording extends React.Component {
       secretKey: "AwaqXwgSVGWVNIa+URyYt9B1Lh8Ut0Yth+y1W64k",
       successActionStatus: 201
     }
-
     let audioLocation = await this._uploadFileToS3(file, options);
-
     console.log("this is the passed through audio location", audioLocation);
-
     this._addRecordingToFirebase(audioLocation);
   }
 

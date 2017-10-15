@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, Button } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons/';
 import {
   TabNavigator,
   TabBarBottom,
@@ -33,12 +33,6 @@ const Tabs = TabNavigator({
         tabBarOnPress: (tab, jumpToIndex) => {
           navigation.navigate('RecordingScreenModal');
         },
-        // header: ({ state }) => ({
-        //     right: <Button title={"Save"} onPress={() => {state.params.handleSave()}} />
-        //   }),
-        //   headerStyle: {
-        //     backgroundColor: '#ff6347',
-        //   }
       })
     },
     Profile: {
@@ -59,19 +53,13 @@ const Tabs = TabNavigator({
         let iconName;
         switch (routeName) {
           case 'Home':
-            iconName = Platform.OS === 'ios'
-              ? 'md-home'
-              : 'md-home';
+            iconName = 'md-home';
             break;
           case 'Recording':
-            iconName = Platform.OS === 'ios'
-              ? 'md-mic'
-              : 'md-mic';
+            iconName = 'md-mic';
             break;
           case 'Profile':
-            iconName = Platform.OS === 'ios'
-              ? 'md-person'
-              : 'md-person';
+            iconName = 'md-person';
         }
         return (
           <Ionicons
@@ -103,7 +91,9 @@ export default StackNavigator({
   },
   RecordingScreenModal: {
     screen: RecordingScreen,
-    // navigationOptionsBack
+    // navigationOptions: {
+    //
+    // }
   },
 },
 {

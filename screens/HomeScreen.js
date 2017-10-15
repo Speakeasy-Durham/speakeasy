@@ -44,6 +44,13 @@ export default class HomeScreen extends React.Component {
     };
   }
 
+  // static navigationOptions = {
+  //   title: 'SPEAKEASY',
+  //     headerTintColor: 'red',
+  //     titleStyle: {
+  //       backgroundColor: 'white',
+  //     }
+  // };
 
   componentWillMount() {
     let user = firebase.auth().currentUser;
@@ -108,14 +115,11 @@ export default class HomeScreen extends React.Component {
             color="#841584"
             accessibilityLabel="Learn more about this purple button"
           />
-      </View>
-      <View>
-        <FeedList
-          allPosts={this.state.allPosts}/>
-      </View>
-
-
-
+        </View>
+        <View>
+          <FeedList
+            allPosts={this.state.allPosts}/>
+        </View>
       </View>
     );
   }
@@ -160,7 +164,6 @@ listStorageBuckets = () => {
     }
   })
 }
-
 
 const styles = StyleSheet.create({
   container: {
