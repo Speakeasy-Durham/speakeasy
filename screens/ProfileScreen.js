@@ -36,7 +36,7 @@ export default class ProfileScreen extends React.Component {
     var currentUserRef = ref
       .orderByChild("userId")
       .equalTo(currentUser);
-    currentUserRef.once("value", (snapshot) => {
+    currentUserRef.on("value", (snapshot) => {
             var userPosts = snapshot.val();
             // console.log(Object.keys(userPosts));
             var userPostsArray = [];

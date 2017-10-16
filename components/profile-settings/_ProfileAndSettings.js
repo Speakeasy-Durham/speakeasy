@@ -58,6 +58,7 @@ export default class ProfileAndSettings extends Component {
         {/* Flatlist renders AudioFileContainer for each item */}
         <View style={styles.listContainer}>
           <FlatList
+            inverted
             data={userPosts}
             keyExtractor={item => item.key}
             renderItem={
