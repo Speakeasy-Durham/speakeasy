@@ -198,7 +198,6 @@ export default class _NewRecording extends React.Component {
     });
   }
 
-
   async _saveRecordingAndPost() {
     const info = await FileSystem.getInfoAsync(this.recording.getURI());
     const jsonInfo = (`${JSON.stringify(info)}`);
@@ -226,8 +225,6 @@ export default class _NewRecording extends React.Component {
     console.log("this is the passed through audio location", audioLocation);
     this._addRecordingToFirebase(audioLocation);
   }
-
-
 
   async _uploadFileToS3(file, options) {
     let s3Response = RNS3.put(file, options);
@@ -259,18 +256,18 @@ export default class _NewRecording extends React.Component {
     console.log("added to firebase");
   }
 
-
-  _onSavePressed = () => {
-    if (this.state.isPlaybackAllowed) {
-      if (this.sound != null) {
-        this.sound.stopAsync();
-        this._saveRecordingAndPost();
-      } else {
-        this._saveRecordingAndPost();
-      }
-    }
+  async _deleteRecording() {
+    this.setState({
+      soundDuration: null,
+      soundPosition: null,
+      isPlaybackAllowed: false,
+      recordingDuration: null,
+      shouldPlay: false,
+      isPlaying: false,
+      isRecording: false,
+      text: ""
+    })
   }
-
 
   _onRecordPressed = () => {
     if (this.state.isRecording) {
@@ -289,6 +286,23 @@ export default class _NewRecording extends React.Component {
       }
     }
   };
+
+  _onSavePressed = () => {
+    if (this.state.isPlaybackAllowed) {
+      if (this.sound != null) {
+        this.sound.stopAsync();
+        this._saveRecordingAndPost();
+      } else {
+        this._saveRecordingAndPost();
+      }
+    }
+  }
+
+  _onDeletePressed = () => {
+    if (this.state.isPlaybackAllowed) {
+      this._deleteRecording();
+    }
+  }
 
   _onMutePressed = () => {
     if (this.sound != null) {
@@ -572,18 +586,6 @@ export default class _NewRecording extends React.Component {
                       }
                     />
                   </TouchableHighlight>
-                  {/* <TouchableHighlight
-                    underlayColor='#ff0000'
-                    style={styles.wrapper}
-                    onPress={this._onPlayPausePressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <Image
-                      style={[styles.image, styles.stretch]}
-                      source={ICON_PAUSE_BUTTON.module}
-                    />
-                  </TouchableHighlight> */}
                   <TouchableHighlight
                     underlayColor='#ff0000'
                     style={styles.wrapper}
@@ -599,7 +601,7 @@ export default class _NewRecording extends React.Component {
                   <TouchableHighlight
                     underlayColor='#ff0000'
                     style={styles.wrapper}
-                    // onPress={this._onStopPressed}
+                    onPress={this._onDeletePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
