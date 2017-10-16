@@ -13,8 +13,6 @@ import {
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
-import { Entypo } from '@expo/vector-icons';
-import { NavigationActions, StackNavigator } from 'react-navigation';
 
 class Icon {
   constructor(module, width, height) {
@@ -46,7 +44,6 @@ const LIVE_COLOR = '#FF0000';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
 
-// const INFO = await FileSystem.getInfoAsync(this.recording.getURI());
 
 export default class _NewRecording extends React.Component {
   constructor(props) {
@@ -73,7 +70,7 @@ export default class _NewRecording extends React.Component {
       text: "",
     };
     this.recordingSettings = JSON.parse(
-      JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY)
+      JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY)
     );
     // // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
@@ -265,7 +262,12 @@ export default class _NewRecording extends React.Component {
 
   _onSavePressed = () => {
     if (this.state.isPlaybackAllowed) {
-      this._saveRecordingAndPost();
+      if (this.sound != null) {
+        this.sound.stopAsync();
+        this._saveRecordingAndPost();
+      } else {
+        this._saveRecordingAndPost();
+      }
     }
   }
 
