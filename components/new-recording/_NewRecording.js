@@ -28,7 +28,6 @@ const ICON_PLAY_BUTTON = new Icon(require('../../assets/images/play.png'), 50, 5
 const ICON_PAUSE_BUTTON = new Icon(require('../../assets/images/pause.png'), 50, 50);
 const ICON_SAVE_BUTTON = new Icon(require('../../assets/images/save.png'), 50, 50);
 const ICON_DELETE_BUTTON = new Icon(require('../../assets/images/delete.png'), 50, 50);
-const ICON_MUTED_BUTTON = new Icon(require('../../assets/images/muted_button.png'), 67, 58);
 const ICON_VOLUME_BUTTON = new Icon(require('../../assets/images/sound.png'), 67, 58);
 
 const ICON_RECORDING = new Icon(require('../../assets/images/dots.png'), 15, 15);
@@ -44,6 +43,8 @@ const { width: DEVICE_WIDTH,
 const BACKGROUND_COLOR = '#F4E9DC';
 const BACKGROUND_COLOR_2 = '#CCC3B8';
 const ACCENT_COLOR = '#B2A28F';
+const BUTTON_COLOR = '#FFFFFF';
+const REC_BUTTON_COLOR = '#E74E37';
 const LIVE_COLOR = '#FF0000';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
@@ -247,6 +248,7 @@ export default class _NewRecording extends React.Component {
     let user = firebase.auth().currentUser;
     let userId = user.providerData[0].uid;
     let recordingId = user.providerData[0].uid + Date.now();
+    let recordingDate = Date.now();
     let name = user.providerData[0].displayName;
     let imageUrl = user.providerData[0].photoURL;
 
@@ -255,6 +257,7 @@ export default class _NewRecording extends React.Component {
       userId: userId,
       audio: audioLocation,
       profile_picture: imageUrl,
+      date: recordingDate,
       text: this.state.text
     })
     console.log("added to firebase");
@@ -460,64 +463,6 @@ export default class _NewRecording extends React.Component {
                   // styles.buttonsContainerTopRow,
                 ]}>
 
-                {/* <View style={styles.playbackContainer}>
-                  <Slider
-                    style={styles.playbackSlider}
-                    trackImage={ICON_TRACK_1.module}
-                    thumbImage={ICON_THUMB_1.module}
-                    value={this._getSeekSliderPosition()}
-                    onValueChange={this._onSeekSliderValueChange}
-                    onSlidingComplete={this._onSeekSliderSlidingComplete}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }
-                  />
-                  <Text
-                    style={[
-                      styles.playbackTimestamp,
-                      { ...Font.style('space-mono-regular') },
-                    ]}>
-                    {this._getPlaybackTimestamp()}
-                  </Text>
-                </View> */}
-
-
-
-                {/* <View style={styles.volumeContainer}>
-                  <TouchableHighlight
-                    underlayColor={BACKGROUND_COLOR}
-                    // style={styles.buttonWrapper}
-                    onPress={this._onMutePressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <Image
-                      style={[styles.volumeIcon, styles.stretch]}
-                      source={
-                        this.state.muted
-                          ? ICON_MUTED_BUTTON.module
-                          : ICON_VOLUME_BUTTON.module
-                      }
-                    />
-                  </TouchableHighlight>
-                  <Text
-                    style={
-                      { ...Font.style('space-mono-regular') }
-                    }>
-                    Volume:
-                  </Text>
-                  <Slider
-                    style={styles.volumeSlider}
-                    trackImage={ICON_TRACK_1.module}
-                    thumbImage={ICON_THUMB_2.module}
-                    value={1}
-                    onValueChange={this._onVolumeSliderValueChange}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }
-                  />
-                </View> */}
-
                 <View style={styles.recordingDataRowContainer}>
                   {/* <Image
                     style={[
@@ -566,7 +511,7 @@ export default class _NewRecording extends React.Component {
                 </View>
                 <View style={styles.allButtonsContainer}>
                   <TouchableHighlight
-                    underlayColor='#ff0000'
+                    underlayColor={LIVE_COLOR}
                     style={styles.recButtonWrapper}
                     onPress={this._onRecordPressed}
                     disabled={this.state.isLoading}>
@@ -576,7 +521,7 @@ export default class _NewRecording extends React.Component {
                       />
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor='#ff0000'
+                    underlayColor={LIVE_COLOR}
                     style={styles.buttonWrapper}
                     onPress={this._onPlayPausePressed}
                     disabled={
@@ -592,7 +537,7 @@ export default class _NewRecording extends React.Component {
                     />
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor='#ff0000'
+                    underlayColor={LIVE_COLOR}
                     style={styles.buttonWrapper}
                     onPress={this._onSavePressed}
                     disabled={
@@ -604,7 +549,7 @@ export default class _NewRecording extends React.Component {
                     />
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor='#ff0000'
+                    underlayColor={LIVE_COLOR}
                     style={styles.buttonWrapper}
                     onPress={this._onDeletePressed}
                     disabled={
@@ -695,7 +640,7 @@ const styles = StyleSheet.create({
     // minWidth: ICON_RECORD_BUTTON.width * 3.0,
     // maxWidth: ICON_RECORD_BUTTON.width * 3.0,
     // borderWidth: 2,
-    // borderColor: '#ff0000',
+    // borderColor: LIVE_COLOR,
   },
   recordingDataRowContainer: {
     flex: 1,
@@ -733,25 +678,26 @@ const styles = StyleSheet.create({
     width: DEVICE_WIDTH / 1.15,
     borderWidth: 20,
     borderRadius: 10,
-    borderColor: BACKGROUND_COLOR_2,
+    borderColor: ACCENT_COLOR,
     alignItems: 'center',
   },
   recordingName: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: BUTTON_COLOR,
     height: DEVICE_WIDTH / 14.5,
     width: DEVICE_WIDTH / 1.7,
     marginTop: 17,
     textAlign: 'left',
   },
   speaker: {
-    resizeMode: 'center',
+    resizeMode: 'repeat',
     marginBottom: 10,
     height: DEVICE_WIDTH / 1.9,
     width: DEVICE_WIDTH / 1.15,
-    borderWidth: 2,
+    // borderWidth: 2,
     borderRadius: 10,
-    borderColor: BACKGROUND_COLOR_2,
-    backgroundColor: '#FFFFFF',
+    // borderColor: BACKGROUND_COLOR_2,
+    // backgroundColor: BUTTON_COLOR,
+    backgroundColor: BACKGROUND_COLOR_2,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -759,7 +705,7 @@ const styles = StyleSheet.create({
   //   backgroundColor: 'rgba(0,0,0,0)',
   // },
   // brandName: {
-  //   color: '#E74E37',
+  //   color: REC_BUTTON_COLOR,
   //   fontSize: 25,
   //   backgroundColor: BACKGROUND_COLOR_2,
   // },
@@ -790,7 +736,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: '#E74E37',
+    backgroundColor: REC_BUTTON_COLOR,
   },
   buttonWrapper: {
     // borderWidth: 2,
@@ -801,7 +747,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: BUTTON_COLOR,
   },
   // recordingContainer: {
   //   flex: 1,
@@ -820,12 +766,12 @@ const styles = StyleSheet.create({
   },
   liveText: {
     color: LIVE_COLOR,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: BUTTON_COLOR,
     borderColor: BACKGROUND_COLOR_2,
   },
   recordingTimestamp: {
     marginLeft: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: BUTTON_COLOR,
     borderColor: BACKGROUND_COLOR_2,
   },
   playbackTimestamp: {
@@ -837,13 +783,13 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUND_COLOR,
     padding: 10,
   },
-  buttonsContainerTopRow: {
-    maxHeight: ICON_MUTED_BUTTON.height,
-    alignSelf: 'stretch',
-    // paddingRight: 20,
-    borderWidth: 2,
-    borderColor: '#ff69b4',
-  },
+  // buttonsContainerTopRow: {
+  //   maxHeight: ICON_MUTED_BUTTON.height,
+  //   alignSelf: 'stretch',
+  //   // paddingRight: 20,
+  //   borderWidth: 2,
+  //   borderColor: '#ff69b4',
+  // },
   volumeContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -859,10 +805,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#0000cd',
   },
-  volumeSlider: {
-    width: DEVICE_WIDTH - ICON_MUTED_BUTTON.width,
-    backgroundColor: BACKGROUND_COLOR,
-  },
+  // volumeSlider: {
+  //   width: DEVICE_WIDTH - ICON_MUTED_BUTTON.width,
+  //   backgroundColor: BACKGROUND_COLOR,
+  // },
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
   },
