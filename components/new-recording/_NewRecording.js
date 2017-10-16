@@ -247,8 +247,9 @@ export default class _NewRecording extends React.Component {
   async _addRecordingToFirebase(audioLocation) {
     let user = firebase.auth().currentUser;
     let userId = user.providerData[0].uid;
-    let recordingId = user.providerData[0].uid + Date.now();
-    let recordingDate = Date.now();
+    let date = Date.now();
+    let recordingId = date + "_" + user.providerData[0].uid;
+    let recordingDate = date;
     let name = user.providerData[0].displayName;
     let imageUrl = user.providerData[0].photoURL;
 
@@ -261,6 +262,7 @@ export default class _NewRecording extends React.Component {
       text: this.state.text
     })
     console.log("added to firebase");
+    console.log(recordingId);
   }
 
   async _deleteRecording() {

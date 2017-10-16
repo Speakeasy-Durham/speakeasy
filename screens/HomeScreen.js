@@ -80,11 +80,8 @@ export default class HomeScreen extends React.Component {
 
   componentDidMount() {
     var ref = firebase.database().ref('recordings/');
-
-    // find only by current user
-    var allRecordingsRef = ref
-
-    allRecordingsRef.once("value", (snapshot) => {
+    var allRecordingsRef = ref.orderByKey();
+    allRecordingsRef.on("value", (snapshot) => {
       this.allPosts = snapshot.val();
       // console.log("this.allPosts");
       // console.log(this.allPosts);
