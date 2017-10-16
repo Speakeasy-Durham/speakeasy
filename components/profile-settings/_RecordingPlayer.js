@@ -31,16 +31,16 @@ class Icon {
 }
 
 const ICON_PLAY_BUTTON = new Icon(
-  require('../../assets/images/play_button.png'),
+  require('../../assets/images/play.png'),
   34,
   51
 );
 const ICON_PAUSE_BUTTON = new Icon(
-  require('../../assets/images/pause_button.png'),
+  require('../../assets/images/pause.png'),
   34,
   51
 );
-const ICON_TRACK_1 = new Icon(require('../../assets/images/track_1.png'), 166, 5);
+const ICON_TRACK_1 = new Icon(require('../../assets/images/slider.png'), 166, 5);
 
 const width = Dimensions.get('window').width,
       height = Dimensions.get('window').height;
