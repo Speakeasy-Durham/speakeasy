@@ -35,6 +35,7 @@ export default class FeedList extends Component {
     return (
       <View style={styles.listContainer}>
         <FlatList
+          inverted
           data={this.props.allPosts}
           keyExtractor={item => item.key}
           renderItem={
