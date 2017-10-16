@@ -36,10 +36,14 @@ const ICON_TRACK_1 = new Icon(require('../../assets/images/slider.png'), 166, 5)
 const ICON_THUMB_1 = new Icon(require('../../assets/images/thumbslider.png'), 25, 25);
 const ICON_THUMB_2 = new Icon(require('../../assets/images/thumbslider.png'), 25, 25);
 
-const TAPE = new Icon(require('../../assets/images/tape.png'), 100, 100);
+const TAPE = new Icon(require('../../assets/images/tape6.png'), 100, 100);
+const SPEAKER = new Icon(require('../../assets/images/speaker3.png'), 100, 100);
 
-const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
-const BACKGROUND_COLOR = '#4F5674';
+const { width: DEVICE_WIDTH,
+       height: DEVICE_HEIGHT } = Dimensions.get('window');
+const BACKGROUND_COLOR = '#F4E9DC';
+const BACKGROUND_COLOR_2 = '#CCC3B8';
+const ACCENT_COLOR = '#B2A28F';
 const LIVE_COLOR = '#FF0000';
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
@@ -67,7 +71,7 @@ export default class _NewRecording extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
-      text: "",
+      text: "Your title goes here",
     };
     this.recordingSettings = JSON.parse(
       JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY)
@@ -265,7 +269,7 @@ export default class _NewRecording extends React.Component {
       shouldPlay: false,
       isPlaying: false,
       isRecording: false,
-      text: ""
+      text: "Your title goes here"
     })
   }
 
@@ -401,48 +405,44 @@ export default class _NewRecording extends React.Component {
         : <View style={styles.container}>
             <View
               style={[
-                styles.topHalfScreenContainer,
-                // {
-                //   opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
-                // },
+                styles.topScreenContainer,
               ]}>
               <View />
+              <Image
+                source={SPEAKER.module}
+                style={styles.speaker}
+              >
+                {/* <View style={styles.brandBackdrop}>
+                  <Text
+                    style={[
+                      styles.brandName,
+                      { ...Font.style('monoton-regular') },
+                    ]}>
+                    SPEAKEASY
+                  </Text>
+                </View> */}
+              </Image>
+              <View />
+            </View>
 
-
+            <View
+              style={[
+                styles.middleScreenContainer,
+              ]}>
+              <View />
               <Image
                 source={TAPE.module}
-                style={{
-                  alignSelf: 'center',
-                  marginBottom: 30,
-                  height: 200,
-                  width: 300,
-                  borderWidth: 15,
-                  borderRadius: 20,
-                  borderColor: '#282A3E',
-                }}
-                // resizeMode='cover'
-              />
-              <View
-                style={{
-                  paddingTop: 4,
-                  paddingRight: 6,
-                  paddingLeft: 6,
-                  // borderWidth: 4,
-                  borderTopRightRadius: 2,
-                  borderTopLeftRadius: 2,
-                  borderColor: '#282A3E',
-                  backgroundColor: '#282A3E',
-                }}
-                >
-                <Text
-                  style={[
-                    styles.brandName,
-                    { ...Font.style('monoton-regular') },
-                  ]}>
-                  SPEAKEASY
-                </Text>
-              </View>
-
+                style={styles.tape}
+              >
+                <TextInput
+                   style={[
+                     styles.recordingName,
+                     { ...Font.style('space-mono-regular') },
+                   ]}
+                   onChangeText={(text) => this.setState({text})}
+                   value={this.state.text}
+                />
+              </Image>
               <View />
             </View>
 
@@ -450,12 +450,7 @@ export default class _NewRecording extends React.Component {
 
             <View
               style={[
-                styles.bottomHalfScreenContainer,
-                // {
-                //   opacity: !this.state.isPlaybackAllowed || this.state.isLoading
-                //     ? DISABLED_OPACITY
-                //     : 1.0,
-                // },
+                styles.bottomScreenContainer,
               ]}>
               <View />
 
@@ -465,7 +460,7 @@ export default class _NewRecording extends React.Component {
                   // styles.buttonsContainerTopRow,
                 ]}>
 
-                <View style={styles.playbackContainer}>
+                {/* <View style={styles.playbackContainer}>
                   <Slider
                     style={styles.playbackSlider}
                     trackImage={ICON_TRACK_1.module}
@@ -484,14 +479,14 @@ export default class _NewRecording extends React.Component {
                     ]}>
                     {this._getPlaybackTimestamp()}
                   </Text>
-                </View>
+                </View> */}
 
 
 
-                <View style={styles.volumeContainer}>
-                  {/* <TouchableHighlight
+                {/* <View style={styles.volumeContainer}>
+                  <TouchableHighlight
                     underlayColor={BACKGROUND_COLOR}
-                    // style={styles.wrapper}
+                    // style={styles.buttonWrapper}
                     onPress={this._onMutePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
@@ -504,7 +499,7 @@ export default class _NewRecording extends React.Component {
                           : ICON_VOLUME_BUTTON.module
                       }
                     />
-                  </TouchableHighlight> */}
+                  </TouchableHighlight>
                   <Text
                     style={
                       { ...Font.style('space-mono-regular') }
@@ -521,17 +516,17 @@ export default class _NewRecording extends React.Component {
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }
                   />
-                </View>
+                </View> */}
 
                 <View style={styles.recordingDataRowContainer}>
-                  <Image
+                  {/* <Image
                     style={[
                       styles.image,
                       // { opacity: this.state.isRecording ? 1.0 : 0.0 },
                       styles.stretch
                     ]}
                     source={ICON_RECORDING.module}
-                  />
+                  /> */}
                   <Text
                     style={[
                       styles.recordingTimestamp,
@@ -540,17 +535,27 @@ export default class _NewRecording extends React.Component {
                     {this._getRecordingTimestamp()}
                   </Text>
 
+                  <Text
+                    style={[
+                      styles.liveText,
+                      { ...Font.style('space-mono-regular') },
+                    ]}>
+                    {this.state.isRecording ? 'LIVE' : ''}
+                  </Text>
+
                   <View >
                     <View />
 
                     <View style={styles.recordingDataContainer}>
                       <View />
+
+
                       <Text
                         style={[
-                          styles.liveText,
+                          styles.playbackTimestamp,
                           { ...Font.style('space-mono-regular') },
                         ]}>
-                        {this.state.isRecording ? 'LIVE' : ''}
+                        {this._getPlaybackTimestamp()}
                       </Text>
 
                       <View />
@@ -572,7 +577,7 @@ export default class _NewRecording extends React.Component {
                   </TouchableHighlight>
                   <TouchableHighlight
                     underlayColor='#ff0000'
-                    style={styles.wrapper}
+                    style={styles.buttonWrapper}
                     onPress={this._onPlayPausePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
@@ -588,7 +593,7 @@ export default class _NewRecording extends React.Component {
                   </TouchableHighlight>
                   <TouchableHighlight
                     underlayColor='#ff0000'
-                    style={styles.wrapper}
+                    style={styles.buttonWrapper}
                     onPress={this._onSavePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
@@ -600,7 +605,7 @@ export default class _NewRecording extends React.Component {
                   </TouchableHighlight>
                   <TouchableHighlight
                     underlayColor='#ff0000'
-                    style={styles.wrapper}
+                    style={styles.buttonWrapper}
                     onPress={this._onDeletePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
@@ -612,11 +617,6 @@ export default class _NewRecording extends React.Component {
                   </TouchableHighlight>
                 </View>
                 <View />
-                <TextInput
-       style={{height: 40, width:200, borderColor: 'gray', borderWidth: 1}}
-       onChangeText={(text) => this.setState({text})}
-       value={this.state.text}
-     />
               </View>
 
               <View />
@@ -644,64 +644,47 @@ const styles = StyleSheet.create({
     // borderWidth: 2,
     // borderColor: '#228b22',
   },
-  topHalfScreenContainer: {
+  topScreenContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 2,
-    maxHeight: DEVICE_HEIGHT / 2,
-    borderBottomWidth: 10,
-    borderColor: '#282A3E',
-    // borderWidth: 6,
-    // borderColor: '#282A3E',
+    minHeight: DEVICE_HEIGHT / 3,
+    maxHeight: DEVICE_HEIGHT / 3,
   },
-  bottomHalfScreenContainer: {
+  middleScreenContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    minHeight: DEVICE_HEIGHT / 3,
+    maxHeight: DEVICE_HEIGHT / 3,
+  },
+  bottomScreenContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 2,
-    maxHeight: DEVICE_HEIGHT / 2,
-    borderBottomWidth: 10,
-    borderColor: '#282A3E',
-    // borderWidth: 6,
-    // borderColor: '#282A3E',
+    minHeight: DEVICE_HEIGHT / 3,
+    maxHeight: DEVICE_HEIGHT / 3,
+  },
+  controlsContainerBase: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    minWidth: DEVICE_WIDTH,
+    maxWidth: DEVICE_WIDTH,
+    backgroundColor: BACKGROUND_COLOR_2,
+    // borderWidth: 2,
+    // borderColor: '#b0e0e6',
   },
   noPermissionsText: {
     textAlign: 'center',
   },
-  wrapper: {
-    borderWidth: 4,
-    borderColor: '#000000',
-    borderRadius: 2,
-    margin: 5,
-    paddingTop: 5,
-    paddingBottom: 30,
-    backgroundColor: '#7181A2',
-  },
-  recButtonWrapper: {
-    borderWidth: 4,
-    borderColor: '#000000',
-    borderRadius: 2,
-    margin: 5,
-    paddingTop: 5,
-    paddingBottom: 30,
-    backgroundColor: '#D85068',
-  },
-  // recordingContainer: {
-  //   flex: 1,
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   alignSelf: 'stretch',
-  //   minHeight: ICON_RECORD_BUTTON.height,
-  //   maxHeight: ICON_RECORD_BUTTON.height,
-    // borderWidth: 2,
-    // borderColor: '#00ffff'
-  // },
   recordingDataContainer: {
     flex: 1,
     flexDirection: 'column',
@@ -717,14 +700,15 @@ const styles = StyleSheet.create({
   recordingDataRowContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: ICON_RECORDING.height * 2.0,
     maxHeight: ICON_RECORDING.height * 2.0,
     minWidth: DEVICE_WIDTH,
     maxWidth: DEVICE_WIDTH,
+    backgroundColor: BACKGROUND_COLOR,
     // borderWidth: 2,
-    // borderColor: '#b22222',
+    // borderColor: '#b22222',///////NEEDS FIXING///////////////////
   },
   playbackContainer: {
     flex: 1,
@@ -736,17 +720,113 @@ const styles = StyleSheet.create({
     maxHeight: ICON_THUMB_1.height * 1.5,
     paddingRight: 10,
     paddingLeft: 10,
-    // borderWidth: 2,
-    // borderColor: '#ffd700',
+    backgroundColor: BACKGROUND_COLOR,
+    borderWidth: 2,
+    borderColor: '#ffd700',
   },
+  tape: {
+    alignSelf: 'center',
+    marginBottom: 2,
+    // height: 200,
+    // width: 300,
+    height: DEVICE_WIDTH / 1.725,
+    width: DEVICE_WIDTH / 1.15,
+    borderWidth: 20,
+    borderRadius: 10,
+    borderColor: BACKGROUND_COLOR_2,
+    alignItems: 'center',
+  },
+  recordingName: {
+    backgroundColor: '#FFFFFF',
+    height: DEVICE_WIDTH / 14.5,
+    width: DEVICE_WIDTH / 1.7,
+    marginTop: 17,
+    textAlign: 'left',
+  },
+  speaker: {
+    resizeMode: 'center',
+    marginBottom: 10,
+    height: DEVICE_WIDTH / 1.9,
+    width: DEVICE_WIDTH / 1.15,
+    borderWidth: 2,
+    borderRadius: 10,
+    borderColor: BACKGROUND_COLOR_2,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  // brandBackdrop: {
+  //   backgroundColor: 'rgba(0,0,0,0)',
+  // },
+  // brandName: {
+  //   color: '#E74E37',
+  //   fontSize: 25,
+  //   backgroundColor: BACKGROUND_COLOR_2,
+  // },
+  allButtonsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // minWidth: ICON_PLAY_BUTTON.width * 4.5,
+    // maxWidth: ICON_PLAY_BUTTON.width * 4.5,
+    // minWidth: DEVICE_WIDTH,
+    // maxWidth: DEVICE_WIDTH,
+    minHeight: ICON_RECORD_BUTTON.height * 2,
+    maxHeight: ICON_RECORD_BUTTON.height * 2,
+    marginRight: -10,
+    marginLeft: -10,
+    backgroundColor: BACKGROUND_COLOR_2,
+    borderRadius: 4,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  recButtonWrapper: {
+    // borderWidth: 2,
+    // borderColor: '#000000',
+    borderRadius: 4,
+    margin: 5,
+    paddingTop: 10,
+    paddingBottom: 30,
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: '#E74E37',
+  },
+  buttonWrapper: {
+    // borderWidth: 2,
+    // borderColor: '#000000',
+    borderRadius: 4,
+    margin: 5,
+    paddingTop: 10,
+    paddingBottom: 30,
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: '#FFFFFF',
+  },
+  // recordingContainer: {
+  //   flex: 1,
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  //   alignItems: 'center',
+  //   alignSelf: 'stretch',
+  //   minHeight: ICON_RECORD_BUTTON.height,
+  //   maxHeight: ICON_RECORD_BUTTON.height,
+    // borderWidth: 2,
+    // borderColor: '#00ffff'
+  // },
   playbackSlider: {
     alignSelf: 'stretch',
+    backgroundColor: BACKGROUND_COLOR,
   },
   liveText: {
     color: LIVE_COLOR,
+    backgroundColor: '#FFFFFF',
+    borderColor: BACKGROUND_COLOR_2,
   },
   recordingTimestamp: {
-    paddingLeft: 20,
+    marginLeft: 20,
+    backgroundColor: '#FFFFFF',
+    borderColor: BACKGROUND_COLOR_2,
   },
   playbackTimestamp: {
     textAlign: 'right',
@@ -757,41 +837,12 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUND_COLOR,
     padding: 10,
   },
-  controlsContainerBase: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    minWidth: DEVICE_WIDTH,
-    maxWidth: DEVICE_WIDTH,
-    backgroundColor: '#AEBDDA',
-    // borderWidth: 2,
-    // borderColor: '#b0e0e6',
-  },
   buttonsContainerTopRow: {
     maxHeight: ICON_MUTED_BUTTON.height,
     alignSelf: 'stretch',
     // paddingRight: 20,
-    // borderWidth: 2,
-    // borderColor: '#ff69b4',
-  },
-  allButtonsContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    // minWidth: (ICON_PLAY_BUTTON.width + ICON_SAVE_BUTTON.width) * 3.0 / 2.0,
-    // maxWidth: (ICON_PLAY_BUTTON.width + ICON_SAVE_BUTTON.width) * 3.0 / 2.0,
-    // minWidth: DEVICE_WIDTH,
-    // maxWidth: DEVICE_WIDTH,
-    minHeight: ICON_RECORD_BUTTON.height * 2,
-    maxHeight: ICON_RECORD_BUTTON.height * 2,
-    marginRight: -10,
-    marginLeft: -10,
-    backgroundColor: '#E6F5FF',
-    borderRadius: 4,
-    // borderWidth: 2,
-    // borderColor: '#7cfc00',
+    borderWidth: 2,
+    borderColor: '#ff69b4',
   },
   volumeContainer: {
     flex: 1,
@@ -804,11 +855,13 @@ const styles = StyleSheet.create({
     maxHeight: ICON_THUMB_1.height * 1.5,
     paddingRight: 10,
     paddingLeft: 10,
-    // borderWidth: 2,
-    // borderColor: '#0000cd',
+    backgroundColor: BACKGROUND_COLOR,
+    borderWidth: 2,
+    borderColor: '#0000cd',
   },
   volumeSlider: {
     width: DEVICE_WIDTH - ICON_MUTED_BUTTON.width,
+    backgroundColor: BACKGROUND_COLOR,
   },
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
@@ -817,10 +870,6 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
   },
-  brandName: {
-    color: '#D85068',
-    fontSize: 20,
-  }
 });
 
 // Expo.registerRootComponent(App);
