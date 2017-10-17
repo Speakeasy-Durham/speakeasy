@@ -615,6 +615,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     minHeight: DEVICE_HEIGHT / 3,
     maxHeight: DEVICE_HEIGHT / 3,
+    paddingBottom: 1,
   },
   bottomScreenContainer: {
     flex: 1,
