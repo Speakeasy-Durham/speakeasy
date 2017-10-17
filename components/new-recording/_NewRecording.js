@@ -413,20 +413,22 @@ export default class _NewRecording extends React.Component {
                 styles.topScreenContainer,
               ]}>
               <View />
-              <Image
-                source={SPEAKER.module}
-                style={styles.speaker}
-              >
-                {/* <View style={styles.brandBackdrop}>
-                  <Text
-                    style={[
-                      styles.brandName,
-                      { ...Font.style('monoton-regular') },
-                    ]}>
-                    SPEAKEASY
-                  </Text>
-                </View> */}
-              </Image>
+                <View style={styles.speakerContainer}>
+                  <Image
+                    source={SPEAKER.module}
+                    style={styles.speaker}
+                  >
+                    {/* <View style={styles.brandBackdrop}>
+                      <Text
+                        style={[
+                          styles.brandName,
+                          { ...Font.style('monoton-regular') },
+                        ]}>
+                        SPEAKEASY
+                      </Text>
+                    </View> */}
+                  </Image>
+                </View>
               <View />
             </View>
 
@@ -435,19 +437,23 @@ export default class _NewRecording extends React.Component {
                 styles.middleScreenContainer,
               ]}>
               <View />
-              <Image
-                source={TAPE.module}
-                style={styles.tape}
-              >
-                <TextInput
-                   style={[
-                     styles.recordingName,
-                     { ...Font.style('space-mono-regular') },
-                   ]}
-                   onChangeText={(text) => this.setState({text})}
-                   value={this.state.text}
-                />
-              </Image>
+                <View
+                  style={styles.tapeContainer}
+                >
+                  <Image
+                    source={TAPE.module}
+                    style={styles.tape}
+                  >
+                    <TextInput
+                       style={[
+                         styles.recordingName,
+                         { ...Font.style('space-mono-regular') },
+                       ]}
+                       onChangeText={(text) => this.setState({text})}
+                       value={this.state.text}
+                    />
+                  </Image>
+                </View>
               <View />
             </View>
 
@@ -599,6 +605,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     minHeight: DEVICE_HEIGHT / 3,
     maxHeight: DEVICE_HEIGHT / 3,
+    paddingBottom: 10,
   },
   middleScreenContainer: {
     flex: 1,
@@ -671,17 +678,28 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#ffd700',
   },
-  tape: {
-    alignSelf: 'center',
-    marginBottom: 2,
-    // height: 200,
-    // width: 300,
+  tapeContainer: {
     height: DEVICE_WIDTH / 1.725,
     width: DEVICE_WIDTH / 1.15,
-    borderWidth: 20,
     borderRadius: 10,
-    borderColor: ACCENT_COLOR,
+    marginBottom: 4,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  tape: {
+    height: DEVICE_WIDTH / 1.725,
+    width: DEVICE_WIDTH / 1.15,
+    // height: 200,
+    // width: 300,
+    borderRadius: 10,
+    borderWidth: 20,
+    marginBottom: 4,
+    alignSelf: 'center',
     alignItems: 'center',
+    borderColor: ACCENT_COLOR,
   },
   recordingName: {
     backgroundColor: BUTTON_COLOR,
@@ -690,18 +708,25 @@ const styles = StyleSheet.create({
     marginTop: 17,
     textAlign: 'left',
   },
-  speaker: {
-    resizeMode: 'repeat',
-    marginBottom: 10,
+  speakerContainer: {
     height: DEVICE_WIDTH / 1.9,
     width: DEVICE_WIDTH / 1.15,
-    // borderWidth: 2,
     borderRadius: 10,
-    // borderColor: BACKGROUND_COLOR_2,
-    // backgroundColor: BUTTON_COLOR,
-    backgroundColor: BACKGROUND_COLOR_2,
+    marginBottom: 4,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  speaker: {
+    height: DEVICE_WIDTH / 1.9,
+    width: DEVICE_WIDTH / 1.15,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    resizeMode: 'repeat',
+    backgroundColor: BACKGROUND_COLOR_2,
   },
   // brandBackdrop: {
   //   backgroundColor: 'rgba(0,0,0,0)',
@@ -739,6 +764,11 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     backgroundColor: REC_BUTTON_COLOR,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 1,
   },
   buttonWrapper: {
     // borderWidth: 2,
@@ -750,6 +780,11 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     backgroundColor: BUTTON_COLOR,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 1,
   },
   // recordingContainer: {
   //   flex: 1,
