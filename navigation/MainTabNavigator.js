@@ -91,9 +91,6 @@ export default StackNavigator({
   },
   RecordingScreenModal: {
     screen: RecordingScreen,
-    // navigationOptions: {
-    //
-    // }
   },
 },
 {
