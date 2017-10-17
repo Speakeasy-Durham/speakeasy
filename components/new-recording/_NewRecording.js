@@ -1,4 +1,5 @@
-import React from 'react';
+// import React from 'react';
+import React, { Component } from 'react';
 import {
   Dimensions,
   Image,
@@ -9,10 +10,12 @@ import {
   View,
   Button,
   TextInput,
+  Alert
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
+// import ModalExample from './_PostRecordingModal';
 
 class Icon {
   constructor(module, width, height) {
@@ -300,9 +303,25 @@ export default class _NewRecording extends React.Component {
     if (this.state.isPlaybackAllowed) {
       if (this.sound != null) {
         this.sound.stopAsync();
-        this._saveRecordingAndPost();
+        Alert.alert(
+          'New Recording',
+          'Share this recording with the community?',
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'POST', onPress: () => this._saveRecordingAndPost()},
+          ],
+          { cancelable: false }
+        );
       } else {
-        this._saveRecordingAndPost();
+        Alert.alert(
+          'New Recording',
+          'Share this recording with the community?',
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'POST', onPress: () => this._saveRecordingAndPost()},
+          ],
+          { cancelable: false }
+        );
       }
     }
   }
