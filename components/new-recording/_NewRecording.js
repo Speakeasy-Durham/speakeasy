@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     alignSelf: 'stretch',
     backgroundColor: BACKGROUND_COLOR,
@@ -615,6 +615,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     minHeight: DEVICE_HEIGHT / 3,
     maxHeight: DEVICE_HEIGHT / 3,
+    paddingBottom: 1,
   },
   bottomScreenContainer: {
     flex: 1,
@@ -622,8 +623,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 3,
-    maxHeight: DEVICE_HEIGHT / 3,
+    minHeight: DEVICE_HEIGHT / 5,
+    maxHeight: DEVICE_HEIGHT / 5,
   },
   controlsContainerBase: {
     flex: 1,
@@ -709,7 +710,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   speakerContainer: {
-    height: DEVICE_WIDTH / 1.9,
+    height: DEVICE_WIDTH / 1.6,
     width: DEVICE_WIDTH / 1.15,
     borderRadius: 10,
     marginBottom: 4,
@@ -720,7 +721,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   speaker: {
-    height: DEVICE_WIDTH / 1.9,
+    height: DEVICE_WIDTH / 1.6,
     width: DEVICE_WIDTH / 1.15,
     borderRadius: 10,
     alignItems: 'center',
