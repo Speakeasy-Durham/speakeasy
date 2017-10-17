@@ -1,4 +1,5 @@
-import React from 'react';
+// import React from 'react';
+import React, { Component } from 'react';
 import {
   Dimensions,
   Image,
@@ -9,10 +10,12 @@ import {
   View,
   Button,
   TextInput,
+  Alert
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
+// import ModalExample from './_PostRecordingModal';
 
 class Icon {
   constructor(module, width, height) {
@@ -300,9 +303,25 @@ export default class _NewRecording extends React.Component {
     if (this.state.isPlaybackAllowed) {
       if (this.sound != null) {
         this.sound.stopAsync();
-        this._saveRecordingAndPost();
+        Alert.alert(
+          'New Recording',
+          'Share this recording with the community?',
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'POST', onPress: () => this._saveRecordingAndPost()},
+          ],
+          { cancelable: false }
+        );
       } else {
-        this._saveRecordingAndPost();
+        Alert.alert(
+          'New Recording',
+          'Share this recording with the community?',
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'POST', onPress: () => this._saveRecordingAndPost()},
+          ],
+          { cancelable: false }
+        );
       }
     }
   }
@@ -523,10 +542,13 @@ export default class _NewRecording extends React.Component {
                     style={styles.recButtonWrapper}
                     onPress={this._onRecordPressed}
                     disabled={this.state.isLoading}>
+                    <View>
                       <Image
-                        style={[styles.image, styles.stretch]}
+                        style={styles.buttonIcon}
                         source={ICON_RECORD_BUTTON.module}
                       />
+                      <Text style={styles.buttonText}>REC</Text>
+                    </View>
                   </TouchableHighlight>
                   <TouchableHighlight
                     underlayColor={LIVE_COLOR}
@@ -535,14 +557,19 @@ export default class _NewRecording extends React.Component {
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
-                    <Image
-                      style={[styles.image, styles.stretch]}
-                      source={
-                        this.state.isPlaying
-                          ? ICON_PAUSE_BUTTON.module
-                          : ICON_PLAY_BUTTON.module
-                      }
-                    />
+                    <View>
+                      <Image
+                        style={styles.buttonIcon}
+                        source={
+                          this.state.isPlaying
+                            ? ICON_PAUSE_BUTTON.module
+                            : ICON_PLAY_BUTTON.module
+                        }
+                      />
+                      <Text style={styles.buttonText}>
+                        {this.state.isPlaying ? 'PAUSE' : 'PLAY'}
+                      </Text>
+                    </View>
                   </TouchableHighlight>
                   <TouchableHighlight
                     underlayColor={LIVE_COLOR}
@@ -551,10 +578,13 @@ export default class _NewRecording extends React.Component {
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
-                    <Image
-                      style={[styles.image, styles.stretch]}
-                      source={ICON_SAVE_BUTTON.module}
-                    />
+                    <View>
+                      <Image
+                        style={styles.buttonIcon}
+                        source={ICON_SAVE_BUTTON.module}
+                      />
+                      <Text style={styles.buttonText}>POST</Text>
+                    </View>
                   </TouchableHighlight>
                   <TouchableHighlight
                     underlayColor={LIVE_COLOR}
@@ -563,10 +593,13 @@ export default class _NewRecording extends React.Component {
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
-                    <Image
-                      style={[styles.image, styles.stretch]}
-                      source={ICON_DELETE_BUTTON.module}
-                    />
+                    <View>
+                      <Image
+                        style={styles.buttonIcon}
+                        source={ICON_DELETE_BUTTON.module}
+                      />
+                      <Text style={styles.buttonText}>DELETE</Text>
+                    </View>
                   </TouchableHighlight>
                 </View>
                 <View />
@@ -756,12 +789,10 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   recButtonWrapper: {
-    // borderWidth: 2,
-    // borderColor: '#000000',
     borderRadius: 4,
     margin: 5,
     paddingTop: 10,
-    paddingBottom: 30,
+    paddingBottom: 15,
     paddingLeft: 5,
     paddingRight: 5,
     backgroundColor: REC_BUTTON_COLOR,
@@ -772,12 +803,10 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   buttonWrapper: {
-    // borderWidth: 2,
-    // borderColor: '#000000',
     borderRadius: 4,
     margin: 5,
     paddingTop: 10,
-    paddingBottom: 30,
+    paddingBottom: 15,
     paddingLeft: 5,
     paddingRight: 5,
     backgroundColor: BUTTON_COLOR,
@@ -787,17 +816,16 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 1,
   },
-  // recordingContainer: {
-  //   flex: 1,
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   alignSelf: 'stretch',
-  //   minHeight: ICON_RECORD_BUTTON.height,
-  //   maxHeight: ICON_RECORD_BUTTON.height,
-    // borderWidth: 2,
-    // borderColor: '#00ffff'
-  // },
+  buttonIcon: {
+    height: 50,
+    width: 50,
+  },
+  buttonText: {
+    color: '#000000',
+    fontFamily: 'space-mono-regular',
+    textAlign: 'center',
+    paddingTop: 5,
+  },
   playbackSlider: {
     alignSelf: 'stretch',
     backgroundColor: BACKGROUND_COLOR,
@@ -821,38 +849,8 @@ const styles = StyleSheet.create({
     backgroundColor: BACKGROUND_COLOR,
     padding: 10,
   },
-  // buttonsContainerTopRow: {
-  //   maxHeight: ICON_MUTED_BUTTON.height,
-  //   alignSelf: 'stretch',
-  //   // paddingRight: 20,
-  //   borderWidth: 2,
-  //   borderColor: '#ff69b4',
-  // },
-  volumeContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    minWidth: DEVICE_WIDTH,
-    maxWidth: DEVICE_WIDTH,
-    minHeight: ICON_THUMB_1.height * 1.5,
-    maxHeight: ICON_THUMB_1.height * 1.5,
-    paddingRight: 10,
-    paddingLeft: 10,
-    backgroundColor: BACKGROUND_COLOR,
-    borderWidth: 2,
-    borderColor: '#0000cd',
-  },
-  // volumeSlider: {
-  //   width: DEVICE_WIDTH - ICON_MUTED_BUTTON.width,
-  //   backgroundColor: BACKGROUND_COLOR,
-  // },
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
-  },
-  stretch: {
-    height: 50,
-    width: 50,
   },
 });
 
