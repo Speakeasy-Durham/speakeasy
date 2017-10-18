@@ -33,9 +33,10 @@ export default class ProfileScreen extends React.Component {
     console.log(this.state.activePost);
     console.log("_setActivePost(id)");
     console.log(id);
-    this.setState({ activePost: 0 });
-    this.setState({activePost: id});
-    this.activePost = this.state.activePost;
+    let expandedId = id;
+    // this.setState({ activePost: 0 });
+    this.setState({activePost: expandedId});
+    this.activePost = expandedId;
     console.log("this.state.activePost = id");
     console.log(this.state.activePost);
   }
@@ -83,6 +84,10 @@ export default class ProfileScreen extends React.Component {
     console.log("ProfileScreen rendered");
   }
 
+  // shouldComponentUpdate() {
+  //
+  // }
+
   _keyExtractor = (item, index) => item.id;
 
   render() {
@@ -100,7 +105,7 @@ export default class ProfileScreen extends React.Component {
             activePost={this.state.activePost}
             keyExtractor={item => item.key}
             data={this.state.userPosts}
-            extraData={this.state}
+            extraData={this.state.activePost}
             renderItem={
               ({item}) =>
                 (
@@ -111,9 +116,11 @@ export default class ProfileScreen extends React.Component {
                   username={item.username}
                   audio={item.audio}
                   _setActivePost={this._setActivePost}
+                  shouldExpand={
+                    this.state.activePost === item.key
+                    ? true : false
+                  }
                 />
-
-
                 )
               }
 
