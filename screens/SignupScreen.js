@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions } from 'react-navigation';
-
 import * as firebase from 'firebase';
 
  const resetStack = NavigationActions.reset({

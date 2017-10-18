@@ -12,13 +12,10 @@ import {
   FlatList,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-
 import { MonoText } from '../components/StyledText';
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
-
 import FeedList from '../components/feed/_FeedList.js';
-
 import { AsyncStorage } from 'react-native';
 // import Cognito from '../cognito-helper';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
@@ -28,6 +25,7 @@ import  {
   CognitoUserAttribute,
   CognitoUser,
   } from 'amazon-cognito-identity-js';
+  
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
