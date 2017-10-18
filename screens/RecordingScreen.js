@@ -67,11 +67,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   closeButtonIcon: {
-    color: Colors.tintColor,
+    color: Colors.iconSelectColor,
     paddingLeft: 15,
   },
   headerTitle: {
-    color: Colors.RECbuttonColor,
+    color: Colors.identityColor,
     fontFamily: 'monoton-regular',
     fontSize: 27,
     textAlign: 'center',

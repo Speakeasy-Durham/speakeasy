@@ -32,7 +32,7 @@ const Tabs = TabNavigator({
         headerTitle: 'Feed',
         headerTintColor: '#fffafa',
         headerStyle: {
-          backgroundColor: '#ff6347',
+          backgroundColor: Colors.identityColor,
         }
       }
     },
@@ -50,7 +50,7 @@ const Tabs = TabNavigator({
         headerTitle: 'You',
         headerTintColor: '#fffafa',
         headerStyle: {
-          backgroundColor: '#ff6347',
+          backgroundColor: Colors.identityColor,
         }
       }
     },
@@ -75,7 +75,7 @@ const Tabs = TabNavigator({
             name={iconName}
             size={28}
             style={{ marginBottom: -3 }}
-            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+            color={focused ? Colors.iconSelectColor : Colors.iconDefaultColor}
           />
         );
       },

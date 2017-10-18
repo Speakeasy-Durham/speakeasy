@@ -1,4 +1,6 @@
-const tintColor = '#2f95dc';
+const identityColor = '#ff6347'
+const iconSelectColor = '#2f95dc';
+const iconDefaultColor = '#ccc';
 const backgroundColor = '#F4E9DC';
 const backgroundColor2 = '#CCC3B8';
 const accentColor = '#B2A28F';
@@ -8,20 +10,20 @@ const liveColor = '#FF0000';
 
 
 export default {
-  tintColor,
+  identityColor,
+  iconSelectColor,
+  iconDefaultColor,
   backgroundColor,
   backgroundColor2,
   accentColor,
   buttonColor,
   RECbuttonColor,
   liveColor,
-  tabIconDefault: '#ccc',
-  tabIconSelected: tintColor,
   tabBar: '#fefefe',
   errorBackground: 'red',
   errorText: '#fff',
   warningBackground: '#EAEB5E',
   warningText: '#666804',
-  noticeBackground: tintColor,
+  noticeBackground: iconSelectColor,
   noticeText: '#fff',
 };
