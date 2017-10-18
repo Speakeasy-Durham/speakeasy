@@ -6,10 +6,6 @@ import * as firebase from 'firebase';
 import ProfileAndSettings from '../components/profile-settings/_ProfileAndSettings';
 
 export default class ProfileScreen extends React.Component {
-  static navigationOptions = {
-    title: 'User\'s name',
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -24,6 +20,7 @@ export default class ProfileScreen extends React.Component {
   componentWillMount() {
     var user = firebase.auth().currentUser;
     // console.log(user);
+
     this.setState({userPhoto: user.providerData[0].photoURL});
     this.setState({userEmail: user.providerData[0].email});
     this.setState({userUid: user.providerData[0].uid});
@@ -39,7 +36,7 @@ export default class ProfileScreen extends React.Component {
     var currentUserRef = ref
       .orderByChild("userId")
       .equalTo(currentUser);
-    currentUserRef.once("value", (snapshot) => {
+    currentUserRef.on("value", (snapshot) => {
             var userPosts = snapshot.val();
             // console.log(Object.keys(userPosts));
             var userPostsArray = [];

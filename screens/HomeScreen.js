@@ -12,13 +12,10 @@ import {
   FlatList,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-
 import { MonoText } from '../components/StyledText';
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
-
 import FeedList from '../components/feed/_FeedList.js';
-
 import { AsyncStorage } from 'react-native';
 // import Cognito from '../cognito-helper';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
@@ -28,6 +25,7 @@ import  {
   CognitoUserAttribute,
   CognitoUser,
   } from 'amazon-cognito-identity-js';
+  
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -43,25 +41,14 @@ export default class HomeScreen extends React.Component {
 
     };
   }
-  // static navigationOptions = {
-  //   title: 'Speakeasy',
-  //     // headerTintColor: 'red',
-  //     // titleStyle: {
-  //     //   backgroundColor: 'white',
-  //     //   fontFamily: 'monoton',
-  //     // }
-  // };
 
-//   static navigationOptions = {
-//   header: ({ navigate }) => {
-//     return {
-//       title: 'Speakeasy',
-//       titleStyle: {
-//         fontFamily: 'American Typewriter'
-//       },
-//     };
-//   },
-// };
+  // static navigationOptions = {
+  //   title: 'SPEAKEASY',
+  //     headerTintColor: 'red',
+  //     titleStyle: {
+  //       backgroundColor: 'white',
+  //     }
+  // };
 
   componentWillMount() {
     let user = firebase.auth().currentUser;
@@ -91,11 +78,8 @@ export default class HomeScreen extends React.Component {
 
   componentDidMount() {
     var ref = firebase.database().ref('recordings/');
-
-    // find only by current user
-    var allRecordingsRef = ref
-
-    allRecordingsRef.once("value", (snapshot) => {
+    var allRecordingsRef = ref.orderByKey();
+    allRecordingsRef.on("value", (snapshot) => {
       this.allPosts = snapshot.val();
       // console.log("this.allPosts");
       // console.log(this.allPosts);
@@ -126,14 +110,11 @@ export default class HomeScreen extends React.Component {
             color="#841584"
             accessibilityLabel="Learn more about this purple button"
           />
-      </View>
-      <View>
-        <FeedList
-          allPosts={this.state.allPosts}/>
-      </View>
-
-
-
+        </View>
+        <View>
+          <FeedList
+            allPosts={this.state.allPosts}/>
+        </View>
       </View>
     );
   }
@@ -178,7 +159,6 @@ listStorageBuckets = () => {
     }
   })
 }
-
 
 const styles = StyleSheet.create({
   container: {

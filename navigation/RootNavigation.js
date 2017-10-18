@@ -20,6 +20,7 @@ const RootStackNavigator = StackNavigator(
     },
   },
   {
+    headerMode: 'screen',
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
