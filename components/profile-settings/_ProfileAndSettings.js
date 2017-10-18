@@ -57,22 +57,7 @@ export default class ProfileAndSettings extends Component {
         </View>
         {/* Flatlist renders AudioFileContainer for each item */}
         <View style={styles.listContainer}>
-          <FlatList
-            inverted
-            data={userPosts}
-            keyExtractor={item => item.key}
-            renderItem={
-              ({item}) =>
-                (
-                <AudioFileContainer
-                  title={item.text}
-                  username={item.username}
-                  audio={item.audio}
-                />
-                )
-              }
-
-          />
+            {this.props.children}
         </View>
       </View>
     )

@@ -27,48 +27,66 @@ export default class AudioFileContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false,
+      activePost: this.props.activePost,
+      id: this.props.id,
     }
-
-    this._toggleExpandPlayer = this._toggleExpandPlayer.bind(this);
-
+    this.id = null;
     this._expandPlayer = this._expandPlayer.bind(this);
   }
 
-  _toggleExpandPlayer() {
+  componentWillMount() {
 
+  }
+
+  componentDidMount() {
     this.setState({
-      expanded: !this.state.expanded,
-    });
+
+    })
   }
 
   _expandPlayer() {
-    if (!this.state.expanded) {
-      return null;
-    }
-    return (
-      <View style={styles.playerContainer}>
-        <AudioFilePlayer
-          audio={this.props.audio}
-        />
-      </View>
-    );
+    this.props._setActivePost(this.id);
+    this.setState({
+      activePost: this.state.id,
+    })
   }
 
   render () {
 
+    this.id = this.props.id;
+
     return (
       <View>
-        {/* TouchableHighlight triggers AudioFilePlayer  */}
-        <TouchableHighlight
-          onPress={ this._toggleExpandPlayer }>
-          <View style={styles.container}>
-            <Text>{this.props.title} </Text>
-            <Text>by: {this.props.username}</Text>
-            { this._expandPlayer() }
-          </View>
-        </TouchableHighlight>
+      <TouchableHighlight
+        onPress={ this._expandPlayer }>
+        <View>
+          <Text>
+              this.state.activePost
+            </Text>
+            <Text>
+              {this.state.activePost}
+            </Text>
+          <Text>
+            this.state.id
+          </Text>
+          <Text>
+            {this.state.id}
+          </Text>
+        </View>
+      </TouchableHighlight>
+      <Text>------------------------------</Text>
       </View>
+      // <View>
+      //   {/* TouchableHighlight triggers AudioFilePlayer  */}
+      //   <TouchableHighlight
+      //     onPress={ this._toggleExpandPlayer }>
+      //     <View style={styles.container}>
+      //       <Text>{this.props.title} </Text>
+      //       <Text>by: {this.props.username}</Text>
+      //       { this._expandPlayer() }
+      //     </View>
+      //   </TouchableHighlight>
+      // </View>
     )
   }
 }
