@@ -15,6 +15,8 @@ import {
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
+import { NavigationActions } from 'react-navigation';
+import Colors from '../../constants/Colors';
 // import ModalExample from './_PostRecordingModal';
 
 class Icon {
@@ -43,15 +45,9 @@ const SPEAKER = new Icon(require('../../assets/images/speaker3.png'), 100, 100);
 
 const { width: DEVICE_WIDTH,
        height: DEVICE_HEIGHT } = Dimensions.get('window');
-const BACKGROUND_COLOR = '#F4E9DC';
-const BACKGROUND_COLOR_2 = '#CCC3B8';
-const ACCENT_COLOR = '#B2A28F';
-const BUTTON_COLOR = '#FFFFFF';
-const REC_BUTTON_COLOR = '#E74E37';
-const LIVE_COLOR = '#FF0000';
+
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
-
 
 export default class _NewRecording extends React.Component {
   constructor(props) {
@@ -299,6 +295,25 @@ export default class _NewRecording extends React.Component {
     }
   };
 
+  // _myAction = () => {
+  //  const nav = NavigationActions.navigate({
+  //    action: NavigationActions.navigate({ routeName: 'HomeScreen' })
+  //  });
+  //  return nav;
+  // };
+
+  // _returnHome(routeName: string) {
+  //   const actionToDispatch = NavigationActions.reset({
+  //     index: 0,
+  //     actions: [NavigationActions.navigate({ routeName })]
+  //   })
+  //   this.props.navigation.dispatch(actionToDispatch)
+  // };
+
+  _postAndGoHome = () => {
+    this.props.navigation.navigate('Home')
+  }
+
   _onSavePressed = () => {
     if (this.state.isPlaybackAllowed) {
       if (this.sound != null) {
@@ -308,7 +323,11 @@ export default class _NewRecording extends React.Component {
           'Share this recording with the community?',
           [
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-            {text: 'POST', onPress: () => this._saveRecordingAndPost()},
+            {text: 'POST', onPress: () => {
+              // this._saveRecordingAndPost();
+              this._postAndGoHome;
+            }
+          },
           ],
           { cancelable: false }
         );
@@ -318,13 +337,21 @@ export default class _NewRecording extends React.Component {
           'Share this recording with the community?',
           [
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-            {text: 'POST', onPress: () => this._saveRecordingAndPost()},
+            {text: 'POST', onPress: () => {
+              // this._saveRecordingAndPost();
+              this._postAndGoHome;
+            }
+          },
           ],
           { cancelable: false }
         );
       }
     }
   }
+
+
+
+
 
   _onDeletePressed = () => {
     if (this.state.isPlaybackAllowed) {
@@ -538,7 +565,7 @@ export default class _NewRecording extends React.Component {
                 </View>
                 <View style={styles.allButtonsContainer}>
                   <TouchableHighlight
-                    underlayColor={LIVE_COLOR}
+                    underlayColor={Colors.liveColor}
                     style={styles.recButtonWrapper}
                     onPress={this._onRecordPressed}
                     disabled={this.state.isLoading}>
@@ -551,7 +578,7 @@ export default class _NewRecording extends React.Component {
                     </View>
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor={LIVE_COLOR}
+                    underlayColor={Colors.liveColor}
                     style={styles.buttonWrapper}
                     onPress={this._onPlayPausePressed}
                     disabled={
@@ -572,7 +599,7 @@ export default class _NewRecording extends React.Component {
                     </View>
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor={LIVE_COLOR}
+                    underlayColor={Colors.liveColor}
                     style={styles.buttonWrapper}
                     onPress={this._onSavePressed}
                     disabled={
@@ -587,7 +614,7 @@ export default class _NewRecording extends React.Component {
                     </View>
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor={LIVE_COLOR}
+                    underlayColor={Colors.liveColor}
                     style={styles.buttonWrapper}
                     onPress={this._onDeletePressed}
                     disabled={
@@ -614,7 +641,7 @@ export default class _NewRecording extends React.Component {
 const styles = StyleSheet.create({
   emptyContainer: {
     alignSelf: 'stretch',
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: Colors.backgroundColor,
   },
   container: {
     flex: 1,
@@ -622,9 +649,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     alignSelf: 'stretch',
-    backgroundColor: BACKGROUND_COLOR,
-    minHeight: DEVICE_HEIGHT,
-    maxHeight: DEVICE_HEIGHT,
+    backgroundColor: Colors.backgroundColor,
+    minHeight: DEVICE_HEIGHT - 70,
+    maxHeight: DEVICE_HEIGHT - 70,
     minWidth: DEVICE_WIDTH,
     minWidth: DEVICE_WIDTH,
     // borderWidth: 2,
@@ -666,7 +693,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     minWidth: DEVICE_WIDTH,
     maxWidth: DEVICE_WIDTH,
-    backgroundColor: BACKGROUND_COLOR_2,
+    backgroundColor: Colors.backgroundColor2,
     // borderWidth: 2,
     // borderColor: '#b0e0e6',
   },
@@ -683,7 +710,7 @@ const styles = StyleSheet.create({
     // minWidth: ICON_RECORD_BUTTON.width * 3.0,
     // maxWidth: ICON_RECORD_BUTTON.width * 3.0,
     // borderWidth: 2,
-    // borderColor: LIVE_COLOR,
+    // borderColor: Colors.liveColor,
   },
   recordingDataRowContainer: {
     flex: 1,
@@ -694,7 +721,7 @@ const styles = StyleSheet.create({
     maxHeight: ICON_RECORDING.height * 2.0,
     minWidth: DEVICE_WIDTH,
     maxWidth: DEVICE_WIDTH,
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: Colors.backgroundColor,
     // borderWidth: 2,
     // borderColor: '#b22222',///////NEEDS FIXING///////////////////
   },
@@ -708,7 +735,7 @@ const styles = StyleSheet.create({
     maxHeight: ICON_THUMB_1.height * 1.5,
     paddingRight: 10,
     paddingLeft: 10,
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: Colors.backgroundColor,
     borderWidth: 2,
     borderColor: '#ffd700',
   },
@@ -733,17 +760,17 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     alignSelf: 'center',
     alignItems: 'center',
-    borderColor: ACCENT_COLOR,
+    borderColor: Colors.accentColor,
   },
   recordingName: {
-    backgroundColor: BUTTON_COLOR,
+    backgroundColor: Colors.buttonColor,
     height: DEVICE_WIDTH / 14.5,
     width: DEVICE_WIDTH / 1.7,
     marginTop: 17,
     textAlign: 'left',
   },
   speakerContainer: {
-    height: DEVICE_WIDTH / 1.6,
+    height: DEVICE_WIDTH / 1.8,
     width: DEVICE_WIDTH / 1.15,
     borderRadius: 10,
     marginBottom: 4,
@@ -754,21 +781,21 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   speaker: {
-    height: DEVICE_WIDTH / 1.6,
+    height: DEVICE_WIDTH / 1.8,
     width: DEVICE_WIDTH / 1.15,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     resizeMode: 'repeat',
-    backgroundColor: BACKGROUND_COLOR_2,
+    backgroundColor: Colors.backgroundColor2,
   },
   // brandBackdrop: {
   //   backgroundColor: 'rgba(0,0,0,0)',
   // },
   // brandName: {
-  //   color: REC_BUTTON_COLOR,
+  //   color: Colors.RECbuttonColor,
   //   fontSize: 25,
-  //   backgroundColor: BACKGROUND_COLOR_2,
+  //   backgroundColor: Colors.backgroundColor2,
   // },
   allButtonsContainer: {
     flex: 1,
@@ -783,7 +810,7 @@ const styles = StyleSheet.create({
     maxHeight: ICON_RECORD_BUTTON.height * 2,
     marginRight: -10,
     marginLeft: -10,
-    backgroundColor: BACKGROUND_COLOR_2,
+    backgroundColor: Colors.backgroundColor2,
     borderRadius: 4,
     paddingLeft: 5,
     paddingRight: 5,
@@ -795,7 +822,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: REC_BUTTON_COLOR,
+    backgroundColor: Colors.RECbuttonColor,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.9,
@@ -809,7 +836,7 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     paddingLeft: 5,
     paddingRight: 5,
-    backgroundColor: BUTTON_COLOR,
+    backgroundColor: Colors.buttonColor,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.9,
@@ -828,17 +855,17 @@ const styles = StyleSheet.create({
   },
   playbackSlider: {
     alignSelf: 'stretch',
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: Colors.backgroundColor,
   },
   liveText: {
-    color: LIVE_COLOR,
-    backgroundColor: BUTTON_COLOR,
-    borderColor: BACKGROUND_COLOR_2,
+    color: Colors.liveColor,
+    backgroundColor: Colors.buttonColor,
+    borderColor: Colors.backgroundColor2,
   },
   recordingTimestamp: {
     marginLeft: 20,
-    backgroundColor: BUTTON_COLOR,
-    borderColor: BACKGROUND_COLOR_2,
+    backgroundColor: Colors.buttonColor,
+    borderColor: Colors.backgroundColor2,
   },
   playbackTimestamp: {
     textAlign: 'right',
@@ -846,7 +873,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   textButton: {
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: Colors.backgroundColor,
     padding: 10,
   },
   rateSlider: {
