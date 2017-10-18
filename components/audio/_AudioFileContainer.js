@@ -89,7 +89,6 @@ export default class AudioFileContainer extends Component {
           <TouchableHighlight
             onPress={ this._expandPlayer }>
             <View style={styles.container}>
-              {/* <Text>collapsed</Text> */}
               <Text>{this.props.title} </Text>
               <Text>by: {this.props.username}</Text>
               {/* <View>
@@ -118,7 +117,6 @@ export default class AudioFileContainer extends Component {
               {/* expanded for player */}
               {this.props.shouldExpand ?
                 <View style={styles.playerContainer}>
-                  <Text>expanded</Text>
                   <AudioFilePlayer
                     audio={this.props.audio}
                   />
