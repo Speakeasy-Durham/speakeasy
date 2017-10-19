@@ -172,7 +172,7 @@ export default class _NewRecording extends React.Component {
       isLoading: false,
     });
 
-    // if (this.state.soundDuration === 3000) {
+    // if (this.state.recordingDuration === 3000) {
     //   this.setState({
     //     isRecording: false,
     //     isLoading: false
@@ -417,7 +417,7 @@ export default class _NewRecording extends React.Component {
   _getMMSSFromMillis(millis) {
     const totalSeconds = millis / 1000;
     const seconds = Math.floor(totalSeconds % 60);
-    const minutes = Math.floor(totalSeconds / 60);
+    // const minutes = Math.floor(totalSeconds / 60);
 
     const padWithZero = number => {
       const string = number.toString();
@@ -426,7 +426,8 @@ export default class _NewRecording extends React.Component {
       }
       return string;
     };
-    return padWithZero(minutes) + ':' + padWithZero(seconds);
+    // return padWithZero(minutes) + ':' + padWithZero(seconds);
+    return padWithZero(seconds);
   }
 
   _getPlaybackTimestamp() {
