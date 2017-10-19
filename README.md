@@ -9,4 +9,4 @@
 
 ###
 
-[Hipster cassette tape](https://www.vexels.com/vectors/preview/130936/hipster-cassette-tape) Designed by Vexels.com
+[Hipster cassette tape](https://www.vexels.com/vectors/preview/130936/hipster-cassette-tape) by Vexels.com

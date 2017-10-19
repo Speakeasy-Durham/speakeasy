@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     color: Colors.identityColor,
     fontFamily: 'monoton-regular',
-    fontSize: 27,
+    fontSize: 28,
     textAlign: 'center',
     flex: 4,
   },
