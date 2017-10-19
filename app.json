@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "speakeasy",
+    "name": "Speakeasy",
     "description": "No description",
     "slug": "speakeasy",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "20.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
