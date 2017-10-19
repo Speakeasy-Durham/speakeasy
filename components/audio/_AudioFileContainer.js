@@ -36,31 +36,17 @@ export default class AudioFileContainer extends Component {
   }
 
   componentWillMount() {
-
     this.setState({
       activePost: this.props.activePost,
       id: this.props.id,
       shouldExpand: this.props.shouldExpand,
     })
-
-
-
-
   }
 
-  componentDidMount() {
-    // this.setState({
-    //
-    // })
-  }
-
-  // shouldComponentUpdate() {
-  //   if (this.props.activePost === this.state.)
-  // }
 
   _expandPlayer() {
-    console.log("expandPlayer this.state.id from AudioFileContainer");
-    console.log(this.state.id);
+    // console.log("expandPlayer this.state.id from AudioFileContainer");
+    // console.log(this.state.id);
     let expandedId = this.state.id;
     this.props._setActivePost(expandedId);
     this.setState({
@@ -69,132 +55,52 @@ export default class AudioFileContainer extends Component {
 
   }
 
-  _renderIf() {
-
-
-  }
-
   render () {
 
-
-
     return (
-    <View>
-      {/* if this.state.isExpanded === true, show expanded */}
-          {/* {this.props.shouldExpand ?
-            <Text>True</Text>
-          :
-            <Text>False</Text>
-          } */}
-          <TouchableHighlight
-            onPress={ this._expandPlayer }>
-            <View style={styles.container}>
-              <Text>{this.props.title} </Text>
-              <Text>by: {this.props.username}</Text>
-              {/* <View>
-                <Text>
-                  this.props.activePost
-                </Text>
-                <Text>
-                  {this.props.activePost}
-                </Text>
-                <Text>
-                    this.state.activePost
-                  </Text>
-                  <Text>
-                    {this.state.activePost}
-                  </Text>
-                <Text>
-                  this.state.id
-                </Text>
-                <Text>
-                  {this.state.id}
-                </Text>
-                <Text>
-                  {this.props.isExpanded}
-                </Text>
-              </View> */}
-              {/* expanded for player */}
-              {this.props.shouldExpand ?
-                <View style={styles.playerContainer}>
-                  <AudioFilePlayer
-                    audio={this.props.audio}
-                  />
-                </View>
-                : null
-              }
+      <TouchableHighlight
+        onPress={ this._expandPlayer }
+        underlaycolor={'#ffffff'}
+        style={styles.container}
+        >
+        <View
+          >
+          <Text>{this.props.title} </Text>
+          <Text>by: {this.props.username}</Text>
+          {/* <View>
+            <Text>
+              this.props.activePost
+            </Text>
+            <Text>
+              {this.props.activePost}
+            </Text>
+            <Text>
+                this.state.activePost
+              </Text>
+              <Text>
+                {this.state.activePost}
+              </Text>
+            <Text>
+              this.state.id
+            </Text>
+            <Text>
+              {this.state.id}
+            </Text>
+            <Text>
+              {this.props.isExpanded}
+            </Text>
+          </View> */}
+          {/* expanded for player */}
+          {this.props.shouldExpand ?
+            <View style={styles.playerContainer}>
+              <AudioFilePlayer
+                audio={this.props.audio}
+              />
             </View>
-          </TouchableHighlight>
-
-
-
-      {/* if this.state.isExpanded === false, show collapsed   */}
-      {this._renderIf(this.state.shouldExpand !== true,
-        (
-          <TouchableHighlight
-            onPress={ this._expandPlayer }>
-            <View style={styles.container}>
-              <Text>collapsed</Text>
-              <Text>{this.props.title} </Text>
-              <Text>by: {this.props.username}</Text>
-              <View>
-                <Text>
-                  this.props.activePost
-                </Text>
-                <Text>
-                  {this.props.activePost}
-                </Text>
-                <Text>
-                    this.state.activePost
-                  </Text>
-                  <Text>
-                    {this.state.activePost}
-                  </Text>
-                <Text>
-                  this.state.id
-                </Text>
-                <Text>
-                  {this.state.id}
-                </Text>
-                <Text>
-                  {this.props.isExpanded}
-                </Text>
-              </View>
-            </View>
-          </TouchableHighlight>
-        )
-      )}
-    </View>
-
-      // <View>
-      // <TouchableHighlight
-      //   onPress={ this._expandPlayer }>
-        // <View>
-        //   <Text>
-        //     this.props.activePost
-        //   </Text>
-        //   <Text>
-        //     {this.props.activePost}
-        //   </Text>
-        //   <Text>
-        //       this.state.activePost
-        //     </Text>
-        //     <Text>
-        //       {this.state.activePost}
-        //     </Text>
-        //   <Text>
-        //     this.state.id
-        //   </Text>
-        //   <Text>
-        //     {this.state.id}
-        //   </Text>
-        //   <Text>
-        //     {this.props.isExpanded}
-        //   </Text>
-        // </View>
-      // </TouchableHighlight>
-      // <Text>------------------------------</Text>
-      // </View>
+            : null
+          }
+        </View>
+      </TouchableHighlight>
 
     )
   }
@@ -202,16 +108,12 @@ export default class AudioFileContainer extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 8,
-    paddingBottom: 12,
-    paddingLeft: 4,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ff634766',
-    minHeight: 100,
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    flex: 1,
   },
 
   playerContainer: {
-    flex: 1,
 
 
   }

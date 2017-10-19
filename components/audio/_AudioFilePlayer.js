@@ -84,7 +84,7 @@ export default class AudioFilePlayer extends Component {
     return (
       <View style={styles.playerContainer}>
         <View style={styles.sliderContainer}>
-          <Text> `${ this.props.audio }` </Text>
+          {/* <Text> `${ this.props.audio }` </Text> */}
         </View>
         <TouchableHighlight style={styles.heartContainer}
           onPress={ this._testClick }>
@@ -117,6 +117,6 @@ const styles = StyleSheet.create({
 
   },
   sliderContainer: {
-    width: width*0.7,
+    width: width*0.5,
   }
 })

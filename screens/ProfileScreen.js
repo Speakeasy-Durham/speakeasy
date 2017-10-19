@@ -10,6 +10,7 @@ import * as firebase from 'firebase';
 
 import ProfileAndSettings from '../components/profile-settings/_ProfileAndSettings';
 import AudioFileContainer from '../components/audio/_AudioFileContainer';
+import ProfileList from '../components/profile-settings/_ProfileList';
 
 export default class ProfileScreen extends React.Component {
   constructor(props) {
@@ -20,26 +21,11 @@ export default class ProfileScreen extends React.Component {
       userUid: null,
       userName: null,
       userPosts: [],
-      // state to be changed by child
-      activePost: null,
     };
     this.activePost = null;
-    // bind this on the function to pass down as props while making its effects scope in this scope.
-    this._setActivePost = this._setActivePost.bind(this);
   }
 
-  _setActivePost(id) {
-    console.log("first this.state.activePost");
-    console.log(this.state.activePost);
-    console.log("_setActivePost(id)");
-    console.log(id);
-    let expandedId = id;
-    // this.setState({ activePost: 0 });
-    this.setState({activePost: expandedId});
-    this.activePost = expandedId;
-    console.log("this.state.activePost = id");
-    console.log(this.state.activePost);
-  }
+
 
   componentWillMount() {
     var user = firebase.auth().currentUser;
@@ -77,11 +63,11 @@ export default class ProfileScreen extends React.Component {
     }
 
   componentDidMount() {
-    console.log("this.activePost");
-    console.log(this.activePost);
-    console.log("second this.state.activePost");
-    console.log(this.state.activePost);
-    console.log("ProfileScreen rendered");
+    // console.log("this.activePost");
+    // console.log(this.activePost);
+    // console.log("second this.state.activePost");
+    // console.log(this.state.activePost);
+    // console.log("ProfileScreen rendered");
   }
 
   // shouldComponentUpdate() {
@@ -100,7 +86,7 @@ export default class ProfileScreen extends React.Component {
           userName={this.state.userName}
           userPosts={this.state.userPosts}
         >
-          <FlatList
+          {/* <FlatList
             inverted
             activePost={this.state.activePost}
             keyExtractor={item => item.key}
@@ -121,10 +107,8 @@ export default class ProfileScreen extends React.Component {
                     ? true : false
                   }
                 />
-                )
-              }
-
-          />
+              )}
+            /> */}
         </ProfileAndSettings>
       </ScrollView>
     );
