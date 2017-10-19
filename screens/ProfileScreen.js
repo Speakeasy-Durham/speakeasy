@@ -78,39 +78,15 @@ export default class ProfileScreen extends React.Component {
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <ProfileAndSettings
           userUid={this.state.userUid}
           userEmail={this.state.userEmail}
           userPhoto={this.state.userPhoto}
           userName={this.state.userName}
           userPosts={this.state.userPosts}
-        >
-          {/* <FlatList
-            inverted
-            activePost={this.state.activePost}
-            keyExtractor={item => item.key}
-            data={this.state.userPosts}
-            extraData={this.state.activePost}
-            renderItem={
-              ({item}) =>
-                (
-                <AudioFileContainer
-                  activePost={this.state.activePost}
-                  id={item.key}
-                  title={item.text}
-                  username={item.username}
-                  audio={item.audio}
-                  _setActivePost={this._setActivePost}
-                  shouldExpand={
-                    this.state.activePost === item.key
-                    ? true : false
-                  }
-                />
-              )}
-            /> */}
-        </ProfileAndSettings>
-      </ScrollView>
+        />
+      </View>
     );
   }
 }

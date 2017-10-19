@@ -39,6 +39,7 @@ export default class FeedItemContainer extends Component {
           title={this.props.title}
           username={this.props.username}
           audio={this.props.audio}
+          duration={this.props.duration}
           _setActivePost={this.props._setActivePost}
           shouldExpand={this.props.shouldExpand}
           style={styles.audioContainer}

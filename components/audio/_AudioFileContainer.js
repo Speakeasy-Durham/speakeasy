@@ -32,6 +32,7 @@ export default class AudioFileContainer extends Component {
       shouldExpand: false,
     }
     this.id = null;
+    this.duration = null;
     this._expandPlayer = this._expandPlayer.bind(this);
   }
 
@@ -41,8 +42,19 @@ export default class AudioFileContainer extends Component {
       id: this.props.id,
       shouldExpand: this.props.shouldExpand,
     })
+    this.duration = this._convertMStoSeconds(this.props.duration);
   }
 
+  _convertMStoSeconds(ms) {
+    let duration = "";
+    let seconds = Math.floor((ms / 1000) % 60);
+    if (seconds < 10) {
+      duration = ":0" + seconds;
+    } else {
+      duration = ":" + seconds;
+    }
+    return duration
+  }
 
   _expandPlayer() {
     // console.log("expandPlayer this.state.id from AudioFileContainer");
@@ -67,6 +79,7 @@ export default class AudioFileContainer extends Component {
           >
           <Text>{this.props.title} </Text>
           <Text>by: {this.props.username}</Text>
+          <Text> {this.duration} </Text>
           {/* <View>
             <Text>
               this.props.activePost
