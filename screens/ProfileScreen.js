@@ -1,9 +1,16 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { FlatList,
+         ScrollView,
+         StyleSheet,
+         Text,
+         View,
+       } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import * as firebase from 'firebase';
 
 import ProfileAndSettings from '../components/profile-settings/_ProfileAndSettings';
+import AudioFileContainer from '../components/audio/_AudioFileContainer';
+import ProfileList from '../components/profile-settings/_ProfileList';
 
 export default class ProfileScreen extends React.Component {
   constructor(props) {
@@ -15,7 +22,10 @@ export default class ProfileScreen extends React.Component {
       userName: null,
       userPosts: [],
     };
+    this.activePost = null;
   }
+
+
 
   componentWillMount() {
     var user = firebase.auth().currentUser;
@@ -47,11 +57,24 @@ export default class ProfileScreen extends React.Component {
                return array
             });
             // console.log("userPostsArray");
-            // console.log(userPostsArray);
+            console.log(userPostsArray);
             this.setState({userPosts: userPostsArray})
           });
     }
 
+  componentDidMount() {
+    // console.log("this.activePost");
+    // console.log(this.activePost);
+    // console.log("second this.state.activePost");
+    // console.log(this.state.activePost);
+    // console.log("ProfileScreen rendered");
+  }
+
+  // shouldComponentUpdate() {
+  //
+  // }
+
+  _keyExtractor = (item, index) => item.id;
 
   render() {
     return (
@@ -62,7 +85,31 @@ export default class ProfileScreen extends React.Component {
           userPhoto={this.state.userPhoto}
           userName={this.state.userName}
           userPosts={this.state.userPosts}
-        />
+        >
+          {/* <FlatList
+            inverted
+            activePost={this.state.activePost}
+            keyExtractor={item => item.key}
+            data={this.state.userPosts}
+            extraData={this.state.activePost}
+            renderItem={
+              ({item}) =>
+                (
+                <AudioFileContainer
+                  activePost={this.state.activePost}
+                  id={item.key}
+                  title={item.text}
+                  username={item.username}
+                  audio={item.audio}
+                  _setActivePost={this._setActivePost}
+                  shouldExpand={
+                    this.state.activePost === item.key
+                    ? true : false
+                  }
+                />
+              )}
+            /> */}
+        </ProfileAndSettings>
       </ScrollView>
     );
   }
