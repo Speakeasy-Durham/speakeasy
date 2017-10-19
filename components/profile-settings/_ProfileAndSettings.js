@@ -10,17 +10,12 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-    // import children
+// import children
 import RecordingPlayer from './_RecordingPlayer';
 import AudioFileContainer from '../audio/_AudioFileContainer';
+import ProfileList from './_ProfileList';
 
 export default class ProfileAndSettings extends Component {
-
-  componentWillMount() {
-
-  }
-
-  _keyExtractor = (item, index) => item.id;
 
   _renderPost = 0;
 
@@ -57,22 +52,8 @@ export default class ProfileAndSettings extends Component {
         </View>
         {/* Flatlist renders AudioFileContainer for each item */}
         <View style={styles.listContainer}>
-          <FlatList
-            inverted
-            data={userPosts}
-            keyExtractor={item => item.key}
-            renderItem={
-              ({item}) =>
-                (
-                <AudioFileContainer
-                  title={item.text}
-                  username={item.username}
-                  audio={item.audio}
-                />
-                )
-              }
-
-          />
+            <ProfileList
+              userPosts={this.props.userPosts} />
         </View>
       </View>
     )
