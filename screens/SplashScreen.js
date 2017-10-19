@@ -45,7 +45,7 @@ export default class SplashScreen extends React.Component {
       function () {
         _this.setState({isReady: true});
       },
-      1800
+      2000
     )
   }
 

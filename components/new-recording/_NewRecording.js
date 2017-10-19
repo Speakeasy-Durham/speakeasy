@@ -1,5 +1,5 @@
-
-import React from 'react';
+// import React from 'react';
+import React, { Component } from 'react';
 import {
   Dimensions,
   Image,
@@ -10,12 +10,14 @@ import {
   View,
   Button,
   TextInput,
-
+  Alert
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
-import { Entypo } from '@expo/vector-icons';
+import { NavigationActions } from 'react-navigation';
+import Colors from '../../constants/Colors';
+// import ModalExample from './_PostRecordingModal';
 
 class Icon {
   constructor(module, width, height) {
@@ -29,9 +31,8 @@ class Icon {
 const ICON_RECORD_BUTTON = new Icon(require('../../assets/images/record.png'), 50, 50);
 const ICON_PLAY_BUTTON = new Icon(require('../../assets/images/play.png'), 50, 50);
 const ICON_PAUSE_BUTTON = new Icon(require('../../assets/images/pause.png'), 50, 50);
-const ICON_STOP_BUTTON = new Icon(require('../../assets/images/stop.png'), 50, 50);
-const ICON_EJECT_BUTTON = new Icon(require('../../assets/images/eject.png'), 50, 50);
-const ICON_MUTED_BUTTON = new Icon(require('../../assets/images/muted_button.png'), 67, 58);
+const ICON_SAVE_BUTTON = new Icon(require('../../assets/images/save.png'), 50, 50);
+const ICON_DELETE_BUTTON = new Icon(require('../../assets/images/delete.png'), 50, 50);
 const ICON_VOLUME_BUTTON = new Icon(require('../../assets/images/sound.png'), 67, 58);
 
 const ICON_RECORDING = new Icon(require('../../assets/images/dots.png'), 15, 15);
@@ -39,11 +40,12 @@ const ICON_TRACK_1 = new Icon(require('../../assets/images/slider.png'), 166, 5)
 const ICON_THUMB_1 = new Icon(require('../../assets/images/thumbslider.png'), 25, 25);
 const ICON_THUMB_2 = new Icon(require('../../assets/images/thumbslider.png'), 25, 25);
 
-const TAPE = new Icon(require('../../assets/images/tape.png'), 100, 100);
+const TAPE = new Icon(require('../../assets/images/tape6.png'), 100, 100);
+const SPEAKER = new Icon(require('../../assets/images/speaker3.png'), 100, 100);
 
-const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
-const BACKGROUND_COLOR = '#4F5674';
-const LIVE_COLOR = '#FF0000';
+const { width: DEVICE_WIDTH,
+       height: DEVICE_HEIGHT } = Dimensions.get('window');
+
 const DISABLED_OPACITY = 0.5;
 const RATE_SCALE = 3.0;
 
@@ -69,10 +71,10 @@ export default class _NewRecording extends React.Component {
       shouldCorrectPitch: true,
       volume: 1.0,
       rate: 1.0,
-      text: "",
+      text: "Your title goes here",
     };
     this.recordingSettings = JSON.parse(
-      JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY)
+      JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY)
     );
     // // UNCOMMENT THIS TO TEST maxFileSize:
     // this.recordingSettings.android['maxFileSize'] = 12000;
@@ -163,9 +165,19 @@ export default class _NewRecording extends React.Component {
     recording.setOnRecordingStatusUpdate(this._updateScreenForRecordingStatus);
     this.recording = recording;
     await this.recording.startAsync();
+    // if (this.recording.recordingDuration == 3000) {
+    //   this.recording.stopAndUnloadAsync();
+    // };
     this.setState({
       isLoading: false,
     });
+
+    // if (this.state.recordingDuration === 3000) {
+    //   this.setState({
+    //     isRecording: false,
+    //     isLoading: false
+    //   })
+    // };
   }
 
   async _stopRecordingAndEnablePlayback() {
@@ -177,35 +189,6 @@ export default class _NewRecording extends React.Component {
     } catch (error) {
       // Do nothing -- we are already unloaded.
     }
-    const info = await FileSystem.getInfoAsync(this.recording.getURI());
-    const jsonInfo = (`${JSON.stringify(info)}`);
-    const newUri = info.uri;
-    let user = firebase.auth().currentUser;
-    let userId = user.providerData[0].uid;
-    const file = {
-  // `uri` can also be a file system path (i.e. file://)
-      uri: `${newUri}`,
-      name: `${userId + Date.now()}.caf`,
-      title: `${this.state.text}`,
-      type: "testaudio/caf"
-    }
-    const jsonFile = (`${JSON.stringify(file)}`);
-    console.log("this is the file and right before options are built for S3 " + file);
-    const options = {
-      keyPrefix: "uploads/",
-      bucket: "tin-can",
-      region: "us-east-2",
-      accessKey: "AKIAI6DKQKOMLHFF5KDQ",
-      secretKey: "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",
-      successActionStatus: 201
-    }
-
-    let audioLocation = await this._uploadFileToS3(file, options);
-
-    console.log("this is the passed through audio location", audioLocation);
-
-    this._addRecordingToFirebase(audioLocation);
-
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
       interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
@@ -229,7 +212,35 @@ export default class _NewRecording extends React.Component {
     });
   }
 
-  async _uploadFileToS3 (file, options) {
+  async _saveRecordingAndPost() {
+    const info = await FileSystem.getInfoAsync(this.recording.getURI());
+    const jsonInfo = (`${JSON.stringify(info)}`);
+    const newUri = info.uri;
+    let user = firebase.auth().currentUser;
+    let userId = user.providerData[0].uid;
+    const file = {
+  // `uri` can also be a file system path (i.e. file://)
+      uri: `${newUri}`,
+      name: `${userId + Date.now()}.caf`,
+      title: `${this.state.text}`,
+      type: "testaudio/caf"
+    }
+    const jsonFile = (`${JSON.stringify(file)}`);
+    console.log("this is the file and right before options are built for S3 " + file);
+    const options = {
+      keyPrefix: "uploads/",
+      bucket: "tin-can",
+      region: "us-east-2",
+      accessKey: "AKIAI6DKQKOMLHFF5KDQ",
+      secretKey: "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",
+      successActionStatus: 201
+    }
+    let audioLocation = await this._uploadFileToS3(file, options);
+    console.log("this is the passed through audio location", audioLocation);
+    this._addRecordingToFirebase(audioLocation);
+  }
+
+  async _uploadFileToS3(file, options) {
     let s3Response = RNS3.put(file, options);
     let audioLoc = await s3Response.then(response => {
       const responseJson = (`${JSON.stringify(response)}`);
@@ -245,18 +256,37 @@ export default class _NewRecording extends React.Component {
   async _addRecordingToFirebase(audioLocation) {
     let user = firebase.auth().currentUser;
     let userId = user.providerData[0].uid;
-    let recordingId = user.providerData[0].uid + Date.now();
+    let date = Date.now();
+    let recordingId = date + "_" + user.providerData[0].uid;
+    let recordingDate = date;
     let name = user.providerData[0].displayName;
     let imageUrl = user.providerData[0].photoURL;
 
     firebase.database().ref('recordings/' + recordingId).set({
       username: name,
-      userId:userId,
+      userId: userId,
       audio: audioLocation,
       profile_picture: imageUrl,
-      text: this.state.text
+      date: recordingDate,
+      text: this.state.text,
+      sound_position: this.state.soundPosition,
+      sound_duration: this.state.soundDuration
     })
     console.log("added to firebase");
+    console.log(recordingId);
+  }
+
+  async _deleteRecording() {
+    this.setState({
+      soundDuration: null,
+      soundPosition: null,
+      isPlaybackAllowed: false,
+      recordingDuration: null,
+      shouldPlay: false,
+      isPlaying: false,
+      isRecording: false,
+      text: "Your title goes here"
+    })
   }
 
   _onRecordPressed = () => {
@@ -277,11 +307,69 @@ export default class _NewRecording extends React.Component {
     }
   };
 
-  _onStopPressed = () => {
-    if (this.sound != null) {
-      this.sound.stopAsync();
+  // _myAction = () => {
+  //  const nav = NavigationActions.navigate({
+  //    action: NavigationActions.navigate({ routeName: 'HomeScreen' })
+  //  });
+  //  return nav;
+  // };
+
+  // _returnHome(routeName: string) {
+  //   const actionToDispatch = NavigationActions.reset({
+  //     index: 0,
+  //     actions: [NavigationActions.navigate({ routeName })]
+  //   })
+  //   this.props.navigation.dispatch(actionToDispatch)
+  // };
+
+  _postAndGoHome = () => {
+    this.props.navigation.navigate('Home')
+  }
+
+  _onSavePressed = () => {
+    if (this.state.isPlaybackAllowed) {
+      if (this.sound != null) {
+        this.sound.stopAsync();
+        Alert.alert(
+          'New Recording',
+          'Share this recording with the community?',
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'POST', onPress: () => {
+              this._saveRecordingAndPost();
+              // this._postAndGoHome;
+            }
+          },
+          ],
+          { cancelable: false }
+        );
+      } else {
+        Alert.alert(
+          'New Recording',
+          'Share this recording with the community?',
+          [
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+            {text: 'POST', onPress: () => {
+              this._saveRecordingAndPost();
+              // this._postAndGoHome;
+            }
+          },
+          ],
+          { cancelable: false }
+        );
+      }
     }
-  };
+  }
+
+
+
+
+
+  _onDeletePressed = () => {
+    if (this.state.isPlaybackAllowed) {
+      this._deleteRecording();
+    }
+  }
 
   _onMutePressed = () => {
     if (this.sound != null) {
@@ -293,24 +381,6 @@ export default class _NewRecording extends React.Component {
     if (this.sound != null) {
       this.sound.setVolumeAsync(value);
     }
-  };
-
-  _trySetRate = async (rate, shouldCorrectPitch) => {
-    if (this.sound != null) {
-      try {
-        await this.sound.setRateAsync(rate, shouldCorrectPitch);
-      } catch (error) {
-        // Rate changing could not be performed, possibly because the client's Android API is too old.
-      }
-    }
-  };
-
-  _onRateSliderSlidingComplete = async value => {
-    this._trySetRate(value * RATE_SCALE, this.state.shouldCorrectPitch);
-  };
-
-  _onPitchCorrectionPressed = async value => {
-    this._trySetRate(this.state.rate, !this.state.shouldCorrectPitch);
   };
 
   _onSeekSliderValueChange = value => {
@@ -347,7 +417,7 @@ export default class _NewRecording extends React.Component {
   _getMMSSFromMillis(millis) {
     const totalSeconds = millis / 1000;
     const seconds = Math.floor(totalSeconds % 60);
-    const minutes = Math.floor(totalSeconds / 60);
+    // const minutes = Math.floor(totalSeconds / 60);
 
     const padWithZero = number => {
       const string = number.toString();
@@ -356,7 +426,8 @@ export default class _NewRecording extends React.Component {
       }
       return string;
     };
-    return padWithZero(minutes) + ':' + padWithZero(seconds);
+    // return padWithZero(minutes) + ':' + padWithZero(seconds);
+    return padWithZero(seconds);
   }
 
   _getPlaybackTimestamp() {
@@ -398,49 +469,50 @@ export default class _NewRecording extends React.Component {
         : <View style={styles.container}>
             <View
               style={[
-                styles.topHalfScreenContainer,
-                // {
-                //   opacity: this.state.isLoading ? DISABLED_OPACITY : 1.0,
-                // },
+                styles.topScreenContainer,
               ]}>
               <View />
+                <View style={styles.speakerContainer}>
+                  <Image
+                    source={SPEAKER.module}
+                    style={styles.speaker}
+                  >
+                    {/* <View style={styles.brandBackdrop}>
+                      <Text
+                        style={[
+                          styles.brandName,
+                          { ...Font.style('monoton-regular') },
+                        ]}>
+                        SPEAKEASY
+                      </Text>
+                    </View> */}
+                  </Image>
+                </View>
+              <View />
+            </View>
 
-              <Image
-                source={TAPE.module}
-                style={{
-                  alignSelf: 'center',
-                  marginBottom: 30,
-                  height: 200,
-                  width: 300,
-                  borderWidth: 15,
-                  borderRadius: 20,
-                  borderColor: '#282A3E',
-                }}
-                // resizeMode='cover'
-              />
-              <View
-                style={{
-                  paddingTop: 4,
-                  paddingRight: 6,
-                  paddingLeft: 6,
-                  // borderWidth: 4,
-                  borderTopRightRadius: 2,
-                  borderTopLeftRadius: 2,
-                  borderColor: '#282A3E',
-                  backgroundColor: '#282A3E',
-                }}
+            <View
+              style={[
+                styles.middleScreenContainer,
+              ]}>
+              <View />
+                <View
+                  style={styles.tapeContainer}
                 >
-                <Text
-                  style={[
-                    styles.brandName,
-                    { ...Font.style('monoton-regular') },
-                  ]}>
-                  Speakeasy
-                </Text>
-              </View>
-
-
-
+                  <Image
+                    source={TAPE.module}
+                    style={styles.tape}
+                  >
+                    <TextInput
+                       style={[
+                         styles.recordingName,
+                         { ...Font.style('space-mono-regular') },
+                       ]}
+                       onChangeText={(text) => this.setState({text})}
+                       value={this.state.text}
+                    />
+                  </Image>
+                </View>
               <View />
             </View>
 
@@ -448,16 +520,9 @@ export default class _NewRecording extends React.Component {
 
             <View
               style={[
-                styles.bottomHalfScreenContainer,
-                // {
-                //   opacity: !this.state.isPlaybackAllowed || this.state.isLoading
-                //     ? DISABLED_OPACITY
-                //     : 1.0,
-                // },
+                styles.bottomScreenContainer,
               ]}>
               <View />
-
-
 
               <View
                 style={[
@@ -465,111 +530,15 @@ export default class _NewRecording extends React.Component {
                   // styles.buttonsContainerTopRow,
                 ]}>
 
-
-
-
-
-                <View style={styles.playbackContainer}>
-                  <Slider
-                    style={styles.playbackSlider}
-                    trackImage={ICON_TRACK_1.module}
-                    thumbImage={ICON_THUMB_1.module}
-                    value={this._getSeekSliderPosition()}
-                    onValueChange={this._onSeekSliderValueChange}
-                    onSlidingComplete={this._onSeekSliderSlidingComplete}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }
-                  />
-                  <Text
-                    style={[
-                      styles.playbackTimestamp,
-                      { ...Font.style('space-mono-regular') },
-                    ]}>
-                    {this._getPlaybackTimestamp()}
-                  </Text>
-                </View>
-
-
-
-                <View style={styles.volumeContainer}>
-                  {/* <TouchableHighlight
-                    underlayColor={BACKGROUND_COLOR}
-                    // style={styles.wrapper}
-                    onPress={this._onMutePressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <Image
-                      style={[styles.volumeIcon, styles.stretch]}
-                      source={
-                        this.state.muted
-                          ? ICON_MUTED_BUTTON.module
-                          : ICON_VOLUME_BUTTON.module
-                      }
-                    />
-                  </TouchableHighlight> */}
-                  <Text
-                    style={
-                      { ...Font.style('space-mono-regular') }
-                    }>
-                    Volume:
-                  </Text>
-                  <Slider
-                    style={styles.volumeSlider}
-                    trackImage={ICON_TRACK_1.module}
-                    thumbImage={ICON_THUMB_2.module}
-                    value={1}
-                    onValueChange={this._onVolumeSliderValueChange}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }
-                  />
-                </View>
-
-                <View
-                  style={[
-                    // styles.controlsContainerBase,
-                    styles.rateControlContainer,
-                  ]}>
-                  <Text
-                    style={
-                      { ...Font.style('space-mono-regular') }
-                    }>
-                    Rate:
-                  </Text>
-                  <Slider
-                    style={styles.rateSlider}
-                    trackImage={ICON_TRACK_1.module}
-                    thumbImage={ICON_THUMB_1.module}
-                    value={this.state.rate / RATE_SCALE}
-                    onSlidingComplete={this._onRateSliderSlidingComplete}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }
-                  />
-                  <TouchableHighlight
-                    underlayColor={BACKGROUND_COLOR}
-                    // style={styles.wrapper}
-                    onPress={this._onPitchCorrectionPressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <Text style={[{ ...Font.style('space-mono-regular') }]}>
-                      PC: {this.state.shouldCorrectPitch ? 'yes' : 'no'}
-                    </Text>
-                  </TouchableHighlight>
-                </View>
-
                 <View style={styles.recordingDataRowContainer}>
-                  <Image
+                  {/* <Image
                     style={[
                       styles.image,
                       // { opacity: this.state.isRecording ? 1.0 : 0.0 },
                       styles.stretch
                     ]}
                     source={ICON_RECORDING.module}
-                  />
+                  /> */}
                   <Text
                     style={[
                       styles.recordingTimestamp,
@@ -578,17 +547,27 @@ export default class _NewRecording extends React.Component {
                     {this._getRecordingTimestamp()}
                   </Text>
 
+                  <Text
+                    style={[
+                      styles.liveText,
+                      { ...Font.style('space-mono-regular') },
+                    ]}>
+                    {this.state.isRecording ? 'LIVE' : ''}
+                  </Text>
+
                   <View >
                     <View />
 
                     <View style={styles.recordingDataContainer}>
                       <View />
+
+
                       <Text
                         style={[
-                          styles.liveText,
+                          styles.playbackTimestamp,
                           { ...Font.style('space-mono-regular') },
                         ]}>
-                        {this.state.isRecording ? 'LIVE' : ''}
+                        {this._getPlaybackTimestamp()}
                       </Text>
 
                       <View />
@@ -599,74 +578,71 @@ export default class _NewRecording extends React.Component {
                 </View>
                 <View style={styles.allButtonsContainer}>
                   <TouchableHighlight
-                    underlayColor='#ff0000'
+                    underlayColor={Colors.liveColor}
                     style={styles.recButtonWrapper}
                     onPress={this._onRecordPressed}
                     disabled={this.state.isLoading}>
+                    <View>
                       <Image
-                        style={[styles.image, styles.stretch]}
+                        style={styles.buttonIcon}
                         source={ICON_RECORD_BUTTON.module}
                       />
+                      <Text style={styles.buttonText}>REC</Text>
+                    </View>
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor='#ff0000'
-                    style={styles.wrapper}
+                    underlayColor={Colors.liveColor}
+                    style={styles.buttonWrapper}
                     onPress={this._onPlayPausePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
-                    <Image
-                      style={[styles.image, styles.stretch]}
-                      source={
-                        this.state.isPlaying
-                          ? ICON_PAUSE_BUTTON.module
-                          : ICON_PLAY_BUTTON.module
-                      }
-                    />
+                    <View>
+                      <Image
+                        style={styles.buttonIcon}
+                        source={
+                          this.state.isPlaying
+                            ? ICON_PAUSE_BUTTON.module
+                            : ICON_PLAY_BUTTON.module
+                        }
+                      />
+                      <Text style={styles.buttonText}>
+                        {this.state.isPlaying ? 'PAUSE' : 'PLAY'}
+                      </Text>
+                    </View>
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor='#ff0000'
-                    style={styles.wrapper}
-                    onPress={this._onPlayPausePressed}
+                    underlayColor={Colors.liveColor}
+                    style={styles.buttonWrapper}
+                    onPress={this._onSavePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
-                    <Image
-                      style={[styles.image, styles.stretch]}
-                      source={ICON_PAUSE_BUTTON.module}
-                    />
+                    <View>
+                      <Image
+                        style={styles.buttonIcon}
+                        source={ICON_SAVE_BUTTON.module}
+                      />
+                      <Text style={styles.buttonText}>POST</Text>
+                    </View>
                   </TouchableHighlight>
                   <TouchableHighlight
-                    underlayColor='#ff0000'
-                    style={styles.wrapper}
-                    onPress={this._onStopPressed}
+                    underlayColor={Colors.liveColor}
+                    style={styles.buttonWrapper}
+                    onPress={this._onDeletePressed}
                     disabled={
                       !this.state.isPlaybackAllowed || this.state.isLoading
                     }>
-                    <Image
-                      style={[styles.image, styles.stretch]}
-                      source={ICON_STOP_BUTTON.module}
-                    />
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    underlayColor='#ff0000'
-                    style={styles.wrapper}
-                    // onPress={this._onStopPressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <Image
-                      style={[styles.image, styles.stretch]}
-                      source={ICON_EJECT_BUTTON.module}
-                    />
+                    <View>
+                      <Image
+                        style={styles.buttonIcon}
+                        source={ICON_DELETE_BUTTON.module}
+                      />
+                      <Text style={styles.buttonText}>DELETE</Text>
+                    </View>
                   </TouchableHighlight>
                 </View>
                 <View />
-                <TextInput
-       style={{height: 40, width:200, borderColor: 'gray', borderWidth: 1}}
-       onChangeText={(text) => this.setState({text})}
-       value={this.state.text}
-     />
               </View>
 
               <View />
@@ -678,80 +654,65 @@ export default class _NewRecording extends React.Component {
 const styles = StyleSheet.create({
   emptyContainer: {
     alignSelf: 'stretch',
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: Colors.backgroundColor,
   },
   container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    backgroundColor: BACKGROUND_COLOR,
-    minHeight: DEVICE_HEIGHT,
-    maxHeight: DEVICE_HEIGHT,
-    minWidth: DEVICE_WIDTH,
-    minWidth: DEVICE_WIDTH,
-    // borderWidth: 2,
-    // borderColor: '#228b22',
-  },
-  topHalfScreenContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 2,
-    maxHeight: DEVICE_HEIGHT / 2,
-    borderBottomWidth: 10,
-    borderColor: '#282A3E',
-    // borderWidth: 6,
-    // borderColor: '#282A3E',
+    backgroundColor: Colors.backgroundColor,
+    minHeight: DEVICE_HEIGHT - 70,
+    maxHeight: DEVICE_HEIGHT - 70,
+    minWidth: DEVICE_WIDTH,
+    minWidth: DEVICE_WIDTH,
+    // borderWidth: 2,
+    // borderColor: '#228b22',
   },
-  bottomHalfScreenContainer: {
+  topScreenContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    minHeight: DEVICE_HEIGHT / 3,
+    maxHeight: DEVICE_HEIGHT / 3,
+    paddingBottom: 10,
+  },
+  middleScreenContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+    minHeight: DEVICE_HEIGHT / 3,
+    maxHeight: DEVICE_HEIGHT / 3,
+    paddingBottom: 1,
+  },
+  bottomScreenContainer: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 2,
-    maxHeight: DEVICE_HEIGHT / 2,
-    borderBottomWidth: 10,
-    borderColor: '#282A3E',
-    // borderWidth: 6,
-    // borderColor: '#282A3E',
+    minHeight: DEVICE_HEIGHT / 5,
+    maxHeight: DEVICE_HEIGHT / 5,
+  },
+  controlsContainerBase: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    minWidth: DEVICE_WIDTH,
+    maxWidth: DEVICE_WIDTH,
+    backgroundColor: Colors.backgroundColor2,
+    // borderWidth: 2,
+    // borderColor: '#b0e0e6',
   },
   noPermissionsText: {
     textAlign: 'center',
   },
-  wrapper: {
-    borderWidth: 4,
-    borderColor: '#000000',
-    borderRadius: 2,
-    margin: 5,
-    paddingTop: 5,
-    paddingBottom: 30,
-    backgroundColor: '#7181A2',
-  },
-  recButtonWrapper: {
-    borderWidth: 4,
-    borderColor: '#000000',
-    borderRadius: 2,
-    margin: 5,
-    paddingTop: 5,
-    paddingBottom: 30,
-    backgroundColor: '#D85068',
-  },
-  // recordingContainer: {
-  //   flex: 1,
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  //   alignItems: 'center',
-  //   alignSelf: 'stretch',
-  //   minHeight: ICON_RECORD_BUTTON.height,
-  //   maxHeight: ICON_RECORD_BUTTON.height,
-    // borderWidth: 2,
-    // borderColor: '#00ffff'
-  // },
   recordingDataContainer: {
     flex: 1,
     flexDirection: 'column',
@@ -762,19 +723,20 @@ const styles = StyleSheet.create({
     // minWidth: ICON_RECORD_BUTTON.width * 3.0,
     // maxWidth: ICON_RECORD_BUTTON.width * 3.0,
     // borderWidth: 2,
-    // borderColor: '#ff0000',
+    // borderColor: Colors.liveColor,
   },
   recordingDataRowContainer: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: ICON_RECORDING.height * 2.0,
     maxHeight: ICON_RECORDING.height * 2.0,
     minWidth: DEVICE_WIDTH,
     maxWidth: DEVICE_WIDTH,
+    backgroundColor: Colors.backgroundColor,
     // borderWidth: 2,
-    // borderColor: '#b22222',
+    // borderColor: '#b22222',///////NEEDS FIXING///////////////////
   },
   playbackContainer: {
     flex: 1,
@@ -786,17 +748,137 @@ const styles = StyleSheet.create({
     maxHeight: ICON_THUMB_1.height * 1.5,
     paddingRight: 10,
     paddingLeft: 10,
-    // borderWidth: 2,
-    // borderColor: '#ffd700',
+    backgroundColor: Colors.backgroundColor,
+    borderWidth: 2,
+    borderColor: '#ffd700',
+  },
+  tapeContainer: {
+    height: DEVICE_WIDTH / 1.725,
+    width: DEVICE_WIDTH / 1.15,
+    borderRadius: 10,
+    marginBottom: 4,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  tape: {
+    height: DEVICE_WIDTH / 1.725,
+    width: DEVICE_WIDTH / 1.15,
+    // height: 200,
+    // width: 300,
+    borderRadius: 10,
+    borderWidth: 20,
+    marginBottom: 4,
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderColor: Colors.accentColor,
+  },
+  recordingName: {
+    backgroundColor: Colors.buttonColor,
+    height: DEVICE_WIDTH / 14.5,
+    width: DEVICE_WIDTH / 1.7,
+    marginTop: 17,
+    textAlign: 'left',
+  },
+  speakerContainer: {
+    height: DEVICE_WIDTH / 1.8,
+    width: DEVICE_WIDTH / 1.15,
+    borderRadius: 10,
+    marginBottom: 4,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  speaker: {
+    height: DEVICE_WIDTH / 1.8,
+    width: DEVICE_WIDTH / 1.15,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    resizeMode: 'repeat',
+    backgroundColor: Colors.backgroundColor2,
+  },
+  // brandBackdrop: {
+  //   backgroundColor: 'rgba(0,0,0,0)',
+  // },
+  // brandName: {
+  //   color: Colors.RECbuttonColor,
+  //   fontSize: 25,
+  //   backgroundColor: Colors.backgroundColor2,
+  // },
+  allButtonsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // minWidth: ICON_PLAY_BUTTON.width * 4.5,
+    // maxWidth: ICON_PLAY_BUTTON.width * 4.5,
+    // minWidth: DEVICE_WIDTH,
+    // maxWidth: DEVICE_WIDTH,
+    minHeight: ICON_RECORD_BUTTON.height * 2,
+    maxHeight: ICON_RECORD_BUTTON.height * 2,
+    marginRight: -10,
+    marginLeft: -10,
+    backgroundColor: Colors.backgroundColor2,
+    borderRadius: 4,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  recButtonWrapper: {
+    borderRadius: 4,
+    margin: 5,
+    paddingTop: 10,
+    paddingBottom: 15,
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: Colors.RECbuttonColor,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  buttonWrapper: {
+    borderRadius: 4,
+    margin: 5,
+    paddingTop: 10,
+    paddingBottom: 15,
+    paddingLeft: 5,
+    paddingRight: 5,
+    backgroundColor: Colors.buttonColor,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  buttonIcon: {
+    height: 50,
+    width: 50,
+  },
+  buttonText: {
+    color: '#000000',
+    fontFamily: 'space-mono-regular',
+    textAlign: 'center',
+    paddingTop: 5,
   },
   playbackSlider: {
     alignSelf: 'stretch',
+    backgroundColor: Colors.backgroundColor,
   },
   liveText: {
-    color: LIVE_COLOR,
+    color: Colors.liveColor,
+    backgroundColor: Colors.buttonColor,
+    borderColor: Colors.backgroundColor2,
   },
   recordingTimestamp: {
-    paddingLeft: 20,
+    marginLeft: 20,
+    backgroundColor: Colors.buttonColor,
+    borderColor: Colors.backgroundColor2,
   },
   playbackTimestamp: {
     textAlign: 'right',
@@ -804,86 +886,12 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   textButton: {
-    backgroundColor: BACKGROUND_COLOR,
+    backgroundColor: Colors.backgroundColor,
     padding: 10,
-  },
-  controlsContainerBase: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    minWidth: DEVICE_WIDTH,
-    maxWidth: DEVICE_WIDTH,
-    backgroundColor: '#AEBDDA',
-    // borderWidth: 2,
-    // borderColor: '#b0e0e6',
-  },
-  buttonsContainerTopRow: {
-    maxHeight: ICON_MUTED_BUTTON.height,
-    alignSelf: 'stretch',
-    // paddingRight: 20,
-    // borderWidth: 2,
-    // borderColor: '#ff69b4',
-  },
-  allButtonsContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    // minWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
-    // maxWidth: (ICON_PLAY_BUTTON.width + ICON_STOP_BUTTON.width) * 3.0 / 2.0,
-    // minWidth: DEVICE_WIDTH,
-    // maxWidth: DEVICE_WIDTH,
-    minHeight: ICON_RECORD_BUTTON.height * 2,
-    maxHeight: ICON_RECORD_BUTTON.height * 2,
-    marginRight: -10,
-    marginLeft: -10,
-    backgroundColor: '#E6F5FF',
-    borderRadius: 4,
-    // borderWidth: 2,
-    // borderColor: '#7cfc00',
-  },
-  volumeContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    minWidth: DEVICE_WIDTH,
-    maxWidth: DEVICE_WIDTH,
-    minHeight: ICON_THUMB_1.height * 1.5,
-    maxHeight: ICON_THUMB_1.height * 1.5,
-    paddingRight: 10,
-    paddingLeft: 10,
-    // borderWidth: 2,
-    // borderColor: '#0000cd',
-  },
-  volumeSlider: {
-    width: DEVICE_WIDTH - ICON_MUTED_BUTTON.width,
-  },
-  rateControlContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    minHeight: ICON_THUMB_1.height * 1.5,
-    maxHeight: ICON_THUMB_1.height * 1.5,
-    alignSelf: 'stretch',
-    paddingRight: 10,
-    paddingLeft: 10,
-    // borderWidth: 2,
-    // borderColor: '#ffa500',
   },
   rateSlider: {
     width: DEVICE_WIDTH / 2.0,
   },
-  stretch: {
-    height: 50,
-    width: 50,
-  },
-  brandName: {
-    color: '#D85068',
-    fontSize: 20,
-  }
 });
 
 // Expo.registerRootComponent(App);

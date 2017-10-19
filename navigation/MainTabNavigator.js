@@ -1,43 +1,56 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { TabNavigator, TabBarBottom } from 'react-navigation';
-
+import { Platform, Button } from 'react-native';
+import { Ionicons } from '@expo/vector-icons/';
+import {
+  TabNavigator,
+  TabBarBottom,
+  StackNavigator,
+  HeaderBackButton,
+} from 'react-navigation';
 import Colors from '../constants/Colors';
-
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import RecordingScreen from '../screens/RecordingScreen';
-// import DiscoverScreen from '../screens/DiscoverScreen';
-// import NotificationScreen from '../screens/NotificationScreen';
 
-export default TabNavigator({
+// const navigationOptionsBack = ({ navigation }) => ({
+//     headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
+// })
+
+const RecordingScreenStack = StackNavigator({
+  Recording: {
+    screen: RecordingScreen,
+  },
+  Home: {
+    screen: HomeScreen,
+  }
+});
+
+const Tabs = TabNavigator({
     Home: {
       screen: HomeScreen,
       navigationOptions: {
-        headerTitle: 'Speakeasy',
+        headerTitle: 'Feed',
         headerTintColor: '#fffafa',
         headerStyle: {
-          backgroundColor: '#ff6347',
+          backgroundColor: Colors.identityColor,
         }
       }
     },
-    // Discover: {
-    //   screen: DiscoverScreen,
-    // },
     Recording: {
-      screen: RecordingScreen,
+      screen: RecordingScreenStack,
+      navigationOptions: ({ navigation }) => ({
+        tabBarOnPress: (tab, jumpToIndex) => {
+          navigation.navigate('RecordingScreenModal');
+        },
+      })
     },
-    // Notifications: {
-    //   screen: NotificationScreen,
-    // },
     Profile: {
       screen: ProfileScreen,
       navigationOptions: {
-        headerTitle: 'Profile',
+        headerTitle: 'You',
         headerTintColor: '#fffafa',
         headerStyle: {
-          backgroundColor: '#ff6347',
+          backgroundColor: Colors.identityColor,
         }
       }
     },
@@ -49,36 +62,20 @@ export default TabNavigator({
         let iconName;
         switch (routeName) {
           case 'Home':
-            iconName = Platform.OS === 'ios'
-              ? `ios-home${focused ? '' : '-outline'}`
-              : 'md-information-circle';
+            iconName = 'md-home';
             break;
-          // case 'Discover':
-          //     iconName = Platform.OS === 'ios'
-          //       ? `ios-search${focused ? '' : '-outline'}`
-          //       : 'md-options';
-          //     break;
           case 'Recording':
-            iconName = Platform.OS === 'ios'
-              ? `ios-mic${focused ? '' : '-outline'}`
-              : 'md-link';
+            iconName = 'md-mic';
             break;
-          // case 'Notifications':
-          //   iconName = Platform.OS === 'ios'
-          //     ? `ios-heart${focused ? '' : '-outline'}`
-          //     : 'md-link';
-          // break;
           case 'Profile':
-            iconName = Platform.OS === 'ios'
-              ? `ios-person${focused ? '' : '-outline'}`
-              : 'md-link';
+            iconName = 'md-person';
         }
         return (
           <Ionicons
             name={iconName}
             size={28}
             style={{ marginBottom: -3 }}
-            color={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+            color={focused ? Colors.iconSelectColor : Colors.iconDefaultColor}
           />
         );
       },
@@ -86,9 +83,26 @@ export default TabNavigator({
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     tabBarOptions: {
-      showLabel: false
+      showLabel: false,
+      style: {
+        backgroundColor: 'white',
+      }
     },
     animationEnabled: false,
     swipeEnabled: false,
   }
 );
+
+
+export default StackNavigator({
+  Tabs: {
+    screen: Tabs,
+  },
+  RecordingScreenModal: {
+    screen: RecordingScreen,
+  },
+},
+{
+  mode: 'modal',
+  headerMode: 'none',
+});

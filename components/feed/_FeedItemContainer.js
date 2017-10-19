@@ -32,12 +32,19 @@ export default class FeedItemContainer extends Component {
           />
           <Text style={styles.name}> { this.props.userName } </Text>
         </View>
-        
+
         <AudioFileContainer
-          key={key}
-          title={this.props.text}
+          activePost={this.props.activePost}
+          id={this.props.id}
+          title={this.props.title}
           username={this.props.username}
-          audio={this.props.audio}/>
+          audio={this.props.audio}
+          duration={this.props.duration}
+          _setActivePost={this.props._setActivePost}
+          shouldExpand={this.props.shouldExpand}
+          style={styles.audioContainer}
+          />
+
       </View>
     )
   }
@@ -47,13 +54,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'nowrap',
-    // backgroundColor: '#D6FFDB',
   },
   imageContainer: {
     padding: 10,
-    width:60,
+    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 0,
   },
   image: {
     width: 56,
@@ -63,4 +70,7 @@ const styles = StyleSheet.create({
   name: {
     marginTop: 4,
   },
+  audioContainer: {
+
+  }
 })

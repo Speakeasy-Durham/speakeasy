@@ -1,15 +1,18 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { FlatList,
+         ScrollView,
+         StyleSheet,
+         Text,
+         View,
+       } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import * as firebase from 'firebase';
 
 import ProfileAndSettings from '../components/profile-settings/_ProfileAndSettings';
+import AudioFileContainer from '../components/audio/_AudioFileContainer';
+import ProfileList from '../components/profile-settings/_ProfileList';
 
 export default class ProfileScreen extends React.Component {
-  static navigationOptions = {
-    title: 'User\'s name',
-  };
-
   constructor(props) {
     super(props);
     this.state = {
@@ -19,11 +22,15 @@ export default class ProfileScreen extends React.Component {
       userName: null,
       userPosts: [],
     };
+    this.activePost = null;
   }
+
+
 
   componentWillMount() {
     var user = firebase.auth().currentUser;
     // console.log(user);
+
     this.setState({userPhoto: user.providerData[0].photoURL});
     this.setState({userEmail: user.providerData[0].email});
     this.setState({userUid: user.providerData[0].uid});
@@ -39,7 +46,7 @@ export default class ProfileScreen extends React.Component {
     var currentUserRef = ref
       .orderByChild("userId")
       .equalTo(currentUser);
-    currentUserRef.once("value", (snapshot) => {
+    currentUserRef.on("value", (snapshot) => {
             var userPosts = snapshot.val();
             // console.log(Object.keys(userPosts));
             var userPostsArray = [];
@@ -50,15 +57,28 @@ export default class ProfileScreen extends React.Component {
                return array
             });
             // console.log("userPostsArray");
-            // console.log(userPostsArray);
+            console.log(userPostsArray);
             this.setState({userPosts: userPostsArray})
           });
     }
 
+  componentDidMount() {
+    // console.log("this.activePost");
+    // console.log(this.activePost);
+    // console.log("second this.state.activePost");
+    // console.log(this.state.activePost);
+    // console.log("ProfileScreen rendered");
+  }
+
+  // shouldComponentUpdate() {
+  //
+  // }
+
+  _keyExtractor = (item, index) => item.id;
 
   render() {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <ProfileAndSettings
           userUid={this.state.userUid}
           userEmail={this.state.userEmail}
@@ -66,7 +86,7 @@ export default class ProfileScreen extends React.Component {
           userName={this.state.userName}
           userPosts={this.state.userPosts}
         />
-      </ScrollView>
+      </View>
     );
   }
 }
