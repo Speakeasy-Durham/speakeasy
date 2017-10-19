@@ -165,9 +165,19 @@ export default class _NewRecording extends React.Component {
     recording.setOnRecordingStatusUpdate(this._updateScreenForRecordingStatus);
     this.recording = recording;
     await this.recording.startAsync();
+    // if (this.recording.recordingDuration == 3000) {
+    //   this.recording.stopAndUnloadAsync();
+    // };
     this.setState({
       isLoading: false,
     });
+
+    // if (this.state.soundDuration === 3000) {
+    //   this.setState({
+    //     isRecording: false,
+    //     isLoading: false
+    //   })
+    // };
   }
 
   async _stopRecordingAndEnablePlayback() {
@@ -258,7 +268,9 @@ export default class _NewRecording extends React.Component {
       audio: audioLocation,
       profile_picture: imageUrl,
       date: recordingDate,
-      text: this.state.text
+      text: this.state.text,
+      sound_position: this.state.soundPosition,
+      sound_duration: this.state.soundDuration
     })
     console.log("added to firebase");
     console.log(recordingId);
@@ -324,8 +336,8 @@ export default class _NewRecording extends React.Component {
           [
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
             {text: 'POST', onPress: () => {
-              // this._saveRecordingAndPost();
-              this._postAndGoHome;
+              this._saveRecordingAndPost();
+              // this._postAndGoHome;
             }
           },
           ],
@@ -338,8 +350,8 @@ export default class _NewRecording extends React.Component {
           [
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
             {text: 'POST', onPress: () => {
-              // this._saveRecordingAndPost();
-              this._postAndGoHome;
+              this._saveRecordingAndPost();
+              // this._postAndGoHome;
             }
           },
           ],
