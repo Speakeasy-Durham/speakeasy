@@ -69,6 +69,7 @@ export default class FeedList extends Component {
                 title={item.text}
                 username={item.username}
                 audio={item.audio}
+                duration={item.sound_duration}
                 userPhoto={item.profile_picture}
                 _setActivePost={this._setActivePost}
                 style={styles.feedItemContainer}
@@ -77,7 +78,8 @@ export default class FeedList extends Component {
                   ? true : false
                 }
               />
-              )}
+              )
+            }
           />
 
       )

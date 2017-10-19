@@ -68,7 +68,6 @@ export default class ProfileList extends Component {
         data={this.props.userPosts}
         extraData={this.state.activePost}
         contentContainerStyle={styles.contentContainer}
-
         renderItem={
           ({item}) =>
             (
@@ -78,6 +77,7 @@ export default class ProfileList extends Component {
               title={item.text}
               username={item.username}
               audio={item.audio}
+              duration={item.sound_duration}
               _setActivePost={this._setActivePost}
               shouldExpand={
                 this.state.activePost === item.key

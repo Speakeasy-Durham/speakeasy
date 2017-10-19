@@ -25,7 +25,7 @@ import  {
   CognitoUserAttribute,
   CognitoUser,
   } from 'amazon-cognito-identity-js';
-  
+
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -84,6 +84,7 @@ export default class HomeScreen extends React.Component {
       // console.log("this.allPosts");
       // console.log(this.allPosts);
 
+      // turn firebase results into an array so that react native Flatlist can render each item
       this.allPostsArray = Object.keys(this.allPosts).map(key => {
         let array = this.allPosts[key]
         // Append key if one exists (optional)
@@ -102,7 +103,7 @@ export default class HomeScreen extends React.Component {
 
     render() {
       return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View>
           <Button
             onPress={this._handleLogOut}
@@ -115,7 +116,7 @@ export default class HomeScreen extends React.Component {
           <FeedList
             allPosts={this.state.allPosts}/>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 
