@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-    // import children
 import RecordingPlayer from './_RecordingPlayer';
 import AudioFileContainer from '../audio/_AudioFileContainer';
 
@@ -18,49 +17,45 @@ export default class ProfileList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // userPosts: this.props.userposts,
       // state to be changed by child
       userPosts: null,
       activePost: null,
     }
     this.activePost = null;
     this.userPosts = null;
-    // bind this on the function to pass down as props while making its effects scope in this scope.
     this._setActivePost = this._setActivePost.bind(this);
   }
 
   _keyExtractor = (item, index) => item.id;
 
   _setActivePost(id) {
-    // console.log("first this.state.activePost");
-    // console.log(this.state.activePost);
-    // console.log("_setActivePost(id)");
-    // console.log(id);
     let expandedId = id;
-    // this.setState({ activePost: 0 });
     this.setState({activePost: expandedId});
     this.activePost = expandedId;
-    // console.log("this.state.activePost = id");
-    // console.log(this.state.activePost);
+  }
+
+  _isPlaying(id) {
+
   }
 
   componentWillMount() {
     this.userposts = this.props.userPosts;
-    // console.log("ProfileList componentWillMount this.props.userPosts");
-    // console.log(this.props.userPosts);
-
   }
 
   componentDidMount() {
     this.setState({userPosts: this.props.userPosts});
+    // console.log("ProfileList this.state.activePost");
+    // console.log(this.state.activePost);
   }
 
   render() {
-    // console.log("ProfileList render this.props.userPosts");
-    // console.log(this.props.userPosts);
-    // console.log("ProfileList render this.state.userPosts");
-    // console.log(this.state.userPosts);
+    console.log("ProfileList this.state.activePost");
+    console.log(this.state.activePost);
     return (
+      <View>
+      <Text>this.state.activePost</Text>
+      <Text>{this.state.activePost}</Text>
+
       <FlatList
         inverted
         activePost={this.state.activePost}
@@ -87,6 +82,7 @@ export default class ProfileList extends Component {
             />
           )}
         />
+        </View>
     )
 
   }

@@ -25,15 +25,18 @@ export default class AudioFilePlayer extends Component {
     this.audioSource = { uri: this.props.audio };
     this.sound = null;
     this.state = {
+      activePost: null,
       isLoading: false,
       isPlaybackAllowed: false,
       shouldPlay: false,
       isPlaying: false,
+      muted: false,
+      soundDuration: null,
+      soundPosition: null,
 
     }
-    this._testClick = this._testClick.bind(this);
-  }
 
+  }
 
   // create sound Object
   async _loadSound() {
@@ -47,25 +50,29 @@ export default class AudioFilePlayer extends Component {
     try {
       await this.sound.loadAsync(this.audioSource);
       await this.sound.playAsync();
-      console.log(this.sound);
+      // console.log(this.sound);
       } catch (error) {
         console.log(error);
       }
     }
 
 
+
+
   componentWillMount() {
-    this.sound = new Expo.Audio.Sound();
-    this._loadSound();
+    this.sound=null;
   }
 
   componentDidMount() {
+    this.setState({
+      activePost: this.props.activePost
+    })
     this.setState({
       isPlaybackAllowed: true,
       shouldPlay: true,
       isPlaying: true
     })
-    console.log(this.sound);
+
   }
 
   async _enablePlayback() {
@@ -74,25 +81,40 @@ export default class AudioFilePlayer extends Component {
     });
   }
 
-  _testClick() {
-    console.log(this.sound);
-  }
-
   render () {
-    console.log("now rendering AudioFilePlayer");
-    console.log(this.props.audio);
+    // console.log("now rendering AudioFilePlayer");
+
+    if (this.props.shouldPlay === true) {
+      this.sound = new Expo.Audio.Sound();
+      this._loadSound();
+      console.log("Sound " + this.props.id + " should play")
+    }
+
+    if (this.sound !== null && this.props.shouldPlay === false) {
+      this.sound.unloadAsync()
+      console.log("Sound " + this.props.id + " should stop")
+    }
+
     return (
-      <View style={styles.playerContainer}>
-        <View style={styles.sliderContainer}>
-          {/* <Text> `${ this.props.audio }` </Text> */}
-        </View>
-        <TouchableHighlight style={styles.heartContainer}
-          onPress={ this._testClick }>
-            <Ionicons
-              name={`ios-heart`}
-              size={28}
-              color='#ff6347'/>
-        </TouchableHighlight>
+      <View>
+        {this.props.shouldPlay ?
+          <View style={styles.playerContainer}>
+
+            <View style={styles.sliderContainer}>
+
+            </View>
+            <TouchableHighlight
+              style={styles.heartContainer}
+              // onPress={ this._testClick }
+            >
+                <Ionicons
+                  name={`ios-heart`}
+                  size={28}
+                  color='#ff6347'/>
+            </TouchableHighlight>
+          </View>
+        : null
+        }
       </View>
     )
   }
