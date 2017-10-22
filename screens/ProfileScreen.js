@@ -28,16 +28,15 @@ export default class ProfileScreen extends React.Component {
 
 
   componentWillMount() {
+  // authorize current user
     var user = firebase.auth().currentUser;
-    // console.log(user);
-
+    console.log(user);
     this.setState({userPhoto: user.providerData[0].photoURL});
     this.setState({userEmail: user.providerData[0].email});
     this.setState({userUid: user.providerData[0].uid});
     this.setState({userName: user.providerData[0].displayName});
 
     var currentUser = user.providerData[0].uid;
-    // console.log(currentUser);
 
     // ref for recordings
     var ref = firebase.database().ref('recordings/');
