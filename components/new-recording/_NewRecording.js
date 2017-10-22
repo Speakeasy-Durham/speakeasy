@@ -165,19 +165,11 @@ export default class _NewRecording extends React.Component {
     recording.setOnRecordingStatusUpdate(this._updateScreenForRecordingStatus);
     this.recording = recording;
     await this.recording.startAsync();
-    // if (this.recording.recordingDuration == 3000) {
-    //   this.recording.stopAndUnloadAsync();
-    // };
+    await setTimeout(() => {
+      this.recording.stopAndUnloadAsync()}, 30000);
     this.setState({
       isLoading: false,
     });
-
-    // if (this.state.recordingDuration === 3000) {
-    //   this.setState({
-    //     isRecording: false,
-    //     isLoading: false
-    //   })
-    // };
   }
 
   async _stopRecordingAndEnablePlayback() {
