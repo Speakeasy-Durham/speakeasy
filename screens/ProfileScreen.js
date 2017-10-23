@@ -20,7 +20,7 @@ export default class ProfileScreen extends React.Component {
       userEmail: null,
       userUid: null,
       userName: null,
-      userPosts: [],
+      userPosts: null,
     };
     this.activePost = null;
   }
@@ -48,16 +48,24 @@ export default class ProfileScreen extends React.Component {
     currentUserRef.on("value", (snapshot) => {
             var userPosts = snapshot.val();
             // console.log(Object.keys(userPosts));
-            var userPostsArray = [];
-            userPostsArray = Object.keys(userPosts).map(key => {
-               let array = userPosts[key]
-               // Apppend key if one exists (optional)
-               array.key = key
-               return array
-            });
-            // console.log("userPostsArray");
-            // console.log(userPostsArray);
-            this.setState({userPosts: userPostsArray})
+            if (userPosts != null) {
+              // console.log("ProfileScreen userPosts isn't null");
+              console.log(userPosts);
+              var userPostsArray = [];
+              userPostsArray = Object.keys(userPosts).map(key => {
+                 let array = userPosts[key]
+                 // Apppend key if one exists (optional)
+                 array.key = key
+                 return array
+              });
+              // console.log("userPostsArray");
+              // console.log(userPostsArray);
+              this.setState({userPosts: userPostsArray})
+            } else {
+              console.log("ProfileScreen userposts == null");
+              console.log(userPosts);
+              var userPostsArray = null;
+          }
           });
     }
 
