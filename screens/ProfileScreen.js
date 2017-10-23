@@ -57,7 +57,7 @@ export default class ProfileScreen extends React.Component {
                return array
             });
             // console.log("userPostsArray");
-            console.log(userPostsArray);
+            // console.log(userPostsArray);
             this.setState({userPosts: userPostsArray})
           });
     }

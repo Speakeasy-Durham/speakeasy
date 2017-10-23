@@ -7,6 +7,7 @@ import {
   Alert,
   TouchableHighlight,
 } from 'react-native';
+import Font from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
   headerText: {
     color: "black",
     fontSize: 40,
-    fontFamily: 'monoton',
+    fontFamily: 'monoton-regular',
     marginBottom: 44,
   },
   facebookButton: {

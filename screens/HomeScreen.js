@@ -156,7 +156,7 @@ listStorageBuckets = () => {
     if (err) {
       return alert('There was an error listing your albums: ' + err.message);
     } else {
-      console.log("This is the data from the storage buckets function ", data);
+      // console.log("This is the data from the storage buckets function ", data);
     }
   })
 }

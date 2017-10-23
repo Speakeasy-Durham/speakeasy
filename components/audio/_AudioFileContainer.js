@@ -80,38 +80,23 @@ export default class AudioFileContainer extends Component {
           <Text>{this.props.title} </Text>
           <Text>by: {this.props.username}</Text>
           <Text> {this.duration} </Text>
-          {/* <View>
-            <Text>
-              this.props.activePost
-            </Text>
-            <Text>
-              {this.props.activePost}
-            </Text>
-            <Text>
-                this.state.activePost
-              </Text>
-              <Text>
-                {this.state.activePost}
-              </Text>
-            <Text>
-              this.state.id
-            </Text>
-            <Text>
-              {this.state.id}
-            </Text>
-            <Text>
-              {this.props.isExpanded}
-            </Text>
-          </View> */}
-          {/* expanded for player */}
+
+          {/* <Text> shouldExpand? {this.props.shouldExpand ? "true" : "false"}</Text> */}
+
+          <AudioFilePlayer
+            audio={this.props.audio}
+            id={this.props.id}
+            activePost={this.props.activePost}
+            shouldPlay={this.props.shouldExpand}
+          />
           {this.props.shouldExpand ?
             <View style={styles.playerContainer}>
-              <AudioFilePlayer
-                audio={this.props.audio}
-              />
+              {/* <Text>expanded</Text> */}
+              {/* <Text>{this.props.activePost}</Text> */}
             </View>
             : null
           }
+          <Text>---------------</Text>
         </View>
       </TouchableHighlight>
 
