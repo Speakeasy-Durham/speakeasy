@@ -165,7 +165,8 @@ export default class _NewRecording extends React.Component {
     this.recording = recording;
     await this.recording.startAsync();
     await setTimeout(() => {
-      this.recording.stopAndUnloadAsync()}, 30000);
+      this._stopRecordingAndEnablePlayback()
+    }, 30000);
     this.setState({
       isLoading: false,
     });
@@ -453,7 +454,8 @@ export default class _NewRecording extends React.Component {
                          styles.recordingName,
                          { ...Font.style('space-mono-regular') },
                        ]}
-                       onChangeText={(text) => this.setState({text})}
+                       onChangeText={(text) =>
+                         this.setState({text})}
                        value={this.state.text}
                     />
                   </Image>
