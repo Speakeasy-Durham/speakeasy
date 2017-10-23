@@ -1,4 +1,4 @@
-const identityColor = '#ff6347'
+const identityColor = '#F06060'
 const iconSelectColor = '#2f95dc';
 const iconDefaultColor = '#ccc';
 const backgroundColor = '#F4E9DC';

@@ -10,7 +10,8 @@ import {
   View,
   Button,
   TextInput,
-  Alert
+  Alert,
+  KeyboardAvoidingView
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 import { RNS3 } from 'react-native-aws3';
@@ -76,8 +77,6 @@ export default class _NewRecording extends React.Component {
     this.recordingSettings = JSON.parse(
       JSON.stringify(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY)
     );
-    // // UNCOMMENT THIS TO TEST maxFileSize:
-    // this.recordingSettings.android['maxFileSize'] = 12000;
   }
 
   componentDidMount() {
@@ -313,10 +312,10 @@ export default class _NewRecording extends React.Component {
   //   })
   //   this.props.navigation.dispatch(actionToDispatch)
   // };
-
-  _postAndGoHome = () => {
-    this.props.navigation.navigate('Home')
-  }
+  //
+  // _postAndGoHome() {
+  //   this.props.navigation.navigate('Home')
+  // }
 
   _onSavePressed = () => {
     if (this.state.isPlaybackAllowed) {
@@ -329,7 +328,7 @@ export default class _NewRecording extends React.Component {
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
             {text: 'POST', onPress: () => {
               this._saveRecordingAndPost();
-              // this._postAndGoHome;
+              // this._returnHome('Main');
             }
           },
           ],
@@ -343,7 +342,7 @@ export default class _NewRecording extends React.Component {
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
             {text: 'POST', onPress: () => {
               this._saveRecordingAndPost();
-              // this._postAndGoHome;
+              // this._returnHome('Main');
             }
           },
           ],
@@ -353,64 +352,15 @@ export default class _NewRecording extends React.Component {
     }
   }
 
-
-
-
-
   _onDeletePressed = () => {
     if (this.state.isPlaybackAllowed) {
       this._deleteRecording();
     }
   }
 
-  _onMutePressed = () => {
-    if (this.sound != null) {
-      this.sound.setIsMutedAsync(!this.state.muted);
-    }
-  };
-
-  _onVolumeSliderValueChange = value => {
-    if (this.sound != null) {
-      this.sound.setVolumeAsync(value);
-    }
-  };
-
-  _onSeekSliderValueChange = value => {
-    if (this.sound != null && !this.isSeeking) {
-      this.isSeeking = true;
-      this.shouldPlayAtEndOfSeek = this.state.shouldPlay;
-      this.sound.pauseAsync();
-    }
-  };
-
-  _onSeekSliderSlidingComplete = async value => {
-    if (this.sound != null) {
-      this.isSeeking = false;
-      const seekPosition = value * this.state.soundDuration;
-      if (this.shouldPlayAtEndOfSeek) {
-        this.sound.playFromPositionAsync(seekPosition);
-      } else {
-        this.sound.setPositionAsync(seekPosition);
-      }
-    }
-  };
-
-  _getSeekSliderPosition() {
-    if (
-      this.sound != null &&
-      this.state.soundPosition != null &&
-      this.state.soundDuration != null
-    ) {
-      return this.state.soundPosition / this.state.soundDuration;
-    }
-    return 0;
-  }
-
   _getMMSSFromMillis(millis) {
     const totalSeconds = millis / 1000;
     const seconds = Math.floor(totalSeconds % 60);
-    // const minutes = Math.floor(totalSeconds / 60);
-
     const padWithZero = number => {
       const string = number.toString();
       if (number < 10) {
@@ -418,7 +368,6 @@ export default class _NewRecording extends React.Component {
       }
       return string;
     };
-    // return padWithZero(minutes) + ':' + padWithZero(seconds);
     return padWithZero(seconds);
   }
 
@@ -442,6 +391,8 @@ export default class _NewRecording extends React.Component {
     return `${this._getMMSSFromMillis(0)}`;
   }
 
+
+
   render() {
     return !this.state.fontLoaded
       ? <View style={styles.emptyContainer} />
@@ -458,7 +409,9 @@ export default class _NewRecording extends React.Component {
             </Text>
             <View />
           </View>
-        : <View style={styles.container}>
+        : <KeyboardAvoidingView
+           behavior='padding'
+           style={styles.container}>
             <View
               style={[
                 styles.topScreenContainer,
@@ -505,6 +458,24 @@ export default class _NewRecording extends React.Component {
                     />
                   </Image>
                 </View>
+                {/* <KeyboardAvoidingView
+                  behavior='padding'
+                  style={styles.tapeContainer}
+                >
+                  <Image
+                    source={TAPE.module}
+                    style={styles.tape}
+                  >
+                    <TextInput
+                       style={[
+                         styles.recordingName,
+                         { ...Font.style('space-mono-regular') },
+                       ]}
+                       onChangeText={(text) => this.setState({text})}
+                       value={this.state.text}
+                    />
+                  </Image>
+                </KeyboardAvoidingView> */}
               <View />
             </View>
 
@@ -639,7 +610,7 @@ export default class _NewRecording extends React.Component {
 
               <View />
             </View>
-          </View>;
+          </KeyboardAvoidingView>;
   }
 }
 

@@ -1,5 +1,5 @@
 # Speakeasy
-## A social media app for sharing user-generated audio snippets.
+### A social media platform for sharing and discovering user-created audio.
 
 
 ### Developers:
@@ -15,8 +15,9 @@ Next, open the link to the Speakeasy app [here](https://exp.host/@prechter/speak
 
 That's it!
 
-NOTE: for now, please use the Google login when signing up
+NOTE: please use your Google login when signing up (for now)
 
 
 ### Attribution:
-[Hipster cassette tape](https://www.vexels.com/vectors/preview/130936/hipster-cassette-tape) | Designed by Vexels.com
+- Splash screen and icon | [Designed by Bennette Sebastian](https://www.bennettesebastian.com/)
+- Hipster cassette tape | [Designed by Vexels.com](https://www.vexels.com/vectors/preview/130936/hipster-cassette-tape)

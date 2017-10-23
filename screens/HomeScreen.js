@@ -27,6 +27,27 @@ import  {
   } from 'amazon-cognito-identity-js';
 
 
+initializeCognito = () => {
+  AWS.config.region = 'us-east-1'; // Region
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+    IdentityPoolId: 'us-east-1:46e64e62-71d0-44c8-bed9-a0a0c7e31abd',
+  });
+}
+
+listStorageBuckets = () => {
+  var s3 = new AWS.S3({
+    apiVersion: '2006-03-01',
+    params: {Bucket: "tin-can"}
+  });
+  s3.listObjects({Delimiter: '/'}, function(err, data) {
+    if (err) {
+      return alert('There was an error listing your albums: ' + err.message);
+    } else {
+      // console.log("This is the data from the storage buckets function ", data);
+    }
+  })
+}
+
 export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -38,17 +59,8 @@ export default class HomeScreen extends React.Component {
       userUid: null,
       userName: null,
       allPosts: [],
-
     };
   }
-
-  // static navigationOptions = {
-  //   title: 'SPEAKEASY',
-  //     headerTintColor: 'red',
-  //     titleStyle: {
-  //       backgroundColor: 'white',
-  //     }
-  // };
 
   componentWillMount() {
     let user = firebase.auth().currentUser;
@@ -97,27 +109,6 @@ export default class HomeScreen extends React.Component {
         allPosts: this.allPostsArray
       });
     })
-
-
-  }
-
-    render() {
-      return (
-      <ScrollView style={styles.container}>
-        <View>
-          <Button
-            onPress={this._handleLogOut}
-            title="Logout of App"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
-          />
-        </View>
-        <View>
-          <FeedList
-            allPosts={this.state.allPosts}/>
-        </View>
-      </ScrollView>
-    );
   }
 
   _handleLogOut = () => {
@@ -138,27 +129,25 @@ export default class HomeScreen extends React.Component {
     })
       this.props.navigation.dispatch(actionToDispatch)
   }
-}
 
-initializeCognito = () => {
-  AWS.config.region = 'us-east-1'; // Region
-  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-    IdentityPoolId: 'us-east-1:46e64e62-71d0-44c8-bed9-a0a0c7e31abd',
-  });
-}
-
-listStorageBuckets = () => {
-  var s3 = new AWS.S3({
-    apiVersion: '2006-03-01',
-    params: {Bucket: "tin-can"}
-  });
-  s3.listObjects({Delimiter: '/'}, function(err, data) {
-    if (err) {
-      return alert('There was an error listing your albums: ' + err.message);
-    } else {
-      // console.log("This is the data from the storage buckets function ", data);
-    }
-  })
+  render() {
+    return (
+      <ScrollView style={styles.container}>
+        <View>
+          <Button
+            onPress={this._handleLogOut}
+            title="Logout of App"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
+        <View>
+          <FeedList
+            allPosts={this.state.allPosts}/>
+        </View>
+      </ScrollView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
