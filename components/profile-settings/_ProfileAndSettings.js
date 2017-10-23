@@ -37,7 +37,10 @@ export default class ProfileAndSettings extends Component {
           <View style={styles.infoContainer}>
             <View style={styles.info}>
               <Text style={styles.infoNumber}>
-                {userPosts.length}
+                {userPosts != null ? (
+                  `${userPosts.length}`
+                ) : (`0`) 
+                }
               </Text>
               <Text style={styles.infoType}>
                 posts

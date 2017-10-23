@@ -53,35 +53,38 @@ export default class ProfileList extends Component {
     console.log(this.state.activePost);
     return (
       <View>
-      <Text>this.state.activePost</Text>
-      <Text>{this.state.activePost}</Text>
-
-      <FlatList
-        inverted
-        activePost={this.state.activePost}
-        keyExtractor={item => item.key}
-        data={this.props.userPosts}
-        extraData={this.state.activePost}
-        contentContainerStyle={styles.contentContainer}
-        renderItem={
-          ({item}) =>
-            (
-            <AudioFileContainer
-              activePost={this.state.activePost}
-              id={item.key}
-              title={item.text}
-              username={item.username}
-              audio={item.audio}
-              duration={item.sound_duration}
-              _setActivePost={this._setActivePost}
-              shouldExpand={
-                this.state.activePost === item.key
-                ? true : false
-              }
-              style={styles.contentContainer}
-            />
-          )}
-        />
+      {/* <Text>this.state.activePost</Text>
+      <Text>{this.state.activePost}</Text> */}
+      { this.props.userPosts != null ? (
+        <FlatList
+          inverted
+          activePost={this.state.activePost}
+          keyExtractor={item => item.key}
+          data={this.props.userPosts}
+          extraData={this.state.activePost}
+          contentContainerStyle={styles.contentContainer}
+          renderItem={
+            ({item}) =>
+              (
+              <AudioFileContainer
+                activePost={this.state.activePost}
+                id={item.key}
+                title={item.text}
+                username={item.username}
+                audio={item.audio}
+                duration={item.sound_duration}
+                _setActivePost={this._setActivePost}
+                shouldExpand={
+                  this.state.activePost === item.key
+                  ? true : false
+                }
+                style={styles.contentContainer}
+              />
+            )}
+          />
+        ) : (
+          <Text>You haven't made any recordings!</Text>
+        )}
         </View>
     )
 
