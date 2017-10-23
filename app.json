@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Speakeasy",
-    "description": "No description",
+    "description": "The social media for audio.",
     "slug": "speakeasy",
     "privacy": "unlisted",
     "sdkVersion": "20.0.0",
