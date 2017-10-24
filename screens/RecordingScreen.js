@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   headerTitle: {
-    color: Colors.identityColor,
+    color: Colors.primaryRed,
     fontFamily: 'monoton-regular',
     fontSize: 28,
     textAlign: 'center',
