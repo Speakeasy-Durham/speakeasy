@@ -16,15 +16,6 @@ import RecordingScreen from '../screens/RecordingScreen';
 //     headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
 // })
 
-// const RecordingScreenStack = StackNavigator({
-//   Recording: {
-//     screen: RecordingScreen,
-//   },
-//   Home: {
-//     screen: HomeScreen,
-//   }
-// });
-
 const Tabs = TabNavigator({
     Home: {
       screen: HomeScreen,
@@ -41,7 +32,6 @@ const Tabs = TabNavigator({
       navigationOptions: ({ navigation }) => ({
         tabBarOnPress: (tab, jumpToIndex) => {
           navigation.navigate('RecordingScreenModal');
-          // jumpToIndex(2);
         },
       })
     },
