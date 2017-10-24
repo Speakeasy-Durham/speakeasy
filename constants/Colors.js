@@ -10,15 +10,17 @@ const liveColor = '#FF0000';
 
 
 // const identityColor = '#F06060'
-// const iconSelectColor = '#8CBEB2';
+const accentGreen = '#8CBEB2';
 // const iconDefaultColor = '#ccc';
 // const backgroundColor = '#F2EBBF';
 // const backgroundColor2 = '#5C4B51';
-// const accentColor = '#F3B562';
+const accentOrange = '#F3B562';
 // const buttonColor = '#FFFFFF';
 // const RECbuttonColor = '#E74E37';
 // const liveColor = '#FF0000';
 
+const fontColorLight = '#5C4B51';
+const fontColorDark = '#42363B';
 
 export default {
   identityColor,
@@ -37,4 +39,8 @@ export default {
   warningText: '#666804',
   noticeBackground: iconSelectColor,
   noticeText: '#fff',
+  accentOrange,
+  accentGreen,
+  fontColorLight,
+  fontColorDark,
 };

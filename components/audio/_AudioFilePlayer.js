@@ -12,6 +12,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 
+import Colors from '../../constants/Colors';
+
 const width = Dimensions.get('window').width,
       height = Dimensions.get('window').height;
 
@@ -35,7 +37,8 @@ export default class AudioFilePlayer extends Component {
       soundPosition: null,
 
     }
-
+    // this._stopSound = this.stopSound.bind(this);
+    // this._loadSound = this.loadSound.bind(this);
   }
 
   // create sound Object
@@ -56,8 +59,12 @@ export default class AudioFilePlayer extends Component {
       }
     }
 
-
-
+  // async _stopSound() {
+  //     await this.sound.stopAsync();
+  //     await this.sound.unloadAsync();
+  //     console.log("_stopSound");
+  //     this.sound = null;
+  // }
 
   componentWillMount() {
     this.sound=null;
@@ -85,9 +92,17 @@ export default class AudioFilePlayer extends Component {
     // console.log("now rendering AudioFilePlayer");
 
     if (this.props.shouldPlay === true) {
-      this.sound = new Expo.Audio.Sound();
-      this._loadSound();
-      console.log("Sound " + this.props.id + " should play")
+      // if (this.sound != null) {
+      //   console.log("Sound already playing, stopAsync");
+      //   this._stopSound();
+      //
+      //  } else {
+        console.log("this.sound");
+        console.log(this.sound);
+        this.sound = new Expo.Audio.Sound();
+        this._loadSound();
+        console.log("Sound " + this.props.id + " should play")
+      // }
     }
 
     if (this.sound !== null && this.props.shouldPlay === false) {
@@ -96,13 +111,17 @@ export default class AudioFilePlayer extends Component {
     }
 
     return (
-      <View>
+      <View style={styles.container}>
+        <View style={styles.sliderContainer}>
+          <Text style={ this.props.shouldPlay ?
+            styles.durationText_active :
+            styles.durationText_inactive
+          }> {this.props.duration} </Text>
+        </View>
         {this.props.shouldPlay ?
           <View style={styles.playerContainer}>
 
-            <View style={styles.sliderContainer}>
 
-            </View>
             <TouchableHighlight
               style={styles.heartContainer}
               // onPress={ this._testClick }
@@ -121,17 +140,27 @@ export default class AudioFilePlayer extends Component {
 }
 
 const styles = StyleSheet.create({
-  playerContainer: {
-    flex: 1,
-    marginTop: 8,
-    paddingTop: 8,
-    flexWrap: 'nowrap',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderTopWidth: 1,
-    borderTopColor: '#ff634722',
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
+  playerContainer: {
+
+    marginTop: 0,
+    paddingTop: 0,
+
+  },
+  durationText_inactive: {
+    fontFamily: 'space-mono-regular',
+    color: Colors.fontColorLight,
+    fontSize: 18,
+  },
+  durationText_active: {
+    fontFamily: 'space-mono-regular',
+    color: Colors.accentGreen,
+    fontSize: 24,
+  },
   heartContainer: {
     width: width*0.2,
     alignItems: 'center',
@@ -139,6 +168,6 @@ const styles = StyleSheet.create({
 
   },
   sliderContainer: {
-    width: width*0.5,
+    // width: width*0.5,
   }
 })
