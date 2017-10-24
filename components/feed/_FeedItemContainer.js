@@ -30,7 +30,7 @@ export default class FeedItemContainer extends Component {
             source={{uri: this.props.userPhoto}}
             style={styles.image}
           />
-          <Text style={styles.name}> { this.props.userName } </Text>
+          {/* <Text style={styles.name}> { this.props.userName } </Text> */}
         </View>
 
         <AudioFileContainer

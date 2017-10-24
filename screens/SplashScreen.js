@@ -17,8 +17,26 @@ export default class SplashScreen extends React.Component {
     header: null
   }
 
+  _initializeApp() {
+    var _this = this;
+    setTimeout(
+      function () {
+        _this.setState({isReady: true});
+      },
+      2500
+    )
+  }
+
+  _navigateTo(routeName: string){
+    const actionToDispatch = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName })]
+    })
+      this.props.navigation.dispatch(actionToDispatch)
+  }
+
   componentDidMount() {
-    this.initializeApp();
+    this._initializeApp();
   }
 
   componentDidUpdate() {
@@ -38,6 +56,7 @@ export default class SplashScreen extends React.Component {
       <Image source={require('../assets/images/splashscreen.png')} style={styles.splashImage} />
     )
   }
+<<<<<<< HEAD
 
   initializeApp() {
     var _this = this;
@@ -58,8 +77,9 @@ export default class SplashScreen extends React.Component {
 
     this.props.navigation.dispatch(actionToDispatch);
   }
+=======
+>>>>>>> development
 }
-
 
 const styles = StyleSheet.create({
   splashImage: {
