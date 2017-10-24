@@ -26,7 +26,6 @@ export default class ProfileScreen extends React.Component {
   }
 
 
-
   componentWillMount() {
     var user = firebase.auth().currentUser;
     // console.log(user);
@@ -96,4 +95,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FCFCFC',
   },
+
 });

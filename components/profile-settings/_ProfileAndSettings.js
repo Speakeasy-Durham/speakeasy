@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     padding: 10,
+    flexDirection: 'row',
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     backgroundColor: '#000',
+    borderRadius: 28
   },
   name: {
     marginTop: 4,

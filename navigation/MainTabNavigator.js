@@ -16,14 +16,14 @@ import RecordingScreen from '../screens/RecordingScreen';
 //     headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
 // })
 
-const RecordingScreenStack = StackNavigator({
-  Recording: {
-    screen: RecordingScreen,
-  },
-  Home: {
-    screen: HomeScreen,
-  }
-});
+// const RecordingScreenStack = StackNavigator({
+//   Recording: {
+//     screen: RecordingScreen,
+//   },
+//   Home: {
+//     screen: HomeScreen,
+//   }
+// });
 
 const Tabs = TabNavigator({
     Home: {
@@ -37,17 +37,18 @@ const Tabs = TabNavigator({
       }
     },
     Recording: {
-      screen: RecordingScreenStack,
+      screen: RecordingScreen,
       navigationOptions: ({ navigation }) => ({
         tabBarOnPress: (tab, jumpToIndex) => {
           navigation.navigate('RecordingScreenModal');
+          // jumpToIndex(2);
         },
       })
     },
     Profile: {
       screen: ProfileScreen,
       navigationOptions: {
-        headerTitle: 'You',
+        headerTitle: 'Profile',
         headerTintColor: '#fffafa',
         headerStyle: {
           backgroundColor: Colors.identityColor,
@@ -92,7 +93,6 @@ const Tabs = TabNavigator({
     swipeEnabled: false,
   }
 );
-
 
 export default StackNavigator({
   Tabs: {
