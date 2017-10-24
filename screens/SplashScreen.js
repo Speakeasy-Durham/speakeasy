@@ -56,7 +56,6 @@ export default class SplashScreen extends React.Component {
       <Image source={require('../assets/images/splashscreen.png')} style={styles.splashImage} />
     )
   }
-<<<<<<< HEAD
 
   initializeApp() {
     var _this = this;
@@ -77,8 +76,6 @@ export default class SplashScreen extends React.Component {
 
     this.props.navigation.dispatch(actionToDispatch);
   }
-=======
->>>>>>> development
 }
 
 const styles = StyleSheet.create({

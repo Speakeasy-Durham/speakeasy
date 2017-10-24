@@ -109,17 +109,6 @@ export default class HomeScreen extends React.Component {
     })
   }
 
-  _handleLogOut = () => {
-      firebase.auth().signOut().then(user => {
-        this._navigateTo('Signup');
-        // Alert.alert(
-        //   "You're logged out."
-        // );
-      }, function(error) {
-        console.log(error);
-    });
-  }
-
   _navigateTo(routeName: string) {
     const actionToDispatch = NavigationActions.reset({
       index: 0,
@@ -133,14 +122,6 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <View>
-          <Button
-            onPress={this._handleLogOut}
-            title="Logout of App"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
-          />
-        </View>
         <View>
           <FeedList
             allPosts={this.state.allPosts}/>
