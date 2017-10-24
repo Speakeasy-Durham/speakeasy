@@ -14,6 +14,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
+import { MaterialCommunityIcons } from '@expo/vector-icons/';
 import { RNS3 } from 'react-native-aws3';
 import * as firebase from 'firebase';
 import { NavigationActions } from 'react-navigation';
@@ -467,9 +468,11 @@ export default class _NewRecording extends React.Component {
                   onPress={this._onRecordPressed}
                   disabled={this.state.isLoading}>
                   <View>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={ICON_RECORD_BUTTON.module} />
+                    <MaterialCommunityIcons
+                      name={'record'}
+                      size={50}
+                      color={Colors.fontColorDark}
+                    />
                     <Text style={styles.buttonText}>REC</Text>
                   </View>
                 </TouchableHighlight>
@@ -481,13 +484,11 @@ export default class _NewRecording extends React.Component {
                     !this.state.isPlaybackAllowed || this.state.isLoading
                   }>
                   <View>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={
-                        this.state.isPlaying
-                          ? ICON_PAUSE_BUTTON.module
-                          : ICON_PLAY_BUTTON.module
-                      }/>
+                    <MaterialCommunityIcons
+                      name={this.state.isPlaying ? 'pause' : 'play'}
+                      size={50}
+                      color={Colors.fontColorDark}
+                    />
                     <Text style={styles.buttonText}>
                       {this.state.isPlaying ? 'PAUSE' : 'PLAY'}
                     </Text>
@@ -501,9 +502,11 @@ export default class _NewRecording extends React.Component {
                     !this.state.isPlaybackAllowed || this.state.isLoading
                   }>
                   <View>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={ICON_SAVE_BUTTON.module}/>
+                    <MaterialCommunityIcons
+                      name={'upload'}
+                      size={50}
+                      color={Colors.fontColorDark}
+                    />
                     <Text style={styles.buttonText}>POST</Text>
                   </View>
                 </TouchableHighlight>
@@ -515,9 +518,11 @@ export default class _NewRecording extends React.Component {
                     !this.state.isPlaybackAllowed || this.state.isLoading
                   }>
                   <View>
-                    <Image
-                      style={styles.buttonIcon}
-                      source={ICON_DELETE_BUTTON.module}/>
+                    <MaterialCommunityIcons
+                      name={'delete'}
+                      size={50}
+                      color={Colors.fontColorDark}
+                    />
                     <Text style={styles.buttonText}>DELETE</Text>
                   </View>
                 </TouchableHighlight>
@@ -630,17 +635,6 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Colors.fontColorDark,
   },
-  // controlsContainerBase: {
-  //   flex: 1,
-  //   flexDirection: 'column',
-  //   alignItems: 'center',
-  //   justifyContent: 'flex-start',
-  //   minWidth: DEVICE_WIDTH,
-  //   maxWidth: DEVICE_WIDTH,
-  //   backgroundColor: Colors.backgroundColor2,
-  //   borderWidth: 2,
-  //   borderColor: 'green',
-  // },
   recordingDataRowContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -717,10 +711,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 1,
-  },
-  buttonIcon: {
-    height: 50,
-    width: 50,
   },
   buttonText: {
     color: '#000000',
