@@ -12,7 +12,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
-
 export default class SignupScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -94,7 +93,6 @@ export default class SignupScreen extends React.Component {
       actions: [NavigationActions.navigate({ routeName })],
       key: null
     });
-
     this.props.navigation.dispatch(actionToDispatch);
   }
 
@@ -135,7 +133,7 @@ const googRed = '#ea4335';
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#F2EBBF',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },

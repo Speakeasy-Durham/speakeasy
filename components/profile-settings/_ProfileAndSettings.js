@@ -39,7 +39,7 @@ export default class ProfileAndSettings extends Component {
               <Text style={styles.infoNumber}>
                 {userPosts != null ? (
                   `${userPosts.length}`
-                ) : (`0`) 
+                ) : (`0`)
                 }
               </Text>
               <Text style={styles.infoType}>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     backgroundColor: '#000',
-    borderRadius: 28
+    borderRadius: 28,
   },
   name: {
     marginTop: 4,

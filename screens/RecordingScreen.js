@@ -20,13 +20,6 @@ export default class RecordingScreen extends React.Component {
     header: null,
   };
 
-  componentDidMount() {
-    Font.loadAsync({
-      'monoton-regular': require('../assets/fonts/Monoton-Regular.ttf'),
-      'space-mono-regular': require('../assets/fonts/SpaceMono-Regular.ttf'),
-    });
-  }
-
   _goBack = () => {
     this.props.navigation.goBack();
   };
@@ -71,7 +64,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
   headerTitle: {
-    color: Colors.identityColor,
+    color: Colors.primaryRed,
     fontFamily: 'monoton-regular',
     fontSize: 28,
     textAlign: 'center',

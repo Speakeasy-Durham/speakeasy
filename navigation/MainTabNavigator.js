@@ -1,6 +1,6 @@
 import React from 'react';
 import { Platform, Button } from 'react-native';
-import { Ionicons } from '@expo/vector-icons/';
+import { MaterialCommunityIcons } from '@expo/vector-icons/';
 import {
   TabNavigator,
   TabBarBottom,
@@ -8,22 +8,19 @@ import {
   HeaderBackButton,
 } from 'react-navigation';
 import Colors from '../constants/Colors';
+
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import RecordingScreen from '../screens/RecordingScreen';
-
-// const navigationOptionsBack = ({ navigation }) => ({
-//     headerLeft: <HeaderBackButton onPress={() => navigation.goBack(null)} />,
-// })
 
 const Tabs = TabNavigator({
     Home: {
       screen: HomeScreen,
       navigationOptions: {
-        headerTitle: 'Feed',
-        headerTintColor: '#fffafa',
+        headerTitle: 'Home',
+        headerTintColor: Colors.accentYellow,
         headerStyle: {
-          backgroundColor: Colors.identityColor,
+          backgroundColor: Colors.primaryRed,
         }
       }
     },
@@ -39,9 +36,9 @@ const Tabs = TabNavigator({
       screen: ProfileScreen,
       navigationOptions: {
         headerTitle: 'Profile',
-        headerTintColor: '#fffafa',
+        headerTintColor: Colors.accentYellow,
         headerStyle: {
-          backgroundColor: Colors.identityColor,
+          backgroundColor: Colors.primaryRed,
         }
       }
     },
@@ -53,20 +50,26 @@ const Tabs = TabNavigator({
         let iconName;
         switch (routeName) {
           case 'Home':
-            iconName = 'md-home';
+            iconName = Platform.OS === 'ios'
+              ? `home${focused ? '' : '-outline'}`
+              : 'home';
             break;
           case 'Recording':
-            iconName = 'md-mic';
+            iconName = Platform.OS === 'ios'
+              ? `microphone${focused ? '' : '-outline'}`
+              : 'microphone';
             break;
           case 'Profile':
-            iconName = 'md-person';
+            iconName = Platform.OS === 'ios'
+              ? `account${focused ? '' : '-outline'}`
+              : 'account';
         }
         return (
-          <Ionicons
+          <MaterialCommunityIcons
             name={iconName}
             size={28}
             style={{ marginBottom: -3 }}
-            color={focused ? Colors.iconSelectColor : Colors.iconDefaultColor}
+            color={focused ? Colors.fontColorDark : Colors.fontColorLight}
           />
         );
       },

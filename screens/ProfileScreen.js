@@ -1,11 +1,12 @@
 import React from 'react';
-import { FlatList,
-         ScrollView,
-         StyleSheet,
-         Text,
-         View,
-         Button,
-       } from 'react-native';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+} from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import * as firebase from 'firebase';
 import {NavigationActions} from 'react-navigation';
@@ -26,7 +27,6 @@ export default class ProfileScreen extends React.Component {
     };
     this.activePost = null;
   }
-
 
   componentWillMount() {
   // authorize current user
@@ -83,6 +83,27 @@ export default class ProfileScreen extends React.Component {
   // }
 
   _keyExtractor = (item, index) => item.id;
+
+  _handleLogOut = () => {
+       firebase.auth().signOut().then(user => {
+         this._navigateTo('Signup');
+         // Alert.alert(
+         //   "You're logged out."
+         // );
+       }, function(error) {
+         console.log(error);
+     });
+   }
+
+   _navigateTo(routeName: string) {
+     const actionToDispatch = NavigationActions.reset({
+       index: 0,
+       actions: [NavigationActions.navigate({ routeName })],
+       key: null
+     });
+
+     this.props.navigation.dispatch(actionToDispatch);
+   }
 
   render() {
     return (
