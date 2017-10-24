@@ -18,7 +18,7 @@ import {
   Slider,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   View
 } from 'react-native';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
@@ -164,12 +164,12 @@ export default class RecordingPlayer extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.playerContainer}>
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.playStopContainer}
             onPress={ this._testPlayPause }
           >
               <Text style={styles.playStopbutton}>></Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <View style={styles.recordingInfoContainer}>
             <Text>Title of recording</Text>
           </View>
@@ -191,8 +191,6 @@ const styles = StyleSheet.create({
     borderColor: '#333',
     borderWidth: 1,
     backgroundColor: '#FFF3FE',
-
-
   },
   playerContainer: {
     flex: 1,
