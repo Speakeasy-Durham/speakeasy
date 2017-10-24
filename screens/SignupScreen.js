@@ -12,13 +12,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { NavigationActions } from 'react-navigation';
 import * as firebase from 'firebase';
 
- const resetStack = NavigationActions.reset({
-   index: 0,
-   actions: [
-     NavigationActions.navigate({ routeName: 'Main' })
-   ]
- });
-
 export default class SignupScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -27,7 +20,7 @@ export default class SignupScreen extends React.Component {
   checkLoggedIn() {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.props.navigation.dispatch(resetStack);
+        this._navigateTo('Main');
       }
     });
   }
@@ -57,10 +50,6 @@ export default class SignupScreen extends React.Component {
               var errorCode = error.code;
               var errorMessage = error.message;
             });
-          Alert.alert(
-            "You're logged in!",
-          );
-          this.props.navigation.dispatch(resetStack);
           return result.accessToken;
         } else {
           return {cancelled: true};
@@ -95,12 +84,16 @@ export default class SignupScreen extends React.Component {
           var errorCode = error.code;
           var errorMessage = error.message;
         });
-      Alert.alert(
-        'Logged in!',
-        `Hi ${fbInfo.name}!`,
-      );
-      this.props.navigation.dispatch(resetStack);
     }
+  }
+
+  _navigateTo(routeName: string) {
+    const actionToDispatch = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName })],
+      key: null
+    });
+    this.props.navigation.dispatch(actionToDispatch);
   }
 
   _handleFacebookAuth = ()  => {
@@ -111,8 +104,11 @@ export default class SignupScreen extends React.Component {
     this.logInGoogle();
   }
 
-  render () {
+  componentDidMount() {
     this.checkLoggedIn();
+  }
+
+  render () {
     return (
       <View style={styles.main}>
         <Text style={styles.headerText}>SPEAKEASY</Text>
@@ -137,7 +133,7 @@ const googRed = '#ea4335';
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#F2EBBF',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },

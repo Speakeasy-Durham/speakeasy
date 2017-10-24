@@ -9,6 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 
+import Colors from '../../constants/Colors';
 import AudioFileContainer from '../audio/_AudioFileContainer';
 import FeedItemContainer from './_FeedItemContainer';
 
@@ -52,6 +53,15 @@ export default class FeedList extends Component {
   }
 
   render () {
+    const separator = (<View
+        style={{
+          height: 1,
+          width: "86%",
+          backgroundColor: Colors.accentOrange,
+          marginLeft: "14%"
+        }}
+      />);
+
     return (
 
         <FlatList
@@ -60,6 +70,7 @@ export default class FeedList extends Component {
           data={this.props.allPosts}
           extraData={this.state.activePost}
           keyExtractor={item => item.key}
+          // ItemSeparatorComponent={this.renderSeparator}
           renderItem={
             ({item}) =>
               (
@@ -86,11 +97,24 @@ export default class FeedList extends Component {
     }
   }
 
+  // renderSeparator = () => {
+  //   return (
+  //     <View
+  //       style={{
+  //         height: 1,
+  //         width: "86%",
+  //         backgroundColor: Colors.accentOrange,
+  //         marginLeft: "14%"
+  //       }}
+  //     />
+  //   );
+  // };
+
 const styles = StyleSheet.create({
   listContainer: {
     paddingTop: 8,
-    paddingRight: 8,
-    paddingLeft: 8,
+    // paddingRight: 8,
+    // paddingLeft: 8,
 
     // backgroundColor: '#D0C0E5',
   },

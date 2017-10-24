@@ -1,12 +1,15 @@
 import React from 'react';
-import { FlatList,
-         ScrollView,
-         StyleSheet,
-         Text,
-         View,
-       } from 'react-native';
+import {
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Button,
+} from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import * as firebase from 'firebase';
+import {NavigationActions} from 'react-navigation';
 
 import ProfileAndSettings from '../components/profile-settings/_ProfileAndSettings';
 import AudioFileContainer from '../components/audio/_AudioFileContainer';
@@ -20,24 +23,21 @@ export default class ProfileScreen extends React.Component {
       userEmail: null,
       userUid: null,
       userName: null,
-      userPosts: [],
+      userPosts: null,
     };
     this.activePost = null;
   }
 
-
-
   componentWillMount() {
+  // authorize current user
     var user = firebase.auth().currentUser;
-    // console.log(user);
-
+    console.log(user);
     this.setState({userPhoto: user.providerData[0].photoURL});
     this.setState({userEmail: user.providerData[0].email});
     this.setState({userUid: user.providerData[0].uid});
     this.setState({userName: user.providerData[0].displayName});
 
     var currentUser = user.providerData[0].uid;
-    // console.log(currentUser);
 
     // ref for recordings
     var ref = firebase.database().ref('recordings/');
@@ -49,16 +49,24 @@ export default class ProfileScreen extends React.Component {
     currentUserRef.on("value", (snapshot) => {
             var userPosts = snapshot.val();
             // console.log(Object.keys(userPosts));
-            var userPostsArray = [];
-            userPostsArray = Object.keys(userPosts).map(key => {
-               let array = userPosts[key]
-               // Apppend key if one exists (optional)
-               array.key = key
-               return array
-            });
-            // console.log("userPostsArray");
-            // console.log(userPostsArray);
-            this.setState({userPosts: userPostsArray})
+            if (userPosts != null) {
+              // console.log("ProfileScreen userPosts isn't null");
+              console.log(userPosts);
+              var userPostsArray = [];
+              userPostsArray = Object.keys(userPosts).map(key => {
+                 let array = userPosts[key]
+                 // Apppend key if one exists (optional)
+                 array.key = key
+                 return array
+              });
+              // console.log("userPostsArray");
+              // console.log(userPostsArray);
+              this.setState({userPosts: userPostsArray})
+            } else {
+              console.log("ProfileScreen userposts == null");
+              console.log(userPosts);
+              var userPostsArray = null;
+          }
           });
     }
 
@@ -76,6 +84,27 @@ export default class ProfileScreen extends React.Component {
 
   _keyExtractor = (item, index) => item.id;
 
+  _handleLogOut = () => {
+       firebase.auth().signOut().then(user => {
+         this._navigateTo('Signup');
+         // Alert.alert(
+         //   "You're logged out."
+         // );
+       }, function(error) {
+         console.log(error);
+     });
+   }
+
+   _navigateTo(routeName: string) {
+     const actionToDispatch = NavigationActions.reset({
+       index: 0,
+       actions: [NavigationActions.navigate({ routeName })],
+       key: null
+     });
+
+     this.props.navigation.dispatch(actionToDispatch);
+   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -86,8 +115,37 @@ export default class ProfileScreen extends React.Component {
           userName={this.state.userName}
           userPosts={this.state.userPosts}
         />
+        <View>
+          <Button
+            onPress={this._handleLogOut}
+            title="Logout of App"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
       </View>
     );
+  }
+
+  _handleLogOut = () => {
+      firebase.auth().signOut().then(user => {
+        this._navigateTo('Signup');
+        // Alert.alert(
+        //   "You're logged out."
+        // );
+      }, function(error) {
+        console.log(error);
+    });
+  }
+
+  _navigateTo(routeName: string) {
+    const actionToDispatch = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName })],
+      key: null
+    });
+
+    this.props.navigation.dispatch(actionToDispatch);
   }
 }
 
@@ -96,4 +154,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FCFCFC',
   },
+
 });

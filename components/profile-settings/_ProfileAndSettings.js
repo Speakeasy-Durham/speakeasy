@@ -37,7 +37,10 @@ export default class ProfileAndSettings extends Component {
           <View style={styles.infoContainer}>
             <View style={styles.info}>
               <Text style={styles.infoNumber}>
-                {userPosts.length}
+                {userPosts != null ? (
+                  `${userPosts.length}`
+                ) : (`0`)
+                }
               </Text>
               <Text style={styles.infoType}>
                 posts
@@ -73,6 +76,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     padding: 10,
+    flexDirection: 'row',
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -81,6 +85,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     backgroundColor: '#000',
+    borderRadius: 28,
   },
   name: {
     marginTop: 4,
