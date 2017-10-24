@@ -35,7 +35,7 @@ const Tabs = TabNavigator({
     Profile: {
       screen: ProfileScreen,
       navigationOptions: {
-        headerTitle: 'You',
+        headerTitle: 'Profile',
         headerTintColor: Colors.accentYellow,
         headerStyle: {
           backgroundColor: Colors.primaryRed,
