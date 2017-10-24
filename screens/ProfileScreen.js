@@ -25,8 +25,6 @@ export default class ProfileScreen extends React.Component {
     this.activePost = null;
   }
 
-
-
   componentWillMount() {
   // authorize current user
     var user = firebase.auth().currentUser;

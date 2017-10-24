@@ -49,8 +49,8 @@ export default class ProfileList extends Component {
   }
 
   render() {
-    console.log("ProfileList this.state.activePost");
-    console.log(this.state.activePost);
+    // console.log("ProfileList this.state.activePost");
+    // console.log(this.state.activePost);
     return (
       <View>
       {/* <Text>this.state.activePost</Text>

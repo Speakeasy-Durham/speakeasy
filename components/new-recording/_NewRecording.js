@@ -430,8 +430,8 @@ export default class _NewRecording extends React.Component {
 
 
             <View style={styles.bottomScreenContainer}>
-              <View style={styles.controlsContainerBase}>
-                <View style={styles.recordingDataRowContainer}>
+              <View style={styles.recordingDataRowContainer}>
+                <View style={styles.recordingTimeContainer}>
                   <Text
                     style={[
                       styles.recordingTimestamp,
@@ -447,80 +447,80 @@ export default class _NewRecording extends React.Component {
                     ]}>
                     {this.state.isRecording ? 'LIVE' : ''}
                   </Text>
+                </View>
 
-                  <View style={styles.recordingDataContainer}>
-                    <Text
-                      style={[
-                        styles.playbackTimestamp,
-                        { ...Font.style('space-mono-regular') },
-                      ]}>
-                      {this._getPlaybackTimestamp()}
+                <View style={styles.playbackTimeContainer}>
+                  <Text
+                    style={[
+                      styles.playbackTimestamp,
+                      { ...Font.style('space-mono-regular') },
+                    ]}>
+                    {this._getPlaybackTimestamp()}
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.buttonsContainer}>
+                <TouchableHighlight
+                  underlayColor={Colors.liveColor}
+                  style={styles.recButtonWrapper}
+                  onPress={this._onRecordPressed}
+                  disabled={this.state.isLoading}>
+                  <View>
+                    <Image
+                      style={styles.buttonIcon}
+                      source={ICON_RECORD_BUTTON.module} />
+                    <Text style={styles.buttonText}>REC</Text>
+                  </View>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  underlayColor={Colors.iconDefaultColor}
+                  style={styles.buttonWrapper}
+                  onPress={this._onPlayPausePressed}
+                  disabled={
+                    !this.state.isPlaybackAllowed || this.state.isLoading
+                  }>
+                  <View>
+                    <Image
+                      style={styles.buttonIcon}
+                      source={
+                        this.state.isPlaying
+                          ? ICON_PAUSE_BUTTON.module
+                          : ICON_PLAY_BUTTON.module
+                      }/>
+                    <Text style={styles.buttonText}>
+                      {this.state.isPlaying ? 'PAUSE' : 'PLAY'}
                     </Text>
                   </View>
-                </View>
-
-                <View style={styles.allButtonsContainer}>
-                  <TouchableHighlight
-                    underlayColor={Colors.liveColor}
-                    style={styles.recButtonWrapper}
-                    onPress={this._onRecordPressed}
-                    disabled={this.state.isLoading}>
-                    <View>
-                      <Image
-                        style={styles.buttonIcon}
-                        source={ICON_RECORD_BUTTON.module} />
-                      <Text style={styles.buttonText}>REC</Text>
-                    </View>
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    underlayColor={Colors.liveColor}
-                    style={styles.buttonWrapper}
-                    onPress={this._onPlayPausePressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <View>
-                      <Image
-                        style={styles.buttonIcon}
-                        source={
-                          this.state.isPlaying
-                            ? ICON_PAUSE_BUTTON.module
-                            : ICON_PLAY_BUTTON.module
-                        }/>
-                      <Text style={styles.buttonText}>
-                        {this.state.isPlaying ? 'PAUSE' : 'PLAY'}
-                      </Text>
-                    </View>
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    underlayColor={Colors.liveColor}
-                    style={styles.buttonWrapper}
-                    onPress={this._onPostPressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <View>
-                      <Image
-                        style={styles.buttonIcon}
-                        source={ICON_SAVE_BUTTON.module}/>
-                      <Text style={styles.buttonText}>POST</Text>
-                    </View>
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    underlayColor={Colors.liveColor}
-                    style={styles.buttonWrapper}
-                    onPress={this._onDeletePressed}
-                    disabled={
-                      !this.state.isPlaybackAllowed || this.state.isLoading
-                    }>
-                    <View>
-                      <Image
-                        style={styles.buttonIcon}
-                        source={ICON_DELETE_BUTTON.module}/>
-                      <Text style={styles.buttonText}>DELETE</Text>
-                    </View>
-                  </TouchableHighlight>
-                </View>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  underlayColor={Colors.iconDefaultColor}
+                  style={styles.buttonWrapper}
+                  onPress={this._onPostPressed}
+                  disabled={
+                    !this.state.isPlaybackAllowed || this.state.isLoading
+                  }>
+                  <View>
+                    <Image
+                      style={styles.buttonIcon}
+                      source={ICON_SAVE_BUTTON.module}/>
+                    <Text style={styles.buttonText}>POST</Text>
+                  </View>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  underlayColor={Colors.iconDefaultColor}
+                  style={styles.buttonWrapper}
+                  onPress={this._onDeletePressed}
+                  disabled={
+                    !this.state.isPlaybackAllowed || this.state.isLoading
+                  }>
+                  <View>
+                    <Image
+                      style={styles.buttonIcon}
+                      source={ICON_DELETE_BUTTON.module}/>
+                    <Text style={styles.buttonText}>DELETE</Text>
+                  </View>
+                </TouchableHighlight>
               </View>
             </View>
 
@@ -572,13 +572,11 @@ const styles = StyleSheet.create({
   bottomScreenContainer: {
     flex: 1,
     flexDirection: 'column',
-    alignItems: 'center',
     justifyContent: 'space-between',
+    alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 5,
-    maxHeight: DEVICE_HEIGHT / 5,
-    borderWidth: 2,
-    borderColor: 'yellow',
+    minHeight: DEVICE_HEIGHT / 4.5,
+    maxHeight: DEVICE_HEIGHT / 4.5,
   },
   speakerContainer: {
     height: DEVICE_WIDTH / 1.8,
@@ -631,29 +629,17 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: Colors.fontColorDark,
   },
-  controlsContainerBase: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    minWidth: DEVICE_WIDTH,
-    maxWidth: DEVICE_WIDTH,
-    backgroundColor: Colors.backgroundColor2,
-    borderWidth: 2,
-    borderColor: 'green',
-  },
-  recordingDataContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    // minHeight: ICON_RECORD_BUTTON.height,
-    // maxHeight: ICON_RECORD_BUTTON.height,
-    // minWidth: ICON_RECORD_BUTTON.width * 3.0,
-    // maxWidth: ICON_RECORD_BUTTON.width * 3.0,
-    borderWidth: 2,
-    borderColor: 'red',
-  },
+  // controlsContainerBase: {
+  //   flex: 1,
+  //   flexDirection: 'column',
+  //   alignItems: 'center',
+  //   justifyContent: 'flex-start',
+  //   minWidth: DEVICE_WIDTH,
+  //   maxWidth: DEVICE_WIDTH,
+  //   backgroundColor: Colors.backgroundColor2,
+  //   borderWidth: 2,
+  //   borderColor: 'green',
+  // },
   recordingDataRowContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -667,43 +653,45 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'blue',
   },
+  recordingTimeContainer:{
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'green',
+  },
+  playbackTimeContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'red',
+  },
   recordingTimestamp: {
-    marginLeft: 20,
-    backgroundColor: Colors.buttonColor,
-    borderColor: Colors.backgroundColor2,
+
   },
   liveText: {
     color: Colors.liveColor,
-    backgroundColor: Colors.buttonColor,
-    borderColor: Colors.backgroundColor2,
   },
   playbackTimestamp: {
-    textAlign: 'right',
-    alignSelf: 'stretch',
-    paddingRight: 20,
+
   },
-  allButtonsContainer: {
+  buttonsContainer: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    // minWidth: ICON_PLAY_BUTTON.width * 4.5,
-    // maxWidth: ICON_PLAY_BUTTON.width * 4.5,
-    // minWidth: DEVICE_WIDTH,
-    // maxWidth: DEVICE_WIDTH,
-    minHeight: ICON_RECORD_BUTTON.height * 2,
-    maxHeight: ICON_RECORD_BUTTON.height * 2,
-    // marginRight: -10,
-    // marginLeft: -10,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    minWidth: DEVICE_WIDTH,
+    maxWidth: DEVICE_WIDTH,
+    minHeight: ICON_RECORD_BUTTON.height * 2.5,
+    maxHeight: ICON_RECORD_BUTTON.height * 2.5,
     backgroundColor: Colors.backgroundColor2,
-    // paddingLeft: 5,
-    // paddingRight: 5,
-    borderWidth: 2,
-    borderColor: 'pink',
   },
   recButtonWrapper: {
     borderRadius: 4,
-    margin: 5,
+    margin: 2,
     paddingTop: 10,
     paddingBottom: 15,
     paddingLeft: 5,
@@ -717,7 +705,7 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     borderRadius: 4,
-    margin: 5,
+    margin: 2,
     paddingTop: 10,
     paddingBottom: 15,
     paddingLeft: 5,

@@ -20,13 +20,6 @@ export default class RecordingScreen extends React.Component {
     header: null,
   };
 
-  componentDidMount() {
-    Font.loadAsync({
-      'monoton-regular': require('../assets/fonts/Monoton-Regular.ttf'),
-      'space-mono-regular': require('../assets/fonts/SpaceMono-Regular.ttf'),
-    });
-  }
-
   _goBack = () => {
     this.props.navigation.goBack();
   };

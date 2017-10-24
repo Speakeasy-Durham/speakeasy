@@ -27,12 +27,13 @@ export default class SplashScreen extends React.Component {
     )
   }
 
-  _navigateTo(routeName: string){
+  _navigateTo(routeName: string) {
     const actionToDispatch = NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName })]
-    })
-      this.props.navigation.dispatch(actionToDispatch)
+      actions: [NavigationActions.navigate({ routeName })],
+       key: null
+    });
+    this.props.navigation.dispatch(actionToDispatch);
   }
 
   componentDidMount() {

@@ -66,8 +66,8 @@ export default class HomeScreen extends React.Component {
     let user = firebase.auth().currentUser;
     let userId = user.providerData[0].uid;
     var ref = firebase.database().ref('users/' + userId);
-    initializeCognito();
-    listStorageBuckets();
+    // initializeCognito();
+    // listStorageBuckets();
     ref.once('value')
       .then(function(dataSnapshot) {
         if(!dataSnapshot.exists()) {
@@ -83,51 +83,51 @@ export default class HomeScreen extends React.Component {
               profile_picture: imageUrl
             })
         } else {
-          console.log("User already added");
+          // console.log("User already added");
         }
     })
   }
 
   componentDidMount() {
-    var ref = firebase.database().ref('recordings/');
-    var allRecordingsRef = ref.orderByKey();
-    allRecordingsRef.on("value", (snapshot) => {
-      this.allPosts = snapshot.val();
-      // console.log("this.allPosts");
-      // console.log(this.allPosts);
+    var ref = firebase.database().ref('recordings/').orderByKey();
+
+    ref.on('value', (snapshot) => {
+      const allPosts = snapshot.val();
 
       // turn firebase results into an array so that react native Flatlist can render each item
-      this.allPostsArray = Object.keys(this.allPosts).map(key => {
-        let array = this.allPosts[key]
+      const allPostsArray = Object.keys(allPosts).map(key => {
+        const post = allPosts[key];
+
         // Append key if one exists (optional)
-        array.key = key
-        return array
-      })
-      // console.log("this.allPostsArray");
-      // console.log(this.allPostsArray);
+        post.key = key;
+        return post;
+      });
+
       this.setState({
-        allPosts: this.allPostsArray
+        allPosts: allPostsArray,
       });
     })
   }
 
   _handleLogOut = () => {
-      this._navigateTo('Signup');
       firebase.auth().signOut().then(user => {
-        Alert.alert(
-          "You're logged out."
-        );
+        this._navigateTo('Signup');
+        // Alert.alert(
+        //   "You're logged out."
+        // );
       }, function(error) {
         console.log(error);
     });
   }
 
-  _navigateTo(routeName: string){
+  _navigateTo(routeName: string) {
     const actionToDispatch = NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName })]
-    })
-      this.props.navigation.dispatch(actionToDispatch)
+      actions: [NavigationActions.navigate({ routeName })],
+      key: null
+    });
+
+    this.props.navigation.dispatch(actionToDispatch);
   }
 
   render() {
