@@ -12,6 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import Expo, { Asset, Audio, FileSystem, Font, Permissions } from 'expo';
 
+import Colors from '../../constants/Colors';
 import AudioFilePlayer from './_AudioFilePlayer'
 
 class Icon {
@@ -75,30 +76,34 @@ export default class AudioFileContainer extends Component {
         underlaycolor={'#ffffff'}
         style={styles.container}
         >
-        <View
-          >
-          <Text>{this.props.title} </Text>
-          <Text>by: {this.props.username}</Text>
-          <Text> {this.duration} </Text>
+        <View style={styles.rowsContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.titleText}>
+              {this.props.username} </Text>
+            <Text style={styles.nameText}>
+              {this.props.title} </Text>
 
-          {/* <Text> shouldExpand? {this.props.shouldExpand ? "true" : "false"}</Text> */}
 
-          <AudioFilePlayer
-            audio={this.props.audio}
-            id={this.props.id}
-            activePost={this.props.activePost}
-            shouldPlay={this.props.shouldExpand}
-          />
-          {this.props.shouldExpand ?
-            <View style={styles.playerContainer}>
-              {/* <Text>expanded</Text> */}
-              {/* <Text>{this.props.activePost}</Text> */}
             </View>
-            : null
-          }
-          <Text>---------------</Text>
-        </View>
-      </TouchableHighlight>
+            {/* <Text> shouldExpand? {this.props.shouldExpand ? "true" : "false"}</Text> */}
+            <View style={styles.playerContainer}>
+              <AudioFilePlayer
+                audio={this.props.audio}
+                id={this.props.id}
+                duration={this.duration}
+                activePost={this.props.activePost}
+                shouldPlay={this.props.shouldExpand}
+              />
+              {this.props.shouldExpand ?
+                <View>
+                  {/* <Text>expanded</Text> */}
+                  {/* <Text>{this.props.activePost}</Text> */}
+                </View>
+                : null
+              }
+              </View>
+          </View>
+        </TouchableHighlight>
 
     )
   }
@@ -106,13 +111,40 @@ export default class AudioFileContainer extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    // alignItems: 'stretch',
+    flex: 1,
+    paddingTop: 12,
+    paddingBottom: 12,
+    borderBottomColor: Colors.accentOrange,
+    borderBottomWidth: 1,
+    marginLeft: 8,
+  },
+  rowsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    justifyContent: 'space-between',
     flex: 1,
   },
+  textContainer: {
+    flexDirection: 'column',
+    flex: 3,
 
+  },
+  titleText: {
+    fontFamily: 'space-mono-bold',
+    color: Colors.fontColorDark,
+    fontSize: 14,
+  },
+  nameText: {
+    fontFamily: 'space-mono-regular',
+    color: Colors.fontColorLight,
+    fontSize: 16,
+  },
   playerContainer: {
-
+    // alignSelf: 'stretch',
+    flex: 1,
 
   }
 })
