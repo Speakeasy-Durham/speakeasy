@@ -107,7 +107,7 @@ export default class SignupScreen extends React.Component {
   componentDidMount() {
     this.checkLoggedIn();
   }
-  
+
   render () {
     return (
       <View style={styles.main}>
@@ -133,7 +133,7 @@ const googRed = '#ea4335';
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: '#F2EBBF',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
   },
