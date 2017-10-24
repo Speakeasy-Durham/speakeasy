@@ -12,11 +12,11 @@ const RootStackNavigator = StackNavigator(
     Splash: {
       screen: SplashScreen,
     },
-    Main: {
-      screen: MainTabNavigator,
-    },
     Signup: {
       screen: SignupScreen,
+    },
+    Main: {
+      screen: MainTabNavigator,
     },
   },
   {
@@ -24,8 +24,7 @@ const RootStackNavigator = StackNavigator(
     navigationOptions: () => ({
       headerTitleStyle: {
         fontWeight: 'normal',
-      },
-      initialRouteName: 'SplashScreen'
+      }
     }),
   }
 );

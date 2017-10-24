@@ -4,9 +4,11 @@ import { FlatList,
          StyleSheet,
          Text,
          View,
+         Button,
        } from 'react-native';
 import { ExpoLinksView } from '@expo/samples';
 import * as firebase from 'firebase';
+import {NavigationActions} from 'react-navigation';
 
 import ProfileAndSettings from '../components/profile-settings/_ProfileAndSettings';
 import AudioFileContainer from '../components/audio/_AudioFileContainer';
@@ -24,7 +26,6 @@ export default class ProfileScreen extends React.Component {
     };
     this.activePost = null;
   }
-
 
 
   componentWillMount() {
@@ -93,8 +94,37 @@ export default class ProfileScreen extends React.Component {
           userName={this.state.userName}
           userPosts={this.state.userPosts}
         />
+        <View>
+          <Button
+            onPress={this._handleLogOut}
+            title="Logout of App"
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+          />
+        </View>
       </View>
     );
+  }
+
+  _handleLogOut = () => {
+      firebase.auth().signOut().then(user => {
+        this._navigateTo('Signup');
+        // Alert.alert(
+        //   "You're logged out."
+        // );
+      }, function(error) {
+        console.log(error);
+    });
+  }
+
+  _navigateTo(routeName: string) {
+    const actionToDispatch = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName })],
+      key: null
+    });
+
+    this.props.navigation.dispatch(actionToDispatch);
   }
 }
 
@@ -103,4 +133,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FCFCFC',
   },
+
 });

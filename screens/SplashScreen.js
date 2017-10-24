@@ -56,6 +56,26 @@ export default class SplashScreen extends React.Component {
       <Image source={require('../assets/images/splashscreen.png')} style={styles.splashImage} />
     )
   }
+
+  initializeApp() {
+    var _this = this;
+    setTimeout(
+      function () {
+        _this.setState({isReady: true});
+      },
+      2500
+    )
+  }
+
+  _navigateTo(routeName: string) {
+    const actionToDispatch = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName })],
+      key: null
+    });
+
+    this.props.navigation.dispatch(actionToDispatch);
+  }
 }
 
 const styles = StyleSheet.create({

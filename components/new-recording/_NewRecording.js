@@ -746,6 +746,7 @@ const styles = StyleSheet.create({
     width: DEVICE_WIDTH / 1.7,
     marginTop: 17,
     textAlign: 'left',
+    paddingLeft: 8,
   },
   speakerContainer: {
     height: DEVICE_WIDTH / 1.8,
