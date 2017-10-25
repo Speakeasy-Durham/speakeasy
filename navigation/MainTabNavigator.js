@@ -18,7 +18,7 @@ const Tabs = TabNavigator({
       screen: HomeScreen,
       navigationOptions: {
         headerTitle: 'Home',
-        headerTintColor: Colors.accentYellow,
+        headerTintColor: '#FCFCFC',
         headerStyle: {
           backgroundColor: Colors.primaryRed,
         }
@@ -36,7 +36,7 @@ const Tabs = TabNavigator({
       screen: ProfileScreen,
       navigationOptions: {
         headerTitle: 'Profile',
-        headerTintColor: Colors.accentYellow,
+        headerTintColor: '#FCFCFC',
         headerStyle: {
           backgroundColor: Colors.primaryRed,
         }
