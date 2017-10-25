@@ -73,7 +73,7 @@ export default class AudioFileContainer extends Component {
     return (
       <TouchableHighlight
         onPress={ this._expandPlayer }
-        underlaycolor={'#ffffff'}
+        underlaycolor={'#FCFCFC'}
         style={styles.container}
         >
         <View style={styles.rowsContainer}>
@@ -117,9 +117,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 12,
     paddingBottom: 12,
-    borderBottomColor: Colors.accentOrange,
+    borderBottomColor: Colors.iconDefaultColor,
     borderBottomWidth: 1,
     marginLeft: 8,
+    marginRight: 8,
   },
   rowsContainer: {
     flexDirection: 'row',

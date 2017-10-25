@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     padding: 10,
-    flexDirection: 'row',
-    flex: 1,
+    flexDirection: 'column',
+    flex: 2,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    flex: 2,
+    flex: 3,
   },
   info: {
     flexDirection: 'column',
