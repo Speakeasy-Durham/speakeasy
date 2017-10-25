@@ -38,12 +38,11 @@ const ICON_DELETE_BUTTON = new Icon(require('../../assets/images/delete.png'), 5
 const ICON_VOLUME_BUTTON = new Icon(require('../../assets/images/sound.png'), 67, 58);
 
 const ICON_RECORDING = new Icon(require('../../assets/images/dots.png'), 15, 15);
-const ICON_TRACK_1 = new Icon(require('../../assets/images/slider.png'), 166, 5);
-const ICON_THUMB_1 = new Icon(require('../../assets/images/thumbslider.png'), 25, 25);
-const ICON_THUMB_2 = new Icon(require('../../assets/images/thumbslider.png'), 25, 25);
 
-const TAPE = new Icon(require('../../assets/images/tape6.png'), 100, 100);
-const SPEAKER = new Icon(require('../../assets/images/speaker3.png'), 100, 100);
+
+
+const TAPE = new Icon(require('../../assets/images/tape-1.png'), 300, 200);
+const SPEAKER = new Icon(require('../../assets/images/speaker4.png'), 100, 100);
 
 const { width: DEVICE_WIDTH,
        height: DEVICE_HEIGHT } = Dimensions.get('window');
@@ -374,9 +373,9 @@ export default class _NewRecording extends React.Component {
 
   _getRecordingTimestamp() {
     if (this.state.recordingDuration != null) {
-      return `${this._getMMSSFromMillis(this.state.recordingDuration)}`;
+      return `${this._getMMSSFromMillis(this.state.recordingDuration)} / 30`;
     }
-    return `${this._getMMSSFromMillis(0)}`;
+    return `${this._getMMSSFromMillis(0)} / 30`;
   };
 
 
@@ -397,7 +396,8 @@ export default class _NewRecording extends React.Component {
             <View />
           </View>
         : <KeyboardAvoidingView
-           behavior='padding'
+           behavior='position'
+          //  keyboardVerticalOffset={10}
            style={styles.container}>
 
 
@@ -411,6 +411,10 @@ export default class _NewRecording extends React.Component {
 
 
             <View style={styles.middleScreenContainer}>
+              <Image
+                source={require('../../assets/images/lines.png')}
+                style={styles.lines}
+              />
               <View
                 style={styles.tapeContainer}>
                 <Image
@@ -418,15 +422,22 @@ export default class _NewRecording extends React.Component {
                   style={styles.tape}>
                   <TextInput
                     style={[
-                       styles.recordingName,
+                       styles.tapeTitle,
                        { ...Font.style('space-mono-regular') },
                     ]}
                     onChangeText={(text) => this.setState({text})}
                     value={this.state.text}
                     placeholder='Enter a title...'
-                    placeholderTextColor= {Colors.fontColorLight} />
+                    placeholderTextColor={Colors.fontColorLight}
+                    returnKeyType='done'
+                    maxLength={60}
+                    />
                 </Image>
               </View>
+              <Image
+                source={require('../../assets/images/lines.png')}
+                style={styles.lines}
+              />
             </View>
 
 
@@ -471,7 +482,7 @@ export default class _NewRecording extends React.Component {
                     <MaterialCommunityIcons
                       name={'record'}
                       size={50}
-                      color={Colors.fontColorDark}
+                      color={'rgb(50, 50, 50)'}
                     />
                     <Text style={styles.buttonText}>REC</Text>
                   </View>
@@ -487,7 +498,7 @@ export default class _NewRecording extends React.Component {
                     <MaterialCommunityIcons
                       name={this.state.isPlaying ? 'pause' : 'play'}
                       size={50}
-                      color={Colors.fontColorDark}
+                      color={'rgb(50, 50, 50)'}
                     />
                     <Text style={styles.buttonText}>
                       {this.state.isPlaying ? 'PAUSE' : 'PLAY'}
@@ -503,9 +514,9 @@ export default class _NewRecording extends React.Component {
                   }>
                   <View>
                     <MaterialCommunityIcons
-                      name={'upload'}
+                      name={'eject'}
                       size={50}
-                      color={Colors.fontColorDark}
+                      color={'rgb(50, 50, 50)'}
                     />
                     <Text style={styles.buttonText}>POST</Text>
                   </View>
@@ -519,9 +530,9 @@ export default class _NewRecording extends React.Component {
                   }>
                   <View>
                     <MaterialCommunityIcons
-                      name={'delete'}
+                      name={'close'}
                       size={50}
-                      color={Colors.fontColorDark}
+                      color={'rgb(50, 50, 50)'}
                     />
                     <Text style={styles.buttonText}>DELETE</Text>
                   </View>
@@ -555,39 +566,38 @@ const styles = StyleSheet.create({
     minWidth: DEVICE_WIDTH,
   },
   topScreenContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 3,
-    maxHeight: DEVICE_HEIGHT / 3,
+    height: DEVICE_HEIGHT / 3.5,
     paddingBottom: 10,
   },
   middleScreenContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
+    // flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 3,
-    maxHeight: DEVICE_HEIGHT / 3,
-    paddingBottom: 1,
+    // alignSelf: 'stretch',
+    height: DEVICE_HEIGHT / 3.5,
+    paddingBottom: 10,
   },
   bottomScreenContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'stretch',
-    minHeight: DEVICE_HEIGHT / 4.5,
-    maxHeight: DEVICE_HEIGHT / 4.5,
+    height: DEVICE_HEIGHT / 4.2,
+    // borderWidth: 2,
+    // borderColor: 'green',
   },
   speakerContainer: {
     height: DEVICE_WIDTH / 1.8,
     width: DEVICE_WIDTH / 1.15,
     borderRadius: 10,
-    marginBottom: 4,
+    marginBottom: DEVICE_HEIGHT / 40,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.9,
@@ -598,14 +608,17 @@ const styles = StyleSheet.create({
     height: DEVICE_WIDTH / 1.8,
     width: DEVICE_WIDTH / 1.15,
     borderRadius: 10,
+    borderWidth: DEVICE_WIDTH / 23,
     alignItems: 'center',
     justifyContent: 'center',
     resizeMode: 'repeat',
-    backgroundColor: Colors.backgroundColor2,
+    borderColor: 'rgb(247, 239, 224)',
+    // backgroundColor: Colors.backgroundColor2,
+    backgroundColor: 'rgb(247, 239, 224)',
   },
   tapeContainer: {
-    height: DEVICE_WIDTH / 1.725,
-    width: DEVICE_WIDTH / 1.15,
+    height: DEVICE_WIDTH / 1.95,
+    width: DEVICE_WIDTH / 1.3,
     borderRadius: 10,
     marginBottom: 4,
     shadowColor: '#000000',
@@ -613,37 +626,48 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 2,
     elevation: 1,
+    // backgroundColor: Colors.backgroundColor2,
+    backgroundColor: 'rgb(50, 50, 50)',
   },
   tape: {
-    height: DEVICE_WIDTH / 1.725,
-    width: DEVICE_WIDTH / 1.15,
+    height: DEVICE_WIDTH / 1.95,
+    width: DEVICE_WIDTH / 1.3,
     // height: 200,
     // width: 300,
     borderRadius: 10,
-    borderWidth: 20,
-    marginBottom: 4,
+    borderWidth: 16,
+    // marginBottom: 4,
     alignSelf: 'center',
     alignItems: 'center',
-    borderColor: Colors.accentColor,
+    borderColor: Colors.accentGreen,
+    shadowColor: '#000000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.9,
+    shadowRadius: 2,
   },
-  recordingName: {
-    backgroundColor: Colors.buttonColor,
+  tapeTitle: {
     height: DEVICE_WIDTH / 14.5,
     width: DEVICE_WIDTH / 1.7,
-    marginTop: 17,
-    paddingLeft: 8,
+    marginTop: 10,
+    paddingLeft: 6,
+    borderRadius: 2,
+    borderWidth: 2,
+    borderColor: Colors.primaryRed,
     textAlign: 'left',
     color: Colors.fontColorDark,
+    backgroundColor: Colors.buttonColor,
+  },
+  lines: {
+    height: DEVICE_HEIGHT / 10,
+    width: DEVICE_WIDTH / 10
   },
   recordingDataRowContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    minHeight: ICON_RECORDING.height * 2.0,
-    maxHeight: ICON_RECORDING.height * 2.0,
-    minWidth: DEVICE_WIDTH,
-    maxWidth: DEVICE_WIDTH,
+    height: DEVICE_HEIGHT / 20,
+    width: DEVICE_WIDTH / 1.5,
     backgroundColor: Colors.backgroundColor,
     // borderWidth: 2,
     // borderColor: 'blue',
@@ -657,40 +681,40 @@ const styles = StyleSheet.create({
     // borderColor: 'green',
   },
   playbackTimeContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    // flex: 1,
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // alignItems: 'center',
     // borderWidth: 2,
     // borderColor: 'red',
   },
   recordingTimestamp: {
-
+    color: 'rgb(50, 50, 50)',
   },
   liveText: {
     color: Colors.liveColor,
   },
   playbackTimestamp: {
-
+    color: 'rgb(50, 50, 50)',
   },
   buttonsContainer: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    minWidth: DEVICE_WIDTH,
-    maxWidth: DEVICE_WIDTH,
-    minHeight: ICON_RECORD_BUTTON.height * 2.5,
-    maxHeight: ICON_RECORD_BUTTON.height * 2.5,
+    // height: DEVICE_HEIGHT / 6,
+    width: DEVICE_WIDTH,
     backgroundColor: Colors.backgroundColor2,
+    // borderWidth: 2,
+    // borderColor: 'red',
   },
   recButtonWrapper: {
     borderRadius: 4,
     margin: 2,
     paddingTop: 10,
     paddingBottom: 15,
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingLeft: 7,
+    paddingRight: 7,
     backgroundColor: Colors.RECbuttonColor,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
@@ -703,8 +727,8 @@ const styles = StyleSheet.create({
     margin: 2,
     paddingTop: 10,
     paddingBottom: 15,
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingLeft: 7,
+    paddingRight: 7,
     backgroundColor: Colors.buttonColor,
     shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
@@ -713,7 +737,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   buttonText: {
-    color: '#000000',
+    color: 'rgb(50, 50, 50)',
     fontFamily: 'space-mono-regular',
     textAlign: 'center',
     paddingTop: 5,

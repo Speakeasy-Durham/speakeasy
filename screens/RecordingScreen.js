@@ -8,7 +8,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { Font } from 'expo';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationActions} from 'react-navigation';
 import _NewRecording from '../components/new-recording/_NewRecording';
 import Colors from '../constants/Colors';
@@ -31,18 +31,16 @@ export default class RecordingScreen extends React.Component {
           <TouchableHighlight
             style={styles.closeButton}
             onPress={this._goBack}>
-            <Ionicons
-              name={'ios-arrow-down'}
-              size={38}
+            <MaterialCommunityIcons
+              name={'chevron-down'}
+              size={42}
               style={styles.closeButtonIcon}
             />
           </TouchableHighlight>
           <Text style={styles.headerTitle}>SPEAKEASY</Text>
           <View style={styles.rightContainer}></View>
         </View>
-        <_NewRecording
-          style={styles._NewRecording}
-        />
+        <_NewRecording />
       </View>
     );
   }
@@ -60,20 +58,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   closeButtonIcon: {
-    color: Colors.iconSelectColor,
-    paddingLeft: 15,
+    color: Colors.primaryRed,
+    paddingLeft: 12,
   },
   headerTitle: {
-    color: Colors.primaryRed,
+    color: Colors.fontColorDark,
     fontFamily: 'monoton-regular',
-    fontSize: 28,
+    fontSize: 30,
     textAlign: 'center',
     flex: 4,
   },
   rightContainer: {
     flex: 1,
   },
-  _NewRecording: {
-
-  }
 })
