@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'nowrap',
+    marginRight: 4,
   },
   imageContainer: {
     padding: 10,
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     backgroundColor: '#000',
+    borderRadius: 28,
   },
   name: {
     marginTop: 4,

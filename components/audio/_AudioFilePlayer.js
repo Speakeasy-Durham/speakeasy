@@ -122,15 +122,17 @@ export default class AudioFilePlayer extends Component {
           <View style={styles.playerContainer}>
 
 
-            <TouchableHighlight
+            {/* <TouchableHighlight
               style={styles.heartContainer}
               // onPress={ this._testClick }
             >
+              <View>
                 <Ionicons
                   name={`ios-heart`}
                   size={28}
                   color='#ff6347'/>
-            </TouchableHighlight>
+                </View>
+            </TouchableHighlight> */}
           </View>
         : null
         }
