@@ -17,6 +17,12 @@ That's it!
 
 NOTE: please use your Google login when signing up (for now)
 
+### 
+
+Social media network for audio. Users can make recordings of up to 30 second snippets as a creative outlet or way to connect with people and friends across distances. Meant to bring the hobby of mailing audio tapes across the country or saving special voicemails. 
+
+Built on React Native using the Expo library, audio clips are uploaded to AWS s3, with Google Firebase used as the backend database. The code is hosted in a private repository on Github to keep AWS keys secure. 
+
 
 ### Attribution:
 - Splash screen and icon | [Designed by Bennette Sebastian](https://www.bennettesebastian.com/)
