@@ -223,8 +223,7 @@ export default class _NewRecording extends React.Component {
       keyPrefix: "uploads/",
       bucket: "tin-can",
       region: "us-east-2",
-      accessKey: "AKIAI6DKQKOMLHFF5KDQ",
-      secretKey: "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",
+      
       successActionStatus: 201
     }
     let audioLocation = await this._uploadFileToS3(file, options);
